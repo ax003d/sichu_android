@@ -33,6 +33,10 @@ public class NavigationWidget extends LinearLayout {
     public ListView getListView() {
         return list;
     }
+    
+    public void setAdapter(ListAdapter adapter) {
+    	list.setAdapter(adapter);
+    }
 
     public void init(ListAdapter adapter,
             OnItemClickListener onItemClickListener, int theme, int page) {
