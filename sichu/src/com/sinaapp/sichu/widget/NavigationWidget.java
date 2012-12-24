@@ -2,16 +2,15 @@
 package com.sinaapp.sichu.widget;
 
 import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.ThemeManager;
 import org.holoeverywhere.widget.LinearLayout;
 import org.holoeverywhere.widget.ListView;
-
-import com.sinaapp.sichu.R;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
+
+import com.sinaapp.sichu.R;
 
 public class NavigationWidget extends LinearLayout {
     private final ListView list;
@@ -37,9 +36,8 @@ public class NavigationWidget extends LinearLayout {
     public void setAdapter(ListAdapter adapter) {
     	list.setAdapter(adapter);
     }
-
-    public void init(ListAdapter adapter,
-            OnItemClickListener onItemClickListener, int theme, int page) {
-        list.setAdapter(adapter);
+    
+    public void setOnItemClickListener(OnItemClickListener listener) {
+    	list.setOnItemClickListener(listener);
     }
 }
