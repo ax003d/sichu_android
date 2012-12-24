@@ -16,7 +16,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.MenuItem;
 import com.sinaapp.sichu.fragments.AboutFragment;
 import com.sinaapp.sichu.fragments.BookCabinetFragment;
 import com.sinaapp.sichu.fragments.FriendsFragment;
@@ -90,7 +91,6 @@ public class MainActivity extends SlidingActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_main);
         
         adapter = new ListNavigationAdapter();
         adapter.add("Books");
@@ -107,12 +107,9 @@ public class MainActivity extends SlidingActivity {
         si.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         si.setBehindWidthRes(R.dimen.demo_menu_width);
         si.setShadowWidth(0);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
+        
+        final ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);        
 	}
 
     public void replaceFragment(Fragment fragment) {
@@ -128,5 +125,17 @@ public class MainActivity extends SlidingActivity {
             ft.addToBackStack(backStackName);
         }
         ft.commit();
-    }	
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                toggle();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }    
 }
