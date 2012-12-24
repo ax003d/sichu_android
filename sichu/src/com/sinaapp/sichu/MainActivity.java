@@ -14,13 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.sinaapp.sichu.fragments.AboutFragment;
+import com.sinaapp.sichu.fragments.AccountFragment;
 import com.sinaapp.sichu.fragments.BookCabinetFragment;
 import com.sinaapp.sichu.fragments.FriendsFragment;
+import com.sinaapp.sichu.fragments.MessagesFragment;
 import com.sinaapp.sichu.widget.NavigationItem;
 import com.sinaapp.sichu.widget.NavigationWidget;
 
@@ -54,31 +55,22 @@ public class MainActivity extends SlidingActivity {
 
     	@Override
     	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    		Fragment fragment = null;
-    		String title = null;
-    		switch (position) {
-    		case 0:
-    			Toast.makeText(MainActivity.this, "Books", Toast.LENGTH_SHORT).show();
-    			lastSelectedItem = 0;
-    			fragment = BookCabinetFragment.getInstance();
-    			title = "Books";
-    			break;
-    		case 1:
-    			Toast.makeText(MainActivity.this, "Friends", Toast.LENGTH_SHORT).show();
-    			lastSelectedItem = 1;
-    			fragment = FriendsFragment.getInstance();
-    			title = "Friends";
-    			break;
-    		case 2:
-    			Toast.makeText(MainActivity.this, "About", Toast.LENGTH_SHORT).show();
-    			lastSelectedItem = 2;
-    			fragment = AboutFragment.getInstance();
-    			title = "About";
-    			break;
-    		default:
-    			break;
-    		}
+    		lastSelectedItem = position;
+    		String title = fragments[lastSelectedItem];
     		notifyDataSetInvalidated();
+    		
+    		Fragment fragment = null;
+    		if (title.equals("Books")) {
+    			fragment = BookCabinetFragment.getInstance();
+    		} else if (title.equals("Friends")) {
+    			fragment = FriendsFragment.getInstance();
+    		} else if (title.equals("Messages")) {
+    			fragment = MessagesFragment.getInstance();
+    		} else if (title.equals("Account")) {
+    			fragment = AccountFragment.getInstance();
+    		} else if (title.equals("About")) {
+    			fragment = AboutFragment.getInstance();
+    		}
             replaceFragment(fragment);
             getSupportActionBar().setSubtitle(title);
 
@@ -87,15 +79,16 @@ public class MainActivity extends SlidingActivity {
     } 
 	
     private ListNavigationAdapter adapter;
+    private static String[] fragments = {"Books", "Friends", "Messages", "Account", "About"};
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         
         adapter = new ListNavigationAdapter();
-        adapter.add("Books");
-        adapter.add("Friends");
-        adapter.add("About");
+        for (int i=0; i < fragments.length; i++) {
+        	adapter.add(fragments[i]);
+        }
         
 		NavigationWidget navigationWidget = new NavigationWidget(this);
 		navigationWidget.setAdapter(adapter);
