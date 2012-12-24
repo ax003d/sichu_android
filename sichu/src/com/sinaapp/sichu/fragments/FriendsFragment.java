@@ -11,6 +11,15 @@ import com.sinaapp.sichu.R;
 
 public class FriendsFragment extends Fragment {
 
+    private static FriendsFragment instance;
+
+    public static FriendsFragment getInstance() {
+        if (FriendsFragment.instance == null) {
+            return new FriendsFragment();
+        }
+        return FriendsFragment.instance;
+    }		
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

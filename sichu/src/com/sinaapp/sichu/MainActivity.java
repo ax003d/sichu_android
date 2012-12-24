@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.holoeverywhere.ArrayAdapter;
+import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.slidingmenu.SlidingMenu;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,6 +17,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
+import com.sinaapp.sichu.fragments.AboutFragment;
+import com.sinaapp.sichu.fragments.BookCabinetFragment;
+import com.sinaapp.sichu.fragments.FriendsFragment;
 import com.sinaapp.sichu.widget.NavigationItem;
 import com.sinaapp.sichu.widget.NavigationWidget;
 
@@ -48,23 +53,35 @@ public class MainActivity extends SlidingActivity {
 
     	@Override
     	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    		Fragment fragment = null;
+    		String title = null;
     		switch (position) {
     		case 0:
     			Toast.makeText(MainActivity.this, "Books", Toast.LENGTH_SHORT).show();
     			lastSelectedItem = 0;
+    			fragment = BookCabinetFragment.getInstance();
+    			title = "Books";
     			break;
     		case 1:
     			Toast.makeText(MainActivity.this, "Friends", Toast.LENGTH_SHORT).show();
     			lastSelectedItem = 1;
+    			fragment = FriendsFragment.getInstance();
+    			title = "Friends";
     			break;
     		case 2:
     			Toast.makeText(MainActivity.this, "About", Toast.LENGTH_SHORT).show();
     			lastSelectedItem = 2;
+    			fragment = AboutFragment.getInstance();
+    			title = "About";
     			break;
     		default:
     			break;
     		}
     		notifyDataSetInvalidated();
+            replaceFragment(fragment);
+            getSupportActionBar().setSubtitle(title);
+
+            getSlidingMenu().showAbove(true);
     	}    
     } 
 	
@@ -73,7 +90,7 @@ public class MainActivity extends SlidingActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        // setContentView(R.layout.activity_main);
         
         adapter = new ListNavigationAdapter();
         adapter.add("Books");
@@ -83,6 +100,7 @@ public class MainActivity extends SlidingActivity {
 		NavigationWidget navigationWidget = new NavigationWidget(this);
 		navigationWidget.setAdapter(adapter);
 		navigationWidget.setOnItemClickListener(adapter);
+		navigationWidget.performItemClick(0);
 		setBehindContentView(navigationWidget);
 		
         final SlidingMenu si = getSlidingMenu();
@@ -97,4 +115,18 @@ public class MainActivity extends SlidingActivity {
 		return true;
 	}
 
+    public void replaceFragment(Fragment fragment) {
+        replaceFragment(fragment, null);
+    }
+
+    public void replaceFragment(Fragment fragment,
+            String backStackName) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.replace(android.R.id.content, fragment);
+        if (backStackName != null) {
+            ft.addToBackStack(backStackName);
+        }
+        ft.commit();
+    }	
 }

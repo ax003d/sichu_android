@@ -40,4 +40,8 @@ public class NavigationWidget extends LinearLayout {
     public void setOnItemClickListener(OnItemClickListener listener) {
     	list.setOnItemClickListener(listener);
     }
+    
+    public void performItemClick(int position) {
+    	list.performItemClick(null, position, 0);
+    }
 }

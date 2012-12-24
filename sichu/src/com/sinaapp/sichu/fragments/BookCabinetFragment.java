@@ -10,6 +10,15 @@ import android.view.ViewGroup;
 import com.sinaapp.sichu.R;
 
 public class BookCabinetFragment extends Fragment {
+
+    private static BookCabinetFragment instance;
+
+    public static BookCabinetFragment getInstance() {
+        if (BookCabinetFragment.instance == null) {
+            return new BookCabinetFragment();
+        }
+        return BookCabinetFragment.instance;
+    }	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

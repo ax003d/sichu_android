@@ -11,6 +11,15 @@ import com.sinaapp.sichu.R;
 
 public class AboutFragment extends Fragment {
 
+    private static AboutFragment instance;
+
+    public static AboutFragment getInstance() {
+        if (AboutFragment.instance == null) {
+            return new AboutFragment();
+        }
+        return AboutFragment.instance;
+    }	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
