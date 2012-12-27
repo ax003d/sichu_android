@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.holoeverywhere.ArrayAdapter;
-import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.slidingmenu.SlidingMenu;
 
@@ -16,16 +15,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.view.MenuItem;
-import com.sinaapp.sichu.fragments.AboutFragment;
-import com.sinaapp.sichu.fragments.AccountFragment;
 import com.sinaapp.sichu.fragments.BookCabinetFragment;
 import com.sinaapp.sichu.fragments.FriendsFragment;
 import com.sinaapp.sichu.fragments.MessagesFragment;
 import com.sinaapp.sichu.widget.NavigationItem;
 import com.sinaapp.sichu.widget.NavigationWidget;
 
-public class MainActivity extends SlidingActivity {
+public class MainActivity extends SlidingActivity implements TabListener {
     private final class ListNavigationAdapter extends ArrayAdapter<String> implements OnItemClickListener {
     	private int lastSelectedItem = 0;
     	
@@ -58,28 +57,16 @@ public class MainActivity extends SlidingActivity {
     		lastSelectedItem = position;
     		String title = fragments[lastSelectedItem];
     		notifyDataSetInvalidated();
-    		
-    		Fragment fragment = null;
-    		if (title.equals("Books")) {
-    			fragment = BookCabinetFragment.getInstance();
-    		} else if (title.equals("Friends")) {
-    			fragment = FriendsFragment.getInstance();
-    		} else if (title.equals("Messages")) {
-    			fragment = MessagesFragment.getInstance();
-    		} else if (title.equals("Account")) {
-    			fragment = AccountFragment.getInstance();
-    		} else if (title.equals("About")) {
-    			fragment = AboutFragment.getInstance();
-    		}
-            replaceFragment(fragment);
+            replaceTabs(title);
             getSupportActionBar().setSubtitle(title);
-
             getSlidingMenu().showAbove(true);
     	}    
     } 
 	
     private ListNavigationAdapter adapter;
     private static String[] fragments = {"Books", "Friends", "Messages", "Account", "About"};
+    private static String[] books_tabs = {"Mine", "Borrowed", "Loaned"};
+    private static String[] friends_tabs = {"Following", "Follower"};
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -102,23 +89,30 @@ public class MainActivity extends SlidingActivity {
         si.setShadowWidth(0);
         
         final ActionBar ab = getSupportActionBar();
+        ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         ab.setDisplayHomeAsUpEnabled(true);        
 	}
-
-    public void replaceFragment(Fragment fragment) {
-        replaceFragment(fragment, null);
-    }
-
-    public void replaceFragment(Fragment fragment,
-            String backStackName) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.replace(android.R.id.content, fragment);
-        if (backStackName != null) {
-            ft.addToBackStack(backStackName);
-        }
-        ft.commit();
-    }
+	
+	private void replaceTabs(String title) {
+		final ActionBar ab = getSupportActionBar();
+		ab.removeAllTabs();
+		
+		if (title.equals("Books")) {
+			for (int i=0; i < books_tabs.length; i++) {
+		        ActionBar.Tab tab = ab.newTab();
+		        tab.setText(books_tabs[i]);
+		        tab.setTabListener(this);
+		        ab.addTab(tab);		
+			}
+		} else if (title.equals("Friends")) {
+			for (int i=0; i < friends_tabs.length; i++) {
+		        ActionBar.Tab tab = getSupportActionBar().newTab();
+		        tab.setText(friends_tabs[i]);
+		        tab.setTabListener(this);
+		        ab.addTab(tab);		
+			}			
+		}
+	}
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -130,5 +124,26 @@ public class MainActivity extends SlidingActivity {
                 return super.onOptionsItemSelected(item);
         }
         return true;
-    }    
+    }
+
+	@Override
+	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		if ( tab.getText().equals("Mine") ) {
+			ft.replace(android.R.id.content, BookCabinetFragment.getInstance());
+		} else if (tab.getText().equals("Borrowed")) {
+			ft.replace(android.R.id.content, FriendsFragment.getInstance());
+		} else if (tab.getText().equals("Loaned")) {
+			ft.replace(android.R.id.content, MessagesFragment.getInstance());
+		}
+	}
+
+	@Override
+	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+
+	}
+
+	@Override
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+
+	}    
 }
