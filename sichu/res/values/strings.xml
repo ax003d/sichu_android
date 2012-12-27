@@ -4,5 +4,11 @@
     <string name="app_name">sichu</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="hint_username">username</string>
+    <string name="hint_password">password</string>
+    <string name="chk_remember">remember me</string>
+    <string name="btn_login">Login</string>
+    <string name="hint_no_network">No available network!</string>
+    <string name="activity_login">Login</string>
 
 </resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="debug_server">http://192.168.2.92:8000</string>
+    <string name="production_server">http://sichu.sinaapp.com</string>
+    <string name="apikey">d8fdc1f628c8ee4511462a5a81fcbf</string>
+</resources>
