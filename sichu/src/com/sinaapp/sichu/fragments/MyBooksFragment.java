@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.sinaapp.sichu.R;
 import com.sinaapp.sichu.adapters.BookOwnListAdapter;
 import com.sinaapp.sichu.api.ISichuAPI;
@@ -42,6 +44,12 @@ public class MyBooksFragment extends Fragment {
 	private SlidingActivity activity;
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_mybooks, container, false);
@@ -56,6 +64,12 @@ public class MyBooksFragment extends Fragment {
 		api_client = SichuAPI.getInstance(getActivity());
 		activity = (SlidingActivity) getActivity();
 		new GetBookOwnTask().execute();
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.fragment_mybooks, menu);
 	}
 
 	private class GetBookOwnTask extends
