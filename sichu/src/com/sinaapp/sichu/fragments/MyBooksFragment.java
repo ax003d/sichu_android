@@ -50,7 +50,7 @@ public class MyBooksFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		adapter = new BookOwnListAdapter();
+		adapter = new BookOwnListAdapter(getActivity());
 		lst_bookown = (ListView) getActivity().findViewById(R.id.lst_bookowns);
 		lst_bookown.setAdapter(adapter);
 		api_client = SichuAPI.getInstance(getActivity());

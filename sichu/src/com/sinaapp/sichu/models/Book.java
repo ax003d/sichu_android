@@ -9,6 +9,7 @@ public class Book {
 	private String title;
 	private String author;
 	private String doubanID;
+	private String cover;
 	
 	public Book(JSONObject jsonObject) {
 		try {
@@ -17,6 +18,7 @@ public class Book {
 			this.setTitle(jsonObject.getString("title"));
 			this.author = jsonObject.getString("author");
 			this.doubanID = jsonObject.getString("douban_id");
+			this.setCover(jsonObject.getString("cover"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -36,5 +38,13 @@ public class Book {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getCover() {
+		return cover;
+	}
+
+	public void setCover(String cover) {
+		this.cover = cover;
 	}	
 }
