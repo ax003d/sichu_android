@@ -39,17 +39,17 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		if (!Utils.isNetworkAvailable(context)) {
 			throw new IOException("Network not available!");
 		}
-		
+
 		if (!request.getPath().equals("/v1/account/login/")) {
 			request.addHeader("AUTHORIZATION",
 					"Bearer " + Preferences.getToken(context));
 		}
-		
-		ApiResponse response = super.execute(request, listener);		
+
+		ApiResponse response = super.execute(request, listener);
 		if (response.getStatusCode() == 401) {
 			Preferences.expireToken(context);
 		}
-		
+
 		return response;
 	}
 
@@ -79,4 +79,21 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		return new JSONObject(response.getContentAsString());
 	}
 
+	@Override
+	public JSONObject bookownAdd(String isbn, String status,
+			String remark, ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.POST,
+				"/v1/bookown/add/");
+
+		request.addParameter("isbn", isbn);
+		request.addParameter("status", status == null ? "1" : status);
+		if (remark != null) {
+			request.addParameter("remark", remark);
+		}
+		
+		ApiResponse response = execute(request, progressListener);
+
+		return new JSONObject(response.getContentAsString());
+	}
 }

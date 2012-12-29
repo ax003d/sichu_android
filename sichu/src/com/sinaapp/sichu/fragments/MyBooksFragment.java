@@ -80,7 +80,8 @@ public class MyBooksFragment extends Fragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.menu_scan) {
-			IntentIntegratorSupportV4 integrator = new IntentIntegratorSupportV4(this);
+			IntentIntegratorSupportV4 integrator = new IntentIntegratorSupportV4(
+					this);
 			integrator.initiateScan();
 		}
 		return super.onOptionsItemSelected(item);
@@ -89,16 +90,14 @@ public class MyBooksFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		IntentResult scanResult = IntentIntegratorSupportV4.parseActivityResult(
-				requestCode, resultCode, data);
+		IntentResult scanResult = IntentIntegratorSupportV4
+				.parseActivityResult(requestCode, resultCode, data);
 		if (scanResult != null) {
-			Toast.makeText(getActivity(), scanResult.getContents(),
-					Toast.LENGTH_SHORT).show();
+			new AddBookOwnTask().execute(scanResult.getContents());
 		}
 	}
 
-	private class GetBookOwnTask extends
-			AsyncTask<String, LinearLayout, JSONObject> {
+	private class GetBookOwnTask extends AsyncTask<String, Void, JSONObject> {
 		@Override
 		protected JSONObject doInBackground(String... params) {
 			JSONObject ret = null;
@@ -165,4 +164,45 @@ public class MyBooksFragment extends Fragment {
 			}
 		} // onPostExecute
 	} // GetBookOwnTask
+
+	private class AddBookOwnTask extends AsyncTask<String, Void, JSONObject> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			activity.setSupportProgressBarIndeterminateVisibility(true);
+		}
+
+		@Override
+		protected JSONObject doInBackground(String... params) {
+			JSONObject ret = null;
+			try {
+				if (params.length == 1) {
+					ret = api_client.bookownAdd(params[0], null, null, null);
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return ret;
+		}
+
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			super.onPostExecute(result);
+			activity.setSupportProgressBarIndeterminateVisibility(false);
+			if (result != null && result.has("id")) {
+				BookOwn own = new BookOwn(result);
+				adapter.addBookOwn(own);
+				adapter.notifyDataSetChanged();
+				Toast.makeText(activity, "Book added!", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(activity, "Add Book failed!", Toast.LENGTH_SHORT)
+						.show();
+			}
+		}
+	}
 }

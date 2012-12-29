@@ -12,7 +12,11 @@ public interface ISichuAPI {
 	JSONObject account_login(String username, String password,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
-	
+
 	JSONObject bookown(String next, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
+
+	JSONObject bookownAdd(String isbn, String status, String remark,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException;
 }
