@@ -18,9 +18,10 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.view.MenuItem;
-import com.sinaapp.sichu.fragments.BookCabinetFragment;
+import com.actionbarsherlock.view.Window;
 import com.sinaapp.sichu.fragments.FriendsFragment;
 import com.sinaapp.sichu.fragments.MessagesFragment;
+import com.sinaapp.sichu.fragments.MyBooksFragment;
 import com.sinaapp.sichu.widget.NavigationItem;
 import com.sinaapp.sichu.widget.NavigationWidget;
 
@@ -65,13 +66,14 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	
     private ListNavigationAdapter adapter;
     private static String[] fragments = {"Books", "Friends", "Messages", "Account", "About"};
-    private static String[] books_tabs = {"Mine", "Borrowed", "Loaned"};
+    private static String[] books_tabs = {"My", "Borrowed", "Loaned"};
     private static String[] friends_tabs = {"Following", "Follower"};
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		
         adapter = new ListNavigationAdapter();
         for (int i=0; i < fragments.length; i++) {
         	adapter.add(fragments[i]);
@@ -128,8 +130,8 @@ public class MainActivity extends SlidingActivity implements TabListener {
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		if ( tab.getText().equals("Mine") ) {
-			ft.replace(android.R.id.content, BookCabinetFragment.getInstance());
+		if ( tab.getText().equals("My") ) {
+			ft.replace(android.R.id.content, MyBooksFragment.getInstance());
 		} else if (tab.getText().equals("Borrowed")) {
 			ft.replace(android.R.id.content, FriendsFragment.getInstance());
 		} else if (tab.getText().equals("Loaned")) {
