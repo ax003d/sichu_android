@@ -7,12 +7,14 @@ import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.widget.ListView;
+import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +23,9 @@ import android.widget.LinearLayout;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.google.zxing.integration.android.IntentIntegratorSupportV4;
+import com.google.zxing.integration.android.IntentResult;
 import com.sinaapp.sichu.R;
 import com.sinaapp.sichu.adapters.BookOwnListAdapter;
 import com.sinaapp.sichu.api.ISichuAPI;
@@ -48,7 +53,7 @@ public class MyBooksFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -65,11 +70,31 @@ public class MyBooksFragment extends Fragment {
 		activity = (SlidingActivity) getActivity();
 		new GetBookOwnTask().execute();
 	}
-	
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.fragment_mybooks, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.menu_scan) {
+			IntentIntegratorSupportV4 integrator = new IntentIntegratorSupportV4(this);
+			integrator.initiateScan();
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		IntentResult scanResult = IntentIntegratorSupportV4.parseActivityResult(
+				requestCode, resultCode, data);
+		if (scanResult != null) {
+			Toast.makeText(getActivity(), scanResult.getContents(),
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	private class GetBookOwnTask extends

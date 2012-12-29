@@ -7,6 +7,7 @@ import org.holoeverywhere.ArrayAdapter;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.slidingmenu.SlidingMenu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -126,6 +127,11 @@ public class MainActivity extends SlidingActivity implements TabListener {
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
     }
 
 	@Override
