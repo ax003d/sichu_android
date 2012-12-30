@@ -364,7 +364,7 @@ public class MyBooksFragment extends Fragment implements
 		if (id == BOOKOWN_LOADER) {
 			return new CursorLoader(activity, Uri.withAppendedPath(
 					BookOwns.CONTENT_URI, "owner/" + userID), null, null, null,
-					null);
+					BookOwns.TABLE_NAME + "." + BookOwns.GUID + " DESC");
 		}
 		return null;
 	}

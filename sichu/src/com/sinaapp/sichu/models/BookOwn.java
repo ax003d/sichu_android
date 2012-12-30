@@ -27,6 +27,7 @@ public class BookOwn {
 		public static final Uri CONTENT_URI = Uri.parse("content://"
 				+ SichuContentProvider.AUTHORITY + "/bookowns");
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.sichu.bookowns";
+		public static final String TABLE_NAME = "bookowns";
 		public static final String GUID = "guid";
 		public static final String BOOKID = "bookID";
 		public static final String OWNERID = "ownerID";

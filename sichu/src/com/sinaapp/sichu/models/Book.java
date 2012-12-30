@@ -24,6 +24,7 @@ public class Book {
 		public static final Uri CONTENT_URI = Uri.parse("content://"
 				+ SichuContentProvider.AUTHORITY + "/books");
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.sichu.books";
+		public static final String TABLE_NAME = "books";
 		public static final String GUID = "guid";
 		public static final String ISBN = "ISBN";
 		public static final String TITLE = "title";
