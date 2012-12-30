@@ -337,10 +337,8 @@ public class MyBooksFragment extends Fragment implements
 							break;
 						} // endswitch						
 					} // endfor
-					if (updated) {
-						contentResolver.notifyChange(Uri.withAppendedPath(
+					contentResolver.notifyChange(Uri.withAppendedPath(
 								BookOwns.CONTENT_URI, "owner/" + userID), null);
-					}
 				} catch (JSONException e1) {
 					e1.printStackTrace();
 				}
@@ -387,8 +385,7 @@ public class MyBooksFragment extends Fragment implements
 		int idx_doubanID = data.getColumnIndex(Books.DOUBAN_ID);
 		int idx_cover = data.getColumnIndex(Books.COVER);
 
-		data.moveToFirst();
-		do {
+		while(data.moveToNext()) {
 			BookOwn own = new BookOwn(data.getLong(idx_guid),
 					data.getLong(idx_bookID), data.getLong(idx_ownerID),
 					data.getInt(idx_status), data.getInt(idx_hasEBook),
@@ -396,7 +393,7 @@ public class MyBooksFragment extends Fragment implements
 					data.getString(idx_title), data.getString(idx_author),
 					data.getString(idx_doubanID), data.getString(idx_cover));
 			adapter.addBookOwn(own);
-		} while (data.moveToNext());
+		};
 		adapter.notifyDataSetChanged();
 	}
 
