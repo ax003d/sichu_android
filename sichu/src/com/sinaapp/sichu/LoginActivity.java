@@ -100,7 +100,8 @@ public class LoginActivity extends Activity implements OnClickListener,
 					Preferences.setLoginInfo(getApplicationContext(),
 							ret.getString("token"),
 							ret.getString("refresh_token"),
-							ret.getLong("expire"));
+							ret.getLong("expire"),
+							ret.getLong("uid"));
 					return true;
 				} else {
 					Preferences.expireToken(getApplicationContext());

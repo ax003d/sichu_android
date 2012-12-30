@@ -15,11 +15,15 @@ import org.json.JSONObject;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -30,10 +34,14 @@ import com.sinaapp.sichu.R;
 import com.sinaapp.sichu.adapters.BookOwnListAdapter;
 import com.sinaapp.sichu.api.ISichuAPI;
 import com.sinaapp.sichu.api.SichuAPI;
+import com.sinaapp.sichu.models.Book.Books;
 import com.sinaapp.sichu.models.BookOwn;
+import com.sinaapp.sichu.models.BookOwn.BookOwns;
 import com.sinaapp.sichu.utils.Preferences;
 
-public class MyBooksFragment extends Fragment {
+public class MyBooksFragment extends Fragment implements
+		LoaderManager.LoaderCallbacks<Cursor> {
+	private static final int BOOKOWN_LOADER = 0;
 	private static MyBooksFragment instance;
 
 	public static MyBooksFragment getInstance() {
@@ -47,6 +55,7 @@ public class MyBooksFragment extends Fragment {
 	private ListView lst_bookown;
 	private ISichuAPI api_client;
 	private SlidingActivity activity;
+	private long userID;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +77,15 @@ public class MyBooksFragment extends Fragment {
 		lst_bookown.setAdapter(adapter);
 		api_client = SichuAPI.getInstance(getActivity());
 		activity = (SlidingActivity) getActivity();
-		new GetBookOwnTask().execute();
+		userID = Preferences.getUserID(activity);
+		activity.setSupportProgressBarIndeterminateVisibility(false);
+		activity.getSupportLoaderManager().initLoader(BOOKOWN_LOADER, null,
+				this);
+		if (Preferences.getSyncTime(activity.getApplicationContext()) == 0) {
+			new GetBookOwnTask().execute();
+		} else {
+			// Sync BookOwn
+		}
 	}
 
 	@Override
@@ -126,6 +143,7 @@ public class MyBooksFragment extends Fragment {
 		@Override
 		protected void onPostExecute(JSONObject result) {
 			super.onPostExecute(result);
+			Cursor cursor;
 
 			if (result != null && result.has("objects")) {
 				ContentResolver contentResolver = activity.getContentResolver();
@@ -135,13 +153,26 @@ public class MyBooksFragment extends Fragment {
 					for (int i = 0; i < jBookOwns.length(); i++) {
 						BookOwn own = new BookOwn(jBookOwns.getJSONObject(i));
 						adapter.addBookOwn(own);
+						cursor = contentResolver.query(Uri.withAppendedPath(
+								Books.CONTENT_URI, "guid/"
+										+ own.getBook().getGuid()), null, null,
+								null, null);
 						ContentValues values = new ContentValues();
-						// values.put(Tasks.GUID, task.getGuid());
-						// values.put(Tasks.NAME, task.getName());
-						// values.put(Tasks.TYPE, task.getTypeAsString());
-						// values.put(Tasks.FINISH, task.getFinish());
-						// values.put(Tasks.REMARK, task.getRemark());
-						// contentResolver.insert(Tasks.CONTENT_URI, values);
+						if (cursor.getCount() == 0) {
+							own.getBook().setContentValues(values);
+							contentResolver.insert(Books.CONTENT_URI, values);
+							values.clear();
+						}
+
+						cursor = contentResolver.query(
+								Uri.withAppendedPath(BookOwns.CONTENT_URI,
+										"guid/" + own.getGuid()), null, null,
+								null, null);
+						if (cursor.getCount() == 0) {
+							own.setContentValues(values, userID);
+							contentResolver
+									.insert(BookOwns.CONTENT_URI, values);
+						}
 					}
 					adapter.notifyDataSetChanged();
 					Preferences.setSyncTime(activity.getApplicationContext());
@@ -198,11 +229,59 @@ public class MyBooksFragment extends Fragment {
 				BookOwn own = new BookOwn(result);
 				adapter.addBookOwn(own);
 				adapter.notifyDataSetChanged();
-				Toast.makeText(activity, "Book added!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity, "Book added!", Toast.LENGTH_SHORT)
+						.show();
 			} else {
 				Toast.makeText(activity, "Add Book failed!", Toast.LENGTH_SHORT)
 						.show();
 			}
 		}
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		if (id == BOOKOWN_LOADER) {
+			return new CursorLoader(activity, Uri.withAppendedPath(
+					BookOwns.CONTENT_URI, "owner/" + userID), null, null,
+					null, null);
+		}
+		return null;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		int idx_guid = data.getColumnIndex(BookOwns.GUID);
+		int idx_bookID = data.getColumnIndex(BookOwns.BOOKID);
+		int idx_ownerID = data.getColumnIndex(BookOwns.OWNERID);
+		int idx_status = data.getColumnIndex(BookOwns.STATUS);
+		int idx_hasEBook = data.getColumnIndex(BookOwns.HASEBOOK);
+		int idx_remark = data.getColumnIndex(BookOwns.REMARK);
+		int idx_ISBN = data.getColumnIndex(Books.ISBN);
+		int idx_title = data.getColumnIndex(Books.TITLE);
+		int idx_author = data.getColumnIndex(Books.AUTHOR);
+		int idx_doubanID = data.getColumnIndex(Books.DOUBAN_ID);
+		int idx_cover = data.getColumnIndex(Books.COVER);
+		
+		while (data.moveToNext()) {
+			BookOwn own = new BookOwn(data.getLong(idx_guid),
+					data.getLong(idx_bookID),
+					data.getLong(idx_ownerID),
+					data.getInt(idx_status),
+					data.getInt(idx_hasEBook),
+					data.getString(idx_remark),
+					data.getString(idx_ISBN),
+					data.getString(idx_title),
+					data.getString(idx_author),
+					data.getString(idx_doubanID),
+					data.getString(idx_cover));
+			adapter.addBookOwn(own);
+		}
+		adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> data) {
+		// TODO Auto-generated method stub
+
 	}
 }

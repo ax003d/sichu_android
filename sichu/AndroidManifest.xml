@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sinaapp.sichu"
     android:versionCode="1"
     android:versionName="1.0" >
@@ -29,6 +30,11 @@
             android:name="com.sinaapp.sichu.MainActivity"
             android:label="@string/app_name" >
         </activity>
+        <provider
+            android:name="com.sinaapp.sichu.providers.SichuContentProvider"
+            android:authorities="com.sinaapp.sichu.providers.SichuContentProvider"
+            tools:ignore="ExportedContentProvider" >
+        </provider>        
     </application>
 
 </manifest>

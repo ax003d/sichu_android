@@ -15,12 +15,12 @@ public class Preferences {
 	public static String SERVER;
 
 	public static void setLoginInfo(Context context, String token,
-			String refresh_token, long expire) {
+			String refresh_token, long expire, long uid) {
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		preferences.edit().putString("token", token)
 				.putString("refresh_token", refresh_token)
-				.putLong("expire", expire).commit();
+				.putLong("expire", expire).putLong("uid", uid).commit();
 	}
 
 	public static void setRemember(Context context, String username,
@@ -30,6 +30,11 @@ public class Preferences {
 				.putString("password", password).commit();
 	}
 
+	public static long getUserID(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context)
+				.getLong("uid", -1);
+	}
+	
 	public static String getRememberedUsername(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getString("username", "");
@@ -68,20 +73,20 @@ public class Preferences {
 
 		return Preferences.SERVER;
 	}
-	
+
 	public static void setSyncTime(Context context) {
 		TimeZone tz = TimeZone.getDefault();
 		Date now = new Date();
-		int offset = tz.getOffset(now.getTime());		
+		int offset = tz.getOffset(now.getTime());
 		PreferenceManager.getDefaultSharedPreferences(context).edit()
-			.putLong("sync_time", (now.getTime() - offset) / 1000).commit();
+				.putLong("sync_time", (now.getTime() - offset) / 1000).commit();
 	}
-	
+
 	public static void setSyncTime(Context context, long timestamp) {
 		PreferenceManager.getDefaultSharedPreferences(context).edit()
-			.putLong("sync_time", timestamp).commit();
-	}	
-	
+				.putLong("sync_time", timestamp).commit();
+	}
+
 	public static long getSyncTime(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context).getLong(
 				"sync_time", 0);

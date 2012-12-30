@@ -3,6 +3,12 @@ package com.sinaapp.sichu.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ContentValues;
+import android.net.Uri;
+import android.provider.BaseColumns;
+
+import com.sinaapp.sichu.providers.SichuContentProvider;
+
 public class Book {
 	private long guid;
 	private String ISBN;
@@ -10,6 +16,21 @@ public class Book {
 	private String author;
 	private String doubanID;
 	private String cover;
+
+	public static final class Books implements BaseColumns {
+		private Books() {
+		}
+
+		public static final Uri CONTENT_URI = Uri.parse("content://"
+				+ SichuContentProvider.AUTHORITY + "/books");
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.sichu.books";
+		public static final String GUID = "guid";
+		public static final String ISBN = "ISBN";
+		public static final String TITLE = "title";
+		public static final String AUTHOR = "author";
+		public static final String DOUBAN_ID = "doubanID";
+		public static final String COVER = "cover";
+	}	
 	
 	public Book(JSONObject jsonObject) {
 		try {
@@ -22,6 +43,16 @@ public class Book {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Book(long bookID, String ISBN, String title, String author,
+			String doubanID, String cover) {
+		this.guid = bookID;
+		this.ISBN = ISBN;
+		this.title = title;
+		this.author = author;
+		this.doubanID = doubanID;
+		this.cover = cover;
 	}
 
 	public long getGuid() {
@@ -46,5 +77,14 @@ public class Book {
 
 	public void setCover(String cover) {
 		this.cover = cover;
+	}
+
+	public void setContentValues(ContentValues values) {
+		values.put(Books.GUID, this.guid);
+		values.put(Books.ISBN, this.ISBN);
+		values.put(Books.TITLE, this.title);
+		values.put(Books.AUTHOR, this.author);
+		values.put(Books.DOUBAN_ID, this.doubanID);
+		values.put(Books.COVER, this.cover);
 	}	
 }

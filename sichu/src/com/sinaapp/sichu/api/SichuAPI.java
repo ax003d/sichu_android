@@ -32,6 +32,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		}
 		return INSTANCE;
 	}
+	
 
 	@Override
 	public ApiResponse execute(ApiRequest request, ProgressListener listener)
