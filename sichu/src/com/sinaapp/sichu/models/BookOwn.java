@@ -4,9 +4,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import com.sinaapp.sichu.models.Book.Books;
 import com.sinaapp.sichu.providers.SichuContentProvider;
 
 public class BookOwn {
@@ -17,8 +19,9 @@ public class BookOwn {
 	private int status;
 	private boolean hasEbook;
 	private String remark;
-	
-	private static final String[] book_status = {"Available", "Not Available", "Loaned", "Lost"};
+
+	private static final String[] book_status = { "Available", "Not Available",
+			"Loaned", "Lost" };
 
 	public static final class BookOwns implements BaseColumns {
 		private BookOwns() {
@@ -34,8 +37,8 @@ public class BookOwn {
 		public static final String STATUS = "status";
 		public static final String HASEBOOK = "hasEbook";
 		public static final String REMARK = "remark";
-	}		
-	
+	}
+
 	public BookOwn(JSONObject jsonObject) {
 		try {
 			this.guid = jsonObject.getLong("id");
@@ -47,11 +50,11 @@ public class BookOwn {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	}	
+	}
 
-	public BookOwn(long guid, long bookID, long ownerID, int status, int hasEbook,
-			String remark, String ISBN, String title, String author,
-			String doubanID, String cover) {
+	public BookOwn(long guid, long bookID, long ownerID, int status,
+			int hasEbook, String remark, String ISBN, String title,
+			String author, String doubanID, String cover) {
 		this.guid = guid;
 		this.book = new Book(bookID, ISBN, title, author, doubanID, cover);
 		this.bookID = bookID;
@@ -61,10 +64,34 @@ public class BookOwn {
 		this.remark = remark;
 	}
 
+	public BookOwn(Cursor data) {
+		int idx_guid = data.getColumnIndex(BookOwns.GUID);
+		int idx_bookID = data.getColumnIndex(BookOwns.BOOKID);
+		int idx_ownerID = data.getColumnIndex(BookOwns.OWNERID);
+		int idx_status = data.getColumnIndex(BookOwns.STATUS);
+		int idx_hasEBook = data.getColumnIndex(BookOwns.HASEBOOK);
+		int idx_remark = data.getColumnIndex(BookOwns.REMARK);
+		int idx_ISBN = data.getColumnIndex(Books.ISBN);
+		int idx_title = data.getColumnIndex(Books.TITLE);
+		int idx_author = data.getColumnIndex(Books.AUTHOR);
+		int idx_doubanID = data.getColumnIndex(Books.DOUBAN_ID);
+		int idx_cover = data.getColumnIndex(Books.COVER);
+
+		this.guid = data.getLong(idx_guid);
+		this.bookID = data.getLong(idx_bookID);
+		this.ownerID = data.getLong(idx_ownerID);
+		this.status = data.getInt(idx_status);
+		this.hasEbook = data.getInt(idx_hasEBook) == 1;
+		this.remark = data.getString(idx_remark);
+		this.book = new Book(this.bookID, data.getString(idx_ISBN),
+				data.getString(idx_title), data.getString(idx_author),
+				data.getString(idx_doubanID), data.getString(idx_cover));
+	}
+
 	public long getBookID() {
 		return bookID;
 	}
-	
+
 	public void setBookID(long bookID) {
 		this.bookID = bookID;
 	}
@@ -81,7 +108,7 @@ public class BookOwn {
 		return book_status[this.status - 1];
 	}
 
-	public void setStatus(String status) {		
+	public void setStatus(String status) {
 		this.status = Integer.parseInt(status);
 	}
 
@@ -92,13 +119,13 @@ public class BookOwn {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
+
 	public static final String GUID = "guid";
 	public static final String BOOKID = "bookID";
 	public static final String OWNERID = "ownerID";
 	public static final String STATUS = "status";
 	public static final String HASEBOOK = "hasEbook";
-	public static final String REMARK = "remark";	
+	public static final String REMARK = "remark";
 
 	public void setContentValues(ContentValues values, long userID) {
 		values.put(BookOwns.GUID, this.guid);

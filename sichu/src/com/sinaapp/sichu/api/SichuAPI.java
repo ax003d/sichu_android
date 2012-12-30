@@ -113,4 +113,17 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		// Log.d("Sync", resp);
 		return new JSONObject(resp);
 	}
+
+	@Override
+	public JSONObject bookborrow(String next, ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.GET,
+				next == null ? "/v1/bookborrow/" : next);
+
+		ApiResponse response = execute(request, progressListener);
+
+		String resp = response.getContentAsString();
+		// Log.d("Sync", resp);
+		return new JSONObject(resp);
+	}
 }

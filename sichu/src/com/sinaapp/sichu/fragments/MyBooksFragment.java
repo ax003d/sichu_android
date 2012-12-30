@@ -373,26 +373,8 @@ public class MyBooksFragment extends Fragment implements
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		adapter.clearBookOwn();
 		
-		int idx_guid = data.getColumnIndex(BookOwns.GUID);
-		int idx_bookID = data.getColumnIndex(BookOwns.BOOKID);
-		int idx_ownerID = data.getColumnIndex(BookOwns.OWNERID);
-		int idx_status = data.getColumnIndex(BookOwns.STATUS);
-		int idx_hasEBook = data.getColumnIndex(BookOwns.HASEBOOK);
-		int idx_remark = data.getColumnIndex(BookOwns.REMARK);
-		int idx_ISBN = data.getColumnIndex(Books.ISBN);
-		int idx_title = data.getColumnIndex(Books.TITLE);
-		int idx_author = data.getColumnIndex(Books.AUTHOR);
-		int idx_doubanID = data.getColumnIndex(Books.DOUBAN_ID);
-		int idx_cover = data.getColumnIndex(Books.COVER);
-
 		while(data.moveToNext()) {
-			BookOwn own = new BookOwn(data.getLong(idx_guid),
-					data.getLong(idx_bookID), data.getLong(idx_ownerID),
-					data.getInt(idx_status), data.getInt(idx_hasEBook),
-					data.getString(idx_remark), data.getString(idx_ISBN),
-					data.getString(idx_title), data.getString(idx_author),
-					data.getString(idx_doubanID), data.getString(idx_cover));
-			adapter.addBookOwn(own);
+			adapter.addBookOwn(new BookOwn(data));
 		};
 		adapter.notifyDataSetChanged();
 	}

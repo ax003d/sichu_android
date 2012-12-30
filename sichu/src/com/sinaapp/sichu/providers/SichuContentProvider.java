@@ -85,7 +85,8 @@ public class SichuContentProvider extends ContentProvider {
 					+ Books.TABLE_NAME + " ON ( " + BookOwns.BOOKID + " = "
 					+ Books.TABLE_NAME + "." + Books.GUID + " )");
 			queryBuilder.setProjectionMap(bookownsWithBookProjectionMap);
-			selection = BookOwns.OWNERID + " = " + uri.getLastPathSegment();
+			selection = (selection == null ? "" : selection + " AND ");
+			selection = selection + BookOwns.OWNERID + " = " + uri.getLastPathSegment();
 			break;
 		case BOOK_BY_GUID:
 			queryBuilder.setTables(Books.TABLE_NAME);

@@ -63,6 +63,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 
 		CheckBox chk_remember = (CheckBox) findViewById(R.id.chk_remember);
 		chk_remember.setOnCheckedChangeListener(this);
+		// to-do: save remember in preference
 	}
 
 	@Override
@@ -97,6 +98,10 @@ public class LoginActivity extends Activity implements OnClickListener,
 				JSONObject ret = api_client.account_login(params[0], params[1],
 						null);
 				if (ret.has("token")) {
+					long uid = ret.getLong("uid");
+					if (Preferences.getUserID(LoginActivity.this) != uid) {
+						Preferences.setSyncTime(LoginActivity.this, 0);
+					}
 					Preferences.setLoginInfo(getApplicationContext(),
 							ret.getString("token"),
 							ret.getString("refresh_token"),

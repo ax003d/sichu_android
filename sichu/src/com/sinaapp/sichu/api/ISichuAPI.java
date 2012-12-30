@@ -22,4 +22,7 @@ public interface ISichuAPI {
 	
 	JSONObject oplog(String next, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;	
+	
+	JSONObject bookborrow(String next, ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException;	
 }
