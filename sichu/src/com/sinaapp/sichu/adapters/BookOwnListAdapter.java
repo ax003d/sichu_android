@@ -32,6 +32,10 @@ public class BookOwnListAdapter extends BaseAdapter {
 		bookowns.add(own);
 	}
 	
+	public void clearBookOwn() {
+		bookowns.clear();
+	}
+	
 	@Override
 	public int getCount() {
 		return bookowns.size();

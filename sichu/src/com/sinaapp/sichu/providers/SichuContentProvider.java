@@ -145,13 +145,38 @@ public class SichuContentProvider extends ContentProvider {
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		return 0;
+		SQLiteDatabase db = db_helper.getWritableDatabase();
+		String table_name;
+		switch ( URI_MATCHER.match(uri) ) {
+		case BOOKOWN_BY_GUID:
+			table_name = BOOKOWNS_TABLE_NAME;
+			selection = BookOwns.GUID + " = " + uri.getLastPathSegment();
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown URI " + uri);
+		}
+		
+		int count = db.delete(table_name, selection, selectionArgs);
+		getContext().getContentResolver().notifyChange(uri, null);
+		return count;
 	}
 
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
-		return 0;
+		SQLiteDatabase db = db_helper.getWritableDatabase();
+		int count = 0;
+		switch (URI_MATCHER.match(uri)) {
+		case BOOKOWN_BY_GUID:
+			selection = BookOwns.GUID + " = " + uri.getLastPathSegment();
+			count = db.update(BOOKOWNS_TABLE_NAME, values, selection, selectionArgs);
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown URI " + uri);
+		}
+		
+		getContext().getContentResolver().notifyChange(uri, null);
+		return count;
 	}
 
 	static {

@@ -24,6 +24,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -64,7 +65,7 @@ public class MyBooksFragment extends Fragment implements
 		adapter = new BookOwnListAdapter(getActivity());
 		api_client = SichuAPI.getInstance(getActivity());
 		activity = (SlidingActivity) getActivity();
-		userID = Preferences.getUserID(activity);		
+		userID = Preferences.getUserID(activity);
 	}
 
 	@Override
@@ -84,10 +85,10 @@ public class MyBooksFragment extends Fragment implements
 		if (Preferences.getSyncTime(activity.getApplicationContext()) == 0) {
 			new GetBookOwnTask().execute();
 		} else {
-			// Sync BookOwn
+			new SyncTask().execute();
 		}
 	}
-	
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -153,8 +154,8 @@ public class MyBooksFragment extends Fragment implements
 					for (int i = 0; i < jBookOwns.length(); i++) {
 						BookOwn own = new BookOwn(jBookOwns.getJSONObject(i));
 						adapter.addBookOwn(own);
-						cursor = contentResolver.query(Uri.withAppendedPath(
-								Books.CONTENT_URI, "guid/"
+						cursor = contentResolver.query(
+								Uri.withAppendedPath(Books.CONTENT_URI, "guid/"
 										+ own.getBook().getGuid()), null, null,
 								null, null);
 						ContentValues values = new ContentValues();
@@ -164,10 +165,9 @@ public class MyBooksFragment extends Fragment implements
 							values.clear();
 						}
 
-						cursor = contentResolver.query(
-								Uri.withAppendedPath(BookOwns.CONTENT_URI,
-										"guid/" + own.getGuid()), null, null,
-								null, null);
+						cursor = contentResolver.query(Uri.withAppendedPath(
+								BookOwns.CONTENT_URI, "guid/" + own.getGuid()),
+								null, null, null, null);
 						if (cursor.getCount() == 0) {
 							own.setContentValues(values, userID);
 							contentResolver
@@ -232,24 +232,149 @@ public class MyBooksFragment extends Fragment implements
 				Toast.makeText(activity, "Book added!", Toast.LENGTH_SHORT)
 						.show();
 			} else {
-				Toast.makeText(activity, "Add Book failed!", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(activity, "Adid Book failed!",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
+
+	private class SyncTask extends AsyncTask<String, LinearLayout, JSONObject> {
+
+		@Override
+		protected JSONObject doInBackground(String... params) {
+			try {
+				if (params.length == 0) {
+					return api_client.oplog(null, null);
+				} else {
+					return api_client.oplog(params[0], null);
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			activity.setSupportProgressBarIndeterminateVisibility(true);
+		}
+
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			super.onPostExecute(result);
+			Cursor cursor = null;
+			boolean updated = false;
+			
+			if (result != null && result.has("objects")) {
+				ContentResolver contentResolver = activity.getContentResolver();
+				try {
+					JSONArray jOplogs = result.getJSONArray("objects");
+					for (int i = 0; i < jOplogs.length(); i++) {
+						JSONObject log = jOplogs.getJSONObject(i);
+						switch (log.getInt("opcode")) {
+						case 1:
+							// add
+							if (log.getString("model").equals(
+									"sichu.cabinet.models.BookOwnership")) {
+								BookOwn own = new BookOwn(new JSONObject(
+										log.getString("data")));
+								cursor = contentResolver.query(
+										Uri.withAppendedPath(Books.CONTENT_URI, "guid/"
+												+ own.getBook().getGuid()), null, null,
+										null, null);
+								ContentValues values = new ContentValues();
+								if (cursor.getCount() == 0) {
+									own.getBook().setContentValues(values);
+									contentResolver.insert(Books.CONTENT_URI, values);
+									values.clear();
+								}
+								own.setContentValues(values, userID);
+								contentResolver.insert(BookOwns.CONTENT_URI,
+										values);
+								Preferences.setSyncTime(activity,
+										log.getLong("timestamp"));
+								updated = true;
+							}
+							break;
+						case 2:
+							// update
+							if (log.getString("model").equals(
+									"sichu.cabinet.models.BookOwnership")) {
+								BookOwn own = new BookOwn(new JSONObject(
+										log.getString("data")));
+								ContentValues values = new ContentValues();
+								own.setContentValues(values, userID);
+								contentResolver.update(Uri.withAppendedPath(
+										BookOwns.CONTENT_URI,
+										"/guid/" + own.getGuid()), values,
+										null, null);
+								Preferences.setSyncTime(activity,
+										log.getLong("timestamp"));
+								updated = true;
+							}
+							break;
+						case 3:
+							// delete
+							if (log.getString("model").equals(
+									"sichu.cabinet.models.BookOwnership")) {
+								JSONObject ret = new JSONObject(
+										log.getString("data"));
+								contentResolver.delete(Uri.withAppendedPath(
+										BookOwns.CONTENT_URI,
+										"/guid/" + ret.getInt("id")), null,
+										null);
+								Preferences.setSyncTime(activity,
+										log.getLong("timestamp"));
+								updated = true;
+							}
+							break;
+						default:
+							break;
+						} // endswitch						
+					} // endfor
+					if (updated) {
+						contentResolver.notifyChange(Uri.withAppendedPath(
+								BookOwns.CONTENT_URI, "owner/" + userID), null);
+					}
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
+			} // endif
+
+			if (result != null && result.has("meta")) {
+				String next;
+				try {
+					next = result.getJSONObject("meta").getString("next");
+					if (!next.equals("null")) {
+						new SyncTask().execute(next);
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			} // endif
+			activity.setSupportProgressBarIndeterminateVisibility(false);
+		} // onPostExecute
+	} // SyncTask
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		if (id == BOOKOWN_LOADER) {
 			return new CursorLoader(activity, Uri.withAppendedPath(
-					BookOwns.CONTENT_URI, "owner/" + userID), null, null,
-					null, null);
+					BookOwns.CONTENT_URI, "owner/" + userID), null, null, null,
+					null);
 		}
 		return null;
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		adapter.clearBookOwn();
+		
 		int idx_guid = data.getColumnIndex(BookOwns.GUID);
 		int idx_bookID = data.getColumnIndex(BookOwns.BOOKID);
 		int idx_ownerID = data.getColumnIndex(BookOwns.OWNERID);
@@ -261,22 +386,17 @@ public class MyBooksFragment extends Fragment implements
 		int idx_author = data.getColumnIndex(Books.AUTHOR);
 		int idx_doubanID = data.getColumnIndex(Books.DOUBAN_ID);
 		int idx_cover = data.getColumnIndex(Books.COVER);
-		
+
 		data.moveToFirst();
 		do {
 			BookOwn own = new BookOwn(data.getLong(idx_guid),
-					data.getLong(idx_bookID),
-					data.getLong(idx_ownerID),
-					data.getInt(idx_status),
-					data.getInt(idx_hasEBook),
-					data.getString(idx_remark),
-					data.getString(idx_ISBN),
-					data.getString(idx_title),
-					data.getString(idx_author),
-					data.getString(idx_doubanID),
-					data.getString(idx_cover));
+					data.getLong(idx_bookID), data.getLong(idx_ownerID),
+					data.getInt(idx_status), data.getInt(idx_hasEBook),
+					data.getString(idx_remark), data.getString(idx_ISBN),
+					data.getString(idx_title), data.getString(idx_author),
+					data.getString(idx_doubanID), data.getString(idx_cover));
 			adapter.addBookOwn(own);
-		} while(data.moveToNext());
+		} while (data.moveToNext());
 		adapter.notifyDataSetChanged();
 	}
 
