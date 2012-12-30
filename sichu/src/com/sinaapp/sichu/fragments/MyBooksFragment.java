@@ -61,6 +61,10 @@ public class MyBooksFragment extends Fragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		adapter = new BookOwnListAdapter(getActivity());
+		api_client = SichuAPI.getInstance(getActivity());
+		activity = (SlidingActivity) getActivity();
+		userID = Preferences.getUserID(activity);		
 	}
 
 	@Override
@@ -72,12 +76,8 @@ public class MyBooksFragment extends Fragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		adapter = new BookOwnListAdapter(getActivity());
 		lst_bookown = (ListView) getActivity().findViewById(R.id.lst_bookowns);
 		lst_bookown.setAdapter(adapter);
-		api_client = SichuAPI.getInstance(getActivity());
-		activity = (SlidingActivity) getActivity();
-		userID = Preferences.getUserID(activity);
 		activity.setSupportProgressBarIndeterminateVisibility(false);
 		activity.getSupportLoaderManager().initLoader(BOOKOWN_LOADER, null,
 				this);
@@ -87,7 +87,7 @@ public class MyBooksFragment extends Fragment implements
 			// Sync BookOwn
 		}
 	}
-
+	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -262,7 +262,8 @@ public class MyBooksFragment extends Fragment implements
 		int idx_doubanID = data.getColumnIndex(Books.DOUBAN_ID);
 		int idx_cover = data.getColumnIndex(Books.COVER);
 		
-		while (data.moveToNext()) {
+		data.moveToFirst();
+		do {
 			BookOwn own = new BookOwn(data.getLong(idx_guid),
 					data.getLong(idx_bookID),
 					data.getLong(idx_ownerID),
@@ -275,7 +276,7 @@ public class MyBooksFragment extends Fragment implements
 					data.getString(idx_doubanID),
 					data.getString(idx_cover));
 			adapter.addBookOwn(own);
-		}
+		} while(data.moveToNext());
 		adapter.notifyDataSetChanged();
 	}
 
