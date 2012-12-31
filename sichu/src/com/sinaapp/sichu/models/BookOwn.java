@@ -145,22 +145,12 @@ public class BookOwn {
 	}
 
 	public void save(ContentResolver contentResolver) {
-		Cursor cursor = contentResolver.query(
-				Uri.withAppendedPath(Books.CONTENT_URI,
-						"guid/" + this.book.getGuid()), null, null, null, null);
+		if (this.book != null) {
+			this.book.save(contentResolver);
+		}
 		ContentValues values = new ContentValues();
-		if (cursor.getCount() == 0) {
-			this.book.setContentValues(values);
-			contentResolver.insert(Books.CONTENT_URI, values);
-			values.clear();
-		}
-		cursor = contentResolver
-				.query(Uri.withAppendedPath(BookOwns.CONTENT_URI, "guid/"
-						+ this.guid), null, null, null, null);
-		if (cursor.getCount() == 0) {
-			setContentValues(values);
-			contentResolver.insert(BookOwns.CONTENT_URI, values);
-		}
+		setContentValues(values);
+		contentResolver.insert(BookOwns.CONTENT_URI, values);
 	}
 
 	public String getOwner() {

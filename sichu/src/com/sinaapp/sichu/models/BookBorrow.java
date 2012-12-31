@@ -5,6 +5,10 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.net.Uri;
+import android.provider.BaseColumns;
+
+import com.sinaapp.sichu.providers.SichuContentProvider;
 import com.sinaapp.sichu.utils.Utils;
 
 public class BookBorrow {
@@ -15,6 +19,22 @@ public class BookBorrow {
 	private Date planedReturnDate;
 	private Date returnedDate;
 	private BookOwn bookown;
+	
+	public static final class BookBorrows implements BaseColumns {
+		private BookBorrows() {
+		}
+
+		public static final Uri CONTENT_URI = Uri.parse("content://"
+				+ SichuContentProvider.AUTHORITY + "/bookborrows");
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.sichu.bookborrows";
+		public static final String TABLE_NAME = "bookborrows";
+		public static final String GUID = "guid";
+		public static final String BOOKOWNID = "bookOwnID";
+		public static final String BORROWERID = "borrowerID";
+		public static final String BORROW_DATE = "borrowDate";
+		public static final String PLANED_RETURN_DATE = "planedReturnDate";
+		public static final String RETURNED_DATE = "returnedDate";
+	}	
 	
 	public BookBorrow(JSONObject jsonObject) {
 		try {

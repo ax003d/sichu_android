@@ -3,6 +3,7 @@ package com.sinaapp.sichu.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -87,5 +88,11 @@ public class Book {
 		values.put(Books.AUTHOR, this.author);
 		values.put(Books.DOUBAN_ID, this.doubanID);
 		values.put(Books.COVER, this.cover);
+	}
+
+	public void save(ContentResolver contentResolver) {
+		ContentValues values = new ContentValues();
+		setContentValues(values);
+		contentResolver.insert(Books.CONTENT_URI, values);				
 	}	
 }

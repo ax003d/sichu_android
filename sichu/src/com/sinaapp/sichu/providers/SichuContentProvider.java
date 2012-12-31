@@ -15,6 +15,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
 import com.sinaapp.sichu.models.Book.Books;
+import com.sinaapp.sichu.models.BookBorrow.BookBorrows;
 import com.sinaapp.sichu.models.BookOwn.BookOwns;
 
 public class SichuContentProvider extends ContentProvider {
@@ -27,6 +28,7 @@ public class SichuContentProvider extends ContentProvider {
 	private static final int BOOKOWNS = 3;
 	private static final int BOOK_BY_GUID = 4;
 	private static final int BOOKOWN_BY_GUID = 5;
+	private static final int BOOKBORROWS = 6;
 
 	private static HashMap<String, String> booksProjectionMap;
 	private static HashMap<String, String> bookownsProjectionMap;
@@ -54,12 +56,21 @@ public class SichuContentProvider extends ContentProvider {
 					+ " INTEGER, " + BookOwns.OWNERID + " INTEGER, "
 					+ BookOwns.STATUS + " VARCHAR(16), " + BookOwns.HASEBOOK
 					+ " BOOLEAN, " + BookOwns.REMARK + " TEXT" + " );");
+			db.execSQL("CREATE TABLE " + BookBorrows.TABLE_NAME + " ("
+					+ BookBorrows._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ BookBorrows.GUID + " INTEGER UNIQUE, "
+					+ BookBorrows.BOOKOWNID + " INTEGER, "
+					+ BookBorrows.BORROWERID + " INTEGER, "
+					+ BookBorrows.BORROW_DATE + " TEXT, "
+					+ BookBorrows.PLANED_RETURN_DATE + " TEXT, "
+					+ BookBorrows.RETURNED_DATE + " TEXT" + " );");
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			db.execSQL("DROP TABLE IF EXISTS " + Books.TABLE_NAME);
 			db.execSQL("DROP TABLE IF EXISTS " + BookOwns.TABLE_NAME);
+			db.execSQL("DROP TABLE IF EXISTS " + BookBorrows.TABLE_NAME);
 			onCreate(db);
 		}
 
@@ -86,17 +97,18 @@ public class SichuContentProvider extends ContentProvider {
 					+ Books.TABLE_NAME + "." + Books.GUID + " )");
 			queryBuilder.setProjectionMap(bookownsWithBookProjectionMap);
 			selection = (selection == null ? "" : selection + " AND ");
-			selection = selection + BookOwns.OWNERID + " = " + uri.getLastPathSegment();
+			selection = selection + BookOwns.OWNERID + " = "
+					+ uri.getLastPathSegment();
 			break;
 		case BOOK_BY_GUID:
 			queryBuilder.setTables(Books.TABLE_NAME);
 			queryBuilder.setProjectionMap(booksProjectionMap);
-			selection = Books.GUID + " = " + uri.getLastPathSegment();			
+			selection = Books.GUID + " = " + uri.getLastPathSegment();
 			break;
 		case BOOKOWN_BY_GUID:
 			queryBuilder.setTables(BookOwns.TABLE_NAME);
 			queryBuilder.setProjectionMap(bookownsProjectionMap);
-			selection = Books.GUID + " = " + uri.getLastPathSegment();			
+			selection = Books.GUID + " = " + uri.getLastPathSegment();
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -115,38 +127,54 @@ public class SichuContentProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		SQLiteDatabase db = db_helper.getWritableDatabase();		
+		SQLiteDatabase db = db_helper.getWritableDatabase();
 		long row_id;
-		
-		switch ( URI_MATCHER.match(uri) ) {
+
+		switch (URI_MATCHER.match(uri)) {
 		case BOOKS:
-			row_id = db.insert(Books.TABLE_NAME, Books.GUID, values);
-			if ( row_id > 0 ) {
-				Uri book_uri = ContentUris.withAppendedId(Books.CONTENT_URI, row_id);
+			row_id = db.insertWithOnConflict(Books.TABLE_NAME, Books.GUID,
+					values, SQLiteDatabase.CONFLICT_IGNORE);
+			if (row_id > 0) {
+				Uri book_uri = ContentUris.withAppendedId(Books.CONTENT_URI,
+						row_id);
 				getContext().getContentResolver().notifyChange(book_uri, null);
 				return book_uri;
-			}			
-			break;
+			}
+			return null;
 		case BOOKOWNS:
-			row_id = db.insert(BookOwns.TABLE_NAME, BookOwns.GUID, values);
-			if ( row_id > 0 ) {
-				Uri bookown_uri = ContentUris.withAppendedId(BookOwns.CONTENT_URI, row_id);
-				getContext().getContentResolver().notifyChange(bookown_uri, null);
+			row_id = db.insertWithOnConflict(BookOwns.TABLE_NAME,
+					BookOwns.GUID, values, SQLiteDatabase.CONFLICT_IGNORE);
+			if (row_id > 0) {
+				Uri bookown_uri = ContentUris.withAppendedId(
+						BookOwns.CONTENT_URI, row_id);
+				getContext().getContentResolver().notifyChange(bookown_uri,
+						null);
 				return bookown_uri;
-			}			
-			break;
+			}
+			return null;
+		case BOOKBORROWS:
+			row_id = db.insertWithOnConflict(BookBorrows.TABLE_NAME,
+					BookBorrows.GUID, values, SQLiteDatabase.CONFLICT_IGNORE);
+			if (row_id > 0) {
+				Uri bookborrow_uri = ContentUris.withAppendedId(
+						BookBorrows.CONTENT_URI, row_id);
+				getContext().getContentResolver().notifyChange(bookborrow_uri,
+						null);
+				return bookborrow_uri;
+			}
+			return null;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
-		}		
-		
-		throw new SQLException("Failed to insert row into " + uri);
+		}
+
+		// throw new SQLException("Failed to insert row into " + uri);
 	}
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		SQLiteDatabase db = db_helper.getWritableDatabase();
 		String table_name;
-		switch ( URI_MATCHER.match(uri) ) {
+		switch (URI_MATCHER.match(uri)) {
 		case BOOKOWN_BY_GUID:
 			table_name = BookOwns.TABLE_NAME;
 			selection = BookOwns.GUID + " = " + uri.getLastPathSegment();
@@ -154,7 +182,7 @@ public class SichuContentProvider extends ContentProvider {
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
-		
+
 		int count = db.delete(table_name, selection, selectionArgs);
 		getContext().getContentResolver().notifyChange(uri, null);
 		return count;
@@ -168,12 +196,13 @@ public class SichuContentProvider extends ContentProvider {
 		switch (URI_MATCHER.match(uri)) {
 		case BOOKOWN_BY_GUID:
 			selection = BookOwns.GUID + " = " + uri.getLastPathSegment();
-			count = db.update(BookOwns.TABLE_NAME, values, selection, selectionArgs);
+			count = db.update(BookOwns.TABLE_NAME, values, selection,
+					selectionArgs);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
-		
+
 		getContext().getContentResolver().notifyChange(uri, null);
 		return count;
 	}
@@ -184,12 +213,15 @@ public class SichuContentProvider extends ContentProvider {
 				BOOKOWNS_BY_OWNER);
 		URI_MATCHER.addURI(AUTHORITY, Books.TABLE_NAME, BOOKS);
 		URI_MATCHER.addURI(AUTHORITY, BookOwns.TABLE_NAME, BOOKOWNS);
-		URI_MATCHER.addURI(AUTHORITY, Books.TABLE_NAME + "/guid/#", BOOK_BY_GUID);
-		URI_MATCHER.addURI(AUTHORITY, BookOwns.TABLE_NAME + "/guid/#", BOOKOWN_BY_GUID);
+		URI_MATCHER.addURI(AUTHORITY, Books.TABLE_NAME + "/guid/#",
+				BOOK_BY_GUID);
+		URI_MATCHER.addURI(AUTHORITY, BookOwns.TABLE_NAME + "/guid/#",
+				BOOKOWN_BY_GUID);
+		URI_MATCHER.addURI(AUTHORITY, BookBorrows.TABLE_NAME, BOOKBORROWS);
 
 		bookownsWithBookProjectionMap = new HashMap<String, String>();
-		bookownsWithBookProjectionMap.put(BookOwns.TABLE_NAME  + "." + BookOwns.GUID, 
-				BookOwns.TABLE_NAME  + "." + BookOwns.GUID);		
+		bookownsWithBookProjectionMap.put(BookOwns.TABLE_NAME + "."
+				+ BookOwns.GUID, BookOwns.TABLE_NAME + "." + BookOwns.GUID);
 		bookownsWithBookProjectionMap.put(BookOwns.BOOKID, BookOwns.BOOKID);
 		bookownsWithBookProjectionMap.put(BookOwns.OWNERID, BookOwns.OWNERID);
 		bookownsWithBookProjectionMap.put(BookOwns.STATUS, BookOwns.STATUS);
@@ -200,22 +232,22 @@ public class SichuContentProvider extends ContentProvider {
 		bookownsWithBookProjectionMap.put(Books.AUTHOR, Books.AUTHOR);
 		bookownsWithBookProjectionMap.put(Books.DOUBAN_ID, Books.DOUBAN_ID);
 		bookownsWithBookProjectionMap.put(Books.COVER, Books.COVER);
-		
-		bookownsProjectionMap = new HashMap<String, String>();		
+
+		bookownsProjectionMap = new HashMap<String, String>();
 		bookownsProjectionMap.put(BookOwns._ID, BookOwns._ID);
 		bookownsProjectionMap.put(BookOwns.GUID, BookOwns.GUID);
 		bookownsProjectionMap.put(BookOwns.BOOKID, BookOwns.BOOKID);
 		bookownsProjectionMap.put(BookOwns.OWNERID, BookOwns.OWNERID);
 		bookownsProjectionMap.put(BookOwns.STATUS, BookOwns.STATUS);
 		bookownsProjectionMap.put(BookOwns.HASEBOOK, BookOwns.HASEBOOK);
-		bookownsProjectionMap.put(BookOwns.REMARK, BookOwns.REMARK);		
-		
+		bookownsProjectionMap.put(BookOwns.REMARK, BookOwns.REMARK);
+
 		booksProjectionMap = new HashMap<String, String>();
 		booksProjectionMap.put(Books._ID, Books._ID);
 		booksProjectionMap.put(Books.ISBN, Books.ISBN);
 		booksProjectionMap.put(Books.TITLE, Books.TITLE);
 		booksProjectionMap.put(Books.AUTHOR, Books.AUTHOR);
 		booksProjectionMap.put(Books.DOUBAN_ID, Books.DOUBAN_ID);
-		booksProjectionMap.put(Books.COVER, Books.COVER);		
+		booksProjectionMap.put(Books.COVER, Books.COVER);
 	}
 }
