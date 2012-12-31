@@ -1,6 +1,8 @@
 package com.sinaapp.sichu.utils;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -20,7 +22,9 @@ public class Utils {
 	// private static String TAG = Utils.class.getSimpleName();
 	private static ImageLoader img_loader;
 	private static DisplayImageOptions cloud_options;
-
+	private static SimpleDateFormat dateTimeFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
+	
 	public static boolean isNetworkAvailable(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -74,5 +78,25 @@ public class Utils {
 			img_loader.init(config);
 		}
 		return img_loader;
+	}
+	
+	public static Date parseDateTimeString(String date) {		
+		try {
+			Date dt = dateTimeFmt.parse(date);
+			return dt;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Date parseDateString(String date) {		
+		try {
+			Date dt = dateFmt.parse(date);
+			return dt;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}	
 }

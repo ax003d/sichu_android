@@ -57,13 +57,27 @@ public class BookLoanedListAdapter extends BaseAdapter {
 		BookBorrow borrow = (BookBorrow) getItem(position);
 		ImageView img_cover = (ImageView) view.findViewById(R.id.img_cover);
 		TextView txt_title = (TextView) view.findViewById(R.id.txt_title);
-		TextView txt_status = (TextView) view.findViewById(R.id.txt_status);
-		TextView txt_remark = (TextView) view.findViewById(R.id.txt_remark);
+		TextView txt_borrow_date = (TextView) view.findViewById(R.id.txt_borrow_date);
+		TextView txt_planed_return_date = (TextView) view.findViewById(R.id.txt_planed_return_date);
+		TextView txt_returned_date = (TextView) view.findViewById(R.id.txt_returned_date);
 		BookOwn own = borrow.getBookOwn();
 		img_loader.displayImage(own.getBook().getCover().replace("lpic", "spic"), img_cover, options);
 		txt_title.setText(own.getBook().getTitle());
-		txt_status.setText(own.getStatus());
-		txt_remark.setText(own.getRemark());
+		if ( borrow.getBorrowDate() != null ) {
+			txt_borrow_date.setText(borrow.getBorrowDate().toLocaleString());
+		} else {
+			txt_borrow_date.setText("");
+		}
+		if ( borrow.getPlanedReturnDate() != null ) {
+			txt_planed_return_date.setText(borrow.getPlanedReturnDate().toLocaleString());
+		} else {
+			txt_planed_return_date.setText("");
+		}
+		if ( borrow.getReturnedDate() != null ) {
+			txt_returned_date.setText(borrow.getReturnedDate().toLocaleString());
+		} else {
+			txt_returned_date.setText("Not returned yet!");
+		}
 		
 		return view;
 	}
