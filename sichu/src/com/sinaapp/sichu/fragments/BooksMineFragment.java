@@ -40,16 +40,16 @@ import com.sinaapp.sichu.models.BookOwn;
 import com.sinaapp.sichu.models.BookOwn.BookOwns;
 import com.sinaapp.sichu.utils.Preferences;
 
-public class MyBooksFragment extends Fragment implements
+public class BooksMineFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
 	private static final int BOOKOWN_LOADER = 0;
-	private static MyBooksFragment instance;
+	private static BooksMineFragment instance;
 
-	public static MyBooksFragment getInstance() {
-		if (MyBooksFragment.instance == null) {
-			return new MyBooksFragment();
+	public static BooksMineFragment getInstance() {
+		if (BooksMineFragment.instance == null) {
+			return new BooksMineFragment();
 		}
-		return MyBooksFragment.instance;
+		return BooksMineFragment.instance;
 	}
 
 	private BookOwnListAdapter adapter;

@@ -28,14 +28,14 @@ import com.sinaapp.sichu.models.BookOwn;
 import com.sinaapp.sichu.models.BookOwn.BookOwns;
 import com.sinaapp.sichu.utils.Preferences;
 
-public class LoanedBooksFragment extends Fragment {
-	private static LoanedBooksFragment instance;
+public class BooksLoanedFragment extends Fragment {
+	private static BooksLoanedFragment instance;
 
-	public static LoanedBooksFragment getInstance() {
-		if (LoanedBooksFragment.instance == null) {
-			return new LoanedBooksFragment();
+	public static BooksLoanedFragment getInstance() {
+		if (BooksLoanedFragment.instance == null) {
+			return new BooksLoanedFragment();
 		}
-		return LoanedBooksFragment.instance;
+		return BooksLoanedFragment.instance;
 	}
 
 	private BookLoanedListAdapter adapter;

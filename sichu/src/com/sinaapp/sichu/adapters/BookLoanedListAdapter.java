@@ -22,7 +22,6 @@ public class BookLoanedListAdapter extends BaseAdapter {
 	private ArrayList<BookBorrow> bookowns;
 	private DisplayImageOptions options;
 	private ImageLoader img_loader;
-	private Context context;
 	private int col_not_returned;
 	private int col_returned;	
 	
