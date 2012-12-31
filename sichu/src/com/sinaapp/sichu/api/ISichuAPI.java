@@ -16,6 +16,9 @@ public interface ISichuAPI {
 	JSONObject bookown(String next, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
 
+	JSONObject bookownByID(String id, ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException;
+	
 	JSONObject bookownAdd(String isbn, String status, String remark,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
@@ -23,6 +26,6 @@ public interface ISichuAPI {
 	JSONObject oplog(String next, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;	
 	
-	JSONObject bookborrow(String next, ProgressListener progressListener)
+	JSONObject bookborrow(String next, boolean asBorrower, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;	
 }

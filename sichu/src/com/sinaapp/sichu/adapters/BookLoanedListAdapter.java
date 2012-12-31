@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sinaapp.sichu.R;
+import com.sinaapp.sichu.models.Book;
 import com.sinaapp.sichu.models.BookBorrow;
 import com.sinaapp.sichu.models.BookOwn;
 import com.sinaapp.sichu.utils.Utils;
@@ -23,7 +24,8 @@ public class BookLoanedListAdapter extends BaseAdapter {
 	private DisplayImageOptions options;
 	private ImageLoader img_loader;
 	private int col_not_returned;
-	private int col_returned;	
+	private int col_returned;
+	private boolean asBorrower;	
 	
 	public BookLoanedListAdapter(Context context) {
 		bookowns = new ArrayList<BookBorrow>();
@@ -32,6 +34,10 @@ public class BookLoanedListAdapter extends BaseAdapter {
 		col_not_returned = context.getResources().getColor(R.color.col_value);
 		col_returned = 0xFF000000;
 	}	
+	
+	public void setAsBorrower(boolean asBorrower) {
+		this.asBorrower = asBorrower;
+	}
 	
 	public void addBookBorrow(BookBorrow borrow) {
 		bookowns.add(borrow);
@@ -66,9 +72,17 @@ public class BookLoanedListAdapter extends BaseAdapter {
 		TextView txt_planed_return_date = (TextView) view.findViewById(R.id.txt_planed_return_date);
 		TextView txt_returned_date = (TextView) view.findViewById(R.id.txt_returned_date);
 		BookOwn own = borrow.getBookOwn();
-		img_loader.displayImage(own.getBook().getCover().replace("lpic", "spic"), img_cover, options);
-		txt_title.setText(own.getBook().getTitle());
-		txt_borrower.setText(borrow.getBorrower());
+		Book book = (own == null ? null : own.getBook());
+		if ( book != null ) {
+			img_loader.displayImage(book.getCover().replace("lpic", "spic"), img_cover, options);
+			txt_title.setText(book.getTitle());
+			if ( asBorrower ) {
+				txt_borrower.setText(own.getOwner());
+			}
+		}
+		if ( !asBorrower ) {
+			txt_borrower.setText(borrow.getBorrower());
+		}
 		if ( borrow.getBorrowDate() != null ) {
 			txt_borrow_date.setText(Utils.formatDate(borrow.getBorrowDate()));
 		} else {

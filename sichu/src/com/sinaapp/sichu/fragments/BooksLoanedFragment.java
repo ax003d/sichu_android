@@ -7,13 +7,12 @@ import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.widget.ListView;
+import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentResolver;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -25,7 +24,6 @@ import com.sinaapp.sichu.api.ISichuAPI;
 import com.sinaapp.sichu.api.SichuAPI;
 import com.sinaapp.sichu.models.BookBorrow;
 import com.sinaapp.sichu.models.BookOwn;
-import com.sinaapp.sichu.models.BookOwn.BookOwns;
 import com.sinaapp.sichu.utils.Preferences;
 
 public class BooksLoanedFragment extends Fragment {
@@ -41,8 +39,8 @@ public class BooksLoanedFragment extends Fragment {
 	private BookLoanedListAdapter adapter;
 	private SlidingActivity activity;
 	private ISichuAPI api_client;
-	private long userID;
 	private ListView lst_books_loaned;
+	private boolean asBorrower;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,8 +48,8 @@ public class BooksLoanedFragment extends Fragment {
 		setHasOptionsMenu(true);
 		activity = (SlidingActivity) getActivity();
 		adapter = new BookLoanedListAdapter(activity);
+		adapter.setAsBorrower(asBorrower);
 		api_client = SichuAPI.getInstance(activity);
-		userID = Preferences.getUserID(activity);
 	}
 
 	@Override
@@ -73,6 +71,13 @@ public class BooksLoanedFragment extends Fragment {
 //		} else {
 //		}
 	}
+	
+	public void setAsBorrower(boolean asBorrower) {
+		this.asBorrower = asBorrower;
+		if (this.adapter != null) {
+			this.adapter.setAsBorrower(asBorrower);
+		}
+	}
 
 	private class GetBooksLoanedTask extends
 			AsyncTask<String, Void, JSONObject> {
@@ -81,9 +86,9 @@ public class BooksLoanedFragment extends Fragment {
 			JSONObject ret = null;
 			try {
 				if (params.length == 0) {
-					ret = api_client.bookborrow(null, null);
+					ret = api_client.bookborrow(null, asBorrower, null);
 				} else {
-					ret = api_client.bookborrow(params[0], null);
+					ret = api_client.bookborrow(params[0], asBorrower, null);
 				}
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -104,7 +109,6 @@ public class BooksLoanedFragment extends Fragment {
 		@Override
 		protected void onPostExecute(JSONObject result) {
 			super.onPostExecute(result);
-			Cursor cursor = null;
 			BookOwn own = null;
 			
 			if (result != null && result.has("objects")) {
@@ -113,30 +117,24 @@ public class BooksLoanedFragment extends Fragment {
 				try {
 					jBooksLoaned = result.getJSONArray("objects");
 					for (int i = 0; i < jBooksLoaned.length(); i++) {
-						// get bookown by ownership
 						BookBorrow borrow = new BookBorrow(
 								jBooksLoaned.getJSONObject(i));
-						cursor = contentResolver.query(Uri.withAppendedPath(
-								BookOwns.CONTENT_URI, "owner/" + userID),
-								null, BookOwns.TABLE_NAME + "." +  BookOwns.GUID
-										+ " = " + borrow.getBookOwnID(), null,
-								null);
-						if ( cursor.moveToNext() ) {
-							own = new BookOwn(cursor);
-						} else {
-							// to-do: get bookown from server
+						own = new BookOwn(jBooksLoaned.getJSONObject(i).getJSONObject("ownership"));
+						if (own != null) {
+							own.save(contentResolver);
 						}
 						borrow.setBookOwn(own);
 						adapter.addBookBorrow(borrow);
 					}
 					adapter.notifyDataSetChanged();
 					Preferences.setSyncTime(activity.getApplicationContext());
-					activity.setSupportProgressBarIndeterminateVisibility(false);
 				} catch (JSONException e) {
 					e.printStackTrace();
+					Toast.makeText(activity, "Get borrow record error!", Toast.LENGTH_SHORT).show();
 				}
 			}
 
+			activity.setSupportProgressBarIndeterminateVisibility(false);
 			if (result != null && result.has("meta")) {
 				String next;
 				try {

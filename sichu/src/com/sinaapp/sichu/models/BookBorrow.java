@@ -19,7 +19,6 @@ public class BookBorrow {
 	public BookBorrow(JSONObject jsonObject) {
 		try {
 			this.guid = jsonObject.getLong("id");
-			this.setBookOwnID(jsonObject.getLong("ownership"));
 			this.setBorrower(jsonObject.getString("borrower"));
 			this.setBorrowDate(Utils.parseDateTimeString(jsonObject.getString("borrow_date")));
 			this.setPlanedReturnDate(Utils.parseDateString(jsonObject.getString("planed_return_date")));
@@ -34,6 +33,7 @@ public class BookBorrow {
 	}
 	public void setBookOwn(BookOwn bookown) {
 		this.bookown = bookown;
+		this.bookOwnID = bookown.getGuid();
 	}
 
 	public long getBookOwnID() {

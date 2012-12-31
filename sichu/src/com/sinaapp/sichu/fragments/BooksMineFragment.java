@@ -13,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -35,7 +34,6 @@ import com.sinaapp.sichu.R;
 import com.sinaapp.sichu.adapters.BookOwnListAdapter;
 import com.sinaapp.sichu.api.ISichuAPI;
 import com.sinaapp.sichu.api.SichuAPI;
-import com.sinaapp.sichu.models.Book.Books;
 import com.sinaapp.sichu.models.BookOwn;
 import com.sinaapp.sichu.models.BookOwn.BookOwns;
 import com.sinaapp.sichu.utils.Preferences;
@@ -144,7 +142,6 @@ public class BooksMineFragment extends Fragment implements
 		@Override
 		protected void onPostExecute(JSONObject result) {
 			super.onPostExecute(result);
-			Cursor cursor;
 
 			if (result != null && result.has("objects")) {
 				ContentResolver contentResolver = activity.getContentResolver();
@@ -154,25 +151,7 @@ public class BooksMineFragment extends Fragment implements
 					for (int i = 0; i < jBookOwns.length(); i++) {
 						BookOwn own = new BookOwn(jBookOwns.getJSONObject(i));
 						adapter.addBookOwn(own);
-						cursor = contentResolver.query(
-								Uri.withAppendedPath(Books.CONTENT_URI, "guid/"
-										+ own.getBook().getGuid()), null, null,
-								null, null);
-						ContentValues values = new ContentValues();
-						if (cursor.getCount() == 0) {
-							own.getBook().setContentValues(values);
-							contentResolver.insert(Books.CONTENT_URI, values);
-							values.clear();
-						}
-
-						cursor = contentResolver.query(Uri.withAppendedPath(
-								BookOwns.CONTENT_URI, "guid/" + own.getGuid()),
-								null, null, null, null);
-						if (cursor.getCount() == 0) {
-							own.setContentValues(values, userID);
-							contentResolver
-									.insert(BookOwns.CONTENT_URI, values);
-						}
+						own.save(contentResolver);
 					}
 					adapter.notifyDataSetChanged();
 					Preferences.setSyncTime(activity.getApplicationContext());
@@ -267,8 +246,6 @@ public class BooksMineFragment extends Fragment implements
 		@Override
 		protected void onPostExecute(JSONObject result) {
 			super.onPostExecute(result);
-			Cursor cursor = null;
-			boolean updated = false;
 			
 			if (result != null && result.has("objects")) {
 				ContentResolver contentResolver = activity.getContentResolver();
@@ -283,22 +260,11 @@ public class BooksMineFragment extends Fragment implements
 									"sichu.cabinet.models.BookOwnership")) {
 								BookOwn own = new BookOwn(new JSONObject(
 										log.getString("data")));
-								cursor = contentResolver.query(
-										Uri.withAppendedPath(Books.CONTENT_URI, "guid/"
-												+ own.getBook().getGuid()), null, null,
-										null, null);
-								ContentValues values = new ContentValues();
-								if (cursor.getCount() == 0) {
-									own.getBook().setContentValues(values);
-									contentResolver.insert(Books.CONTENT_URI, values);
-									values.clear();
+								if (own != null) {
+									own.save(contentResolver);
 								}
-								own.setContentValues(values, userID);
-								contentResolver.insert(BookOwns.CONTENT_URI,
-										values);
 								Preferences.setSyncTime(activity,
 										log.getLong("timestamp"));
-								updated = true;
 							}
 							break;
 						case 2:
@@ -307,15 +273,11 @@ public class BooksMineFragment extends Fragment implements
 									"sichu.cabinet.models.BookOwnership")) {
 								BookOwn own = new BookOwn(new JSONObject(
 										log.getString("data")));
-								ContentValues values = new ContentValues();
-								own.setContentValues(values, userID);
-								contentResolver.update(Uri.withAppendedPath(
-										BookOwns.CONTENT_URI,
-										"/guid/" + own.getGuid()), values,
-										null, null);
+								if (own != null) {
+									own.save(contentResolver);
+								}
 								Preferences.setSyncTime(activity,
 										log.getLong("timestamp"));
-								updated = true;
 							}
 							break;
 						case 3:
@@ -330,7 +292,6 @@ public class BooksMineFragment extends Fragment implements
 										null);
 								Preferences.setSyncTime(activity,
 										log.getLong("timestamp"));
-								updated = true;
 							}
 							break;
 						default:

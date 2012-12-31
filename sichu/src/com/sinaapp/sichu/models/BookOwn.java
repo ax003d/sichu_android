@@ -3,6 +3,7 @@ package com.sinaapp.sichu.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,6 +20,7 @@ public class BookOwn {
 	private int status;
 	private boolean hasEbook;
 	private String remark;
+	private String owner;
 
 	private static final String[] book_status = { "Available", "Not Available",
 			"Loaned", "Lost" };
@@ -47,6 +49,8 @@ public class BookOwn {
 			this.setStatus(jsonObject.getString("status"));
 			this.hasEbook = jsonObject.getBoolean("has_ebook");
 			this.setRemark(jsonObject.getString("remark"));
+			this.ownerID = jsonObject.getJSONObject("owner").getLong("id");
+			this.setOwner(jsonObject.getJSONObject("owner").getString("username"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -127,10 +131,10 @@ public class BookOwn {
 	public static final String HASEBOOK = "hasEbook";
 	public static final String REMARK = "remark";
 
-	public void setContentValues(ContentValues values, long userID) {
+	public void setContentValues(ContentValues values) {
 		values.put(BookOwns.GUID, this.guid);
 		values.put(BookOwns.BOOKID, this.bookID);
-		values.put(BookOwns.OWNERID, userID);
+		values.put(BookOwns.OWNERID, this.ownerID);
 		values.put(BookOwns.STATUS, this.status);
 		values.put(BookOwns.HASEBOOK, this.hasEbook);
 		values.put(BookOwns.REMARK, this.remark);
@@ -138,5 +142,32 @@ public class BookOwn {
 
 	public long getGuid() {
 		return this.guid;
+	}
+
+	public void save(ContentResolver contentResolver) {
+		Cursor cursor = contentResolver.query(
+				Uri.withAppendedPath(Books.CONTENT_URI,
+						"guid/" + this.book.getGuid()), null, null, null, null);
+		ContentValues values = new ContentValues();
+		if (cursor.getCount() == 0) {
+			this.book.setContentValues(values);
+			contentResolver.insert(Books.CONTENT_URI, values);
+			values.clear();
+		}
+		cursor = contentResolver
+				.query(Uri.withAppendedPath(BookOwns.CONTENT_URI, "guid/"
+						+ this.guid), null, null, null, null);
+		if (cursor.getCount() == 0) {
+			setContentValues(values);
+			contentResolver.insert(BookOwns.CONTENT_URI, values);
+		}
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 }

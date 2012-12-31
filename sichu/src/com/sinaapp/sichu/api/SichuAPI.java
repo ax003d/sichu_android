@@ -115,15 +115,30 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	}
 
 	@Override
-	public JSONObject bookborrow(String next, ProgressListener progressListener)
+	public JSONObject bookborrow(String next, boolean asBorrower, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException {
-		ApiRequest request = new ApiRequest(ApiRequest.GET,
-				next == null ? "/v1/bookborrow/" : next);
+		String url = null;
+		if ( next != null ) {
+			url = asBorrower ? next + "&as_borrower=1" : next;
+		} else {
+			url = asBorrower ? "/v1/bookborrow/?as_borrower=1" : "/v1/bookborrow/";
+		}
+		ApiRequest request = new ApiRequest(ApiRequest.GET, url);
 
 		ApiResponse response = execute(request, progressListener);
 
 		String resp = response.getContentAsString();
-		// Log.d("Sync", resp);
+		Log.d("Sync", resp);
 		return new JSONObject(resp);
+	}
+
+	@Override
+	public JSONObject bookownByID(String id, ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.GET, "/v1/bookown/?id__exact=" + id);
+
+		ApiResponse response = execute(request, progressListener);
+
+		return new JSONObject(response.getContentAsString());
 	}
 }

@@ -20,9 +20,7 @@ import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
-import com.sinaapp.sichu.fragments.FriendsFragment;
 import com.sinaapp.sichu.fragments.BooksLoanedFragment;
-import com.sinaapp.sichu.fragments.MessagesFragment;
 import com.sinaapp.sichu.fragments.BooksMineFragment;
 import com.sinaapp.sichu.widget.NavigationItem;
 import com.sinaapp.sichu.widget.NavigationWidget;
@@ -140,9 +138,13 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		if ( tab.getText().equals("Mine") ) {
 			ft.replace(android.R.id.content, BooksMineFragment.getInstance());
 		} else if (tab.getText().equals("Loaned")) {
-			ft.replace(android.R.id.content, BooksLoanedFragment.getInstance());
+			BooksLoanedFragment fragment = BooksLoanedFragment.getInstance();
+			fragment.setAsBorrower(false);
+			ft.replace(android.R.id.content, fragment);
 		} else if (tab.getText().equals("Borrowed")) {
-			ft.replace(android.R.id.content, FriendsFragment.getInstance());
+			BooksLoanedFragment fragment = BooksLoanedFragment.getInstance();
+			fragment.setAsBorrower(true);
+			ft.replace(android.R.id.content, fragment);
 		}
 	}
 
