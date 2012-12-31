@@ -5,6 +5,8 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -14,12 +16,13 @@ import com.sinaapp.sichu.utils.Utils;
 public class BookBorrow {
 	private long guid;
 	private long bookOwnID;
-	private String borrower;
+	private long borrowerID;
 	private Date borrowDate;
 	private Date planedReturnDate;
 	private Date returnedDate;
 	private BookOwn bookown;
-	
+	private User borrower;
+
 	public static final class BookBorrows implements BaseColumns {
 		private BookBorrows() {
 		}
@@ -34,23 +37,39 @@ public class BookBorrow {
 		public static final String BORROW_DATE = "borrowDate";
 		public static final String PLANED_RETURN_DATE = "planedReturnDate";
 		public static final String RETURNED_DATE = "returnedDate";
-	}	
-	
+	}
+
+	private void setContentValues(ContentValues values) {
+		values.put(BookBorrows.GUID, this.guid);
+		values.put(BookBorrows.BOOKOWNID, bookOwnID);
+		values.put(BookBorrows.BORROWERID, borrowerID);
+		values.put(BookBorrows.BORROW_DATE, Utils.formatDateTime(borrowDate));
+		values.put(BookBorrows.PLANED_RETURN_DATE,
+				Utils.formatDate(planedReturnDate));
+		values.put(BookBorrows.RETURNED_DATE,
+				returnedDate == null ? "" : Utils.formatDateTime(returnedDate));
+	}
+
 	public BookBorrow(JSONObject jsonObject) {
 		try {
 			this.guid = jsonObject.getLong("id");
-			this.setBorrower(jsonObject.getString("borrower"));
-			this.setBorrowDate(Utils.parseDateTimeString(jsonObject.getString("borrow_date")));
-			this.setPlanedReturnDate(Utils.parseDateString(jsonObject.getString("planed_return_date")));
-			this.setReturnedDate(Utils.parseDateTimeString(jsonObject.getString("returned_date")));
+			this.borrower = new User(jsonObject.getJSONObject("borrower"));
+			this.borrowerID = this.borrower.getGuid();
+			this.setBorrowDate(Utils.parseDateTimeString(jsonObject
+					.getString("borrow_date")));
+			this.setPlanedReturnDate(Utils.parseDateString(jsonObject
+					.getString("planed_return_date")));
+			this.setReturnedDate(Utils.parseDateTimeString(jsonObject
+					.getString("returned_date")));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public BookOwn getBookOwn() {
 		return bookown;
 	}
+
 	public void setBookOwn(BookOwn bookown) {
 		this.bookown = bookown;
 		this.bookOwnID = bookown.getGuid();
@@ -88,11 +107,23 @@ public class BookBorrow {
 		this.returnedDate = returnedDate;
 	}
 
-	public String getBorrower() {
+	public User getBorrower() {
 		return borrower;
 	}
 
-	public void setBorrower(String borrower) {
+	public void setBorrower(User borrower) {
 		this.borrower = borrower;
+	}
+
+	public void save(ContentResolver contentResolver) {
+		if (this.bookown != null) {
+			this.bookown.save(contentResolver);
+		}
+		if (this.borrower != null) {
+			this.borrower.save(contentResolver);
+		}
+		ContentValues values = new ContentValues();
+		setContentValues(values);
+		contentResolver.insert(BookBorrows.CONTENT_URI, values);
 	}
 }

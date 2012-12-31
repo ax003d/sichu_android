@@ -77,11 +77,11 @@ public class BookLoanedListAdapter extends BaseAdapter {
 			img_loader.displayImage(book.getCover().replace("lpic", "spic"), img_cover, options);
 			txt_title.setText(book.getTitle());
 			if ( asBorrower ) {
-				txt_borrower.setText(own.getOwner());
+				txt_borrower.setText(own.getOwner().getUsername());
 			}
 		}
 		if ( !asBorrower ) {
-			txt_borrower.setText(borrow.getBorrower());
+			txt_borrower.setText(borrow.getBorrower().getUsername());
 		}
 		if ( borrow.getBorrowDate() != null ) {
 			txt_borrow_date.setText(Utils.formatDate(borrow.getBorrowDate()));

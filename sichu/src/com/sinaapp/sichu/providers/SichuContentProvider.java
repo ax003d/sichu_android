@@ -8,7 +8,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -17,6 +16,7 @@ import android.net.Uri;
 import com.sinaapp.sichu.models.Book.Books;
 import com.sinaapp.sichu.models.BookBorrow.BookBorrows;
 import com.sinaapp.sichu.models.BookOwn.BookOwns;
+import com.sinaapp.sichu.models.User.Users;
 
 public class SichuContentProvider extends ContentProvider {
 
@@ -29,6 +29,7 @@ public class SichuContentProvider extends ContentProvider {
 	private static final int BOOK_BY_GUID = 4;
 	private static final int BOOKOWN_BY_GUID = 5;
 	private static final int BOOKBORROWS = 6;
+	private static final int USERS = 7;
 
 	private static HashMap<String, String> booksProjectionMap;
 	private static HashMap<String, String> bookownsProjectionMap;
@@ -64,6 +65,12 @@ public class SichuContentProvider extends ContentProvider {
 					+ BookBorrows.BORROW_DATE + " TEXT, "
 					+ BookBorrows.PLANED_RETURN_DATE + " TEXT, "
 					+ BookBorrows.RETURNED_DATE + " TEXT" + " );");
+			db.execSQL("CREATE TABLE " + Users.TABLE_NAME + " ("
+					+ Users._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ Users.GUID + " INTEGER UNIQUE, "
+					+ Users.USERNAME + " TEXT, "
+					+ Users.LAST_NAME + " TEXT, "
+					+ Users.FIRST_NAME + " TEXT" + " );");			
 		}
 
 		@Override
@@ -71,6 +78,7 @@ public class SichuContentProvider extends ContentProvider {
 			db.execSQL("DROP TABLE IF EXISTS " + Books.TABLE_NAME);
 			db.execSQL("DROP TABLE IF EXISTS " + BookOwns.TABLE_NAME);
 			db.execSQL("DROP TABLE IF EXISTS " + BookBorrows.TABLE_NAME);
+			db.execSQL("DROP TABLE IF EXISTS " + Users.TABLE_NAME);
 			onCreate(db);
 		}
 
@@ -134,6 +142,8 @@ public class SichuContentProvider extends ContentProvider {
 		case BOOKS:
 			row_id = db.insertWithOnConflict(Books.TABLE_NAME, Books.GUID,
 					values, SQLiteDatabase.CONFLICT_IGNORE);
+			// to-do: this should return primary key when conflict, but it return -1, 
+			// so I return null to walk around it
 			if (row_id > 0) {
 				Uri book_uri = ContentUris.withAppendedId(Books.CONTENT_URI,
 						row_id);
@@ -162,6 +172,17 @@ public class SichuContentProvider extends ContentProvider {
 						null);
 				return bookborrow_uri;
 			}
+			return null;
+		case USERS:
+			row_id = db.insertWithOnConflict(Users.TABLE_NAME,
+					Users.GUID, values, SQLiteDatabase.CONFLICT_IGNORE);
+			if (row_id > 0) {
+				Uri user_uri = ContentUris.withAppendedId(
+						Users.CONTENT_URI, row_id);
+				getContext().getContentResolver().notifyChange(user_uri,
+						null);
+				return user_uri;
+			}			
 			return null;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -218,6 +239,7 @@ public class SichuContentProvider extends ContentProvider {
 		URI_MATCHER.addURI(AUTHORITY, BookOwns.TABLE_NAME + "/guid/#",
 				BOOKOWN_BY_GUID);
 		URI_MATCHER.addURI(AUTHORITY, BookBorrows.TABLE_NAME, BOOKBORROWS);
+		URI_MATCHER.addURI(AUTHORITY, Users.TABLE_NAME, USERS);
 
 		bookownsWithBookProjectionMap = new HashMap<String, String>();
 		bookownsWithBookProjectionMap.put(BookOwns.TABLE_NAME + "."

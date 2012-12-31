@@ -8,11 +8,9 @@ import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.Toast;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,7 +21,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -81,9 +78,9 @@ public class BooksMineFragment extends Fragment implements
 		activity.getSupportLoaderManager().initLoader(BOOKOWN_LOADER, null,
 				this);
 		if (Preferences.getSyncTime(activity.getApplicationContext()) == 0) {
-			new GetBookOwnTask().execute();
+			// new GetBookOwnTask().execute();
 		} else {
-			new SyncTask().execute();
+			// new SyncTask().execute();
 		}
 	}
 
@@ -112,68 +109,6 @@ public class BooksMineFragment extends Fragment implements
 			new AddBookOwnTask().execute(scanResult.getContents());
 		}
 	}
-
-	private class GetBookOwnTask extends AsyncTask<String, Void, JSONObject> {
-		@Override
-		protected JSONObject doInBackground(String... params) {
-			JSONObject ret = null;
-			try {
-				if (params.length == 0) {
-					ret = api_client.bookown(null, null);
-				} else {
-					ret = api_client.bookown(params[0], null);
-				}
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			return ret;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			activity.setSupportProgressBarIndeterminateVisibility(true);
-		}
-
-		@Override
-		protected void onPostExecute(JSONObject result) {
-			super.onPostExecute(result);
-
-			if (result != null && result.has("objects")) {
-				ContentResolver contentResolver = activity.getContentResolver();
-				JSONArray jBookOwns;
-				try {
-					jBookOwns = result.getJSONArray("objects");
-					for (int i = 0; i < jBookOwns.length(); i++) {
-						BookOwn own = new BookOwn(jBookOwns.getJSONObject(i));
-						adapter.addBookOwn(own);
-						own.save(contentResolver);
-					}
-					adapter.notifyDataSetChanged();
-					Preferences.setSyncTime(activity.getApplicationContext());
-					activity.setSupportProgressBarIndeterminateVisibility(false);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-
-			if (result != null && result.has("meta")) {
-				String next;
-				try {
-					next = result.getJSONObject("meta").getString("next");
-					if (!next.equals("null")) {
-						new GetBookOwnTask().execute(next);
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		} // onPostExecute
-	} // GetBookOwnTask
 
 	private class AddBookOwnTask extends AsyncTask<String, Void, JSONObject> {
 
@@ -217,109 +152,6 @@ public class BooksMineFragment extends Fragment implements
 		}
 	}
 
-	private class SyncTask extends AsyncTask<String, LinearLayout, JSONObject> {
-
-		@Override
-		protected JSONObject doInBackground(String... params) {
-			try {
-				if (params.length == 0) {
-					return api_client.oplog(null, null);
-				} else {
-					return api_client.oplog(params[0], null);
-				}
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			activity.setSupportProgressBarIndeterminateVisibility(true);
-		}
-
-		@Override
-		protected void onPostExecute(JSONObject result) {
-			super.onPostExecute(result);
-			
-			if (result != null && result.has("objects")) {
-				ContentResolver contentResolver = activity.getContentResolver();
-				try {
-					JSONArray jOplogs = result.getJSONArray("objects");
-					for (int i = 0; i < jOplogs.length(); i++) {
-						JSONObject log = jOplogs.getJSONObject(i);
-						switch (log.getInt("opcode")) {
-						case 1:
-							// add
-							if (log.getString("model").equals(
-									"sichu.cabinet.models.BookOwnership")) {
-								BookOwn own = new BookOwn(new JSONObject(
-										log.getString("data")));
-								if (own != null) {
-									own.save(contentResolver);
-								}
-								Preferences.setSyncTime(activity,
-										log.getLong("timestamp"));
-							}
-							break;
-						case 2:
-							// update
-							if (log.getString("model").equals(
-									"sichu.cabinet.models.BookOwnership")) {
-								BookOwn own = new BookOwn(new JSONObject(
-										log.getString("data")));
-								if (own != null) {
-									own.save(contentResolver);
-								}
-								Preferences.setSyncTime(activity,
-										log.getLong("timestamp"));
-							}
-							break;
-						case 3:
-							// delete
-							if (log.getString("model").equals(
-									"sichu.cabinet.models.BookOwnership")) {
-								JSONObject ret = new JSONObject(
-										log.getString("data"));
-								contentResolver.delete(Uri.withAppendedPath(
-										BookOwns.CONTENT_URI,
-										"/guid/" + ret.getInt("id")), null,
-										null);
-								Preferences.setSyncTime(activity,
-										log.getLong("timestamp"));
-							}
-							break;
-						default:
-							break;
-						} // endswitch						
-					} // endfor
-					contentResolver.notifyChange(Uri.withAppendedPath(
-								BookOwns.CONTENT_URI, "owner/" + userID), null);
-				} catch (JSONException e1) {
-					e1.printStackTrace();
-				}
-			} // endif
-
-			if (result != null && result.has("meta")) {
-				String next;
-				try {
-					next = result.getJSONObject("meta").getString("next");
-					if (!next.equals("null")) {
-						new SyncTask().execute(next);
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			} // endif
-			activity.setSupportProgressBarIndeterminateVisibility(false);
-		} // onPostExecute
-	} // SyncTask
-
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		if (id == BOOKOWN_LOADER) {
@@ -334,9 +166,13 @@ public class BooksMineFragment extends Fragment implements
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		adapter.clearBookOwn();
 		
-		while(data.moveToNext()) {
+		if ( !data.moveToFirst() ) {
+			return;
+		}
+		
+		do {
 			adapter.addBookOwn(new BookOwn(data));
-		};
+		} while (data.moveToNext());
 		adapter.notifyDataSetChanged();
 	}
 

@@ -20,7 +20,7 @@ public class BookOwn {
 	private int status;
 	private boolean hasEbook;
 	private String remark;
-	private String owner;
+	private User owner;
 
 	private static final String[] book_status = { "Available", "Not Available",
 			"Loaned", "Lost" };
@@ -49,8 +49,8 @@ public class BookOwn {
 			this.setStatus(jsonObject.getString("status"));
 			this.hasEbook = jsonObject.getBoolean("has_ebook");
 			this.setRemark(jsonObject.getString("remark"));
-			this.ownerID = jsonObject.getJSONObject("owner").getLong("id");
-			this.setOwner(jsonObject.getJSONObject("owner").getString("username"));
+			this.owner = new User(jsonObject.getJSONObject("owner"));
+			this.ownerID = this.owner.getGuid();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -148,16 +148,19 @@ public class BookOwn {
 		if (this.book != null) {
 			this.book.save(contentResolver);
 		}
+		if (this.owner != null) {
+			this.owner.save(contentResolver);
+		}
 		ContentValues values = new ContentValues();
 		setContentValues(values);
 		contentResolver.insert(BookOwns.CONTENT_URI, values);
 	}
 
-	public String getOwner() {
+	public User getOwner() {
 		return owner;
 	}
 
-	public void setOwner(String owner) {
+	public void setOwner(User owner) {
 		this.owner = owner;
 	}
 }

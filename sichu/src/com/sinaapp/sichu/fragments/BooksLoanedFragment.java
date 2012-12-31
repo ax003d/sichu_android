@@ -66,10 +66,10 @@ public class BooksLoanedFragment extends Fragment {
 				R.id.lst_books_loaned);
 		lst_books_loaned.setAdapter(adapter);
 		activity.setSupportProgressBarIndeterminateVisibility(false);
-		new GetBooksLoanedTask().execute();
-//		if (Preferences.getSyncTime(activity.getApplicationContext()) == 0) {
-//		} else {
-//		}
+		if (Preferences.getSyncTime(activity.getApplicationContext()) == 0) {
+			// new GetBooksLoanedTask().execute();
+		} else {
+		}
 	}
 	
 	public void setAsBorrower(boolean asBorrower) {
@@ -124,6 +124,7 @@ public class BooksLoanedFragment extends Fragment {
 							own.save(contentResolver);
 						}
 						borrow.setBookOwn(own);
+						borrow.save(contentResolver);
 						adapter.addBookBorrow(borrow);
 					}
 					adapter.notifyDataSetChanged();
