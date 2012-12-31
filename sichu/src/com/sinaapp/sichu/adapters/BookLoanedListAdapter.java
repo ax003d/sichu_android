@@ -21,12 +21,17 @@ public class BookLoanedListAdapter extends BaseAdapter {
 
 	private ArrayList<BookBorrow> bookowns;
 	private DisplayImageOptions options;
-	private ImageLoader img_loader;	
+	private ImageLoader img_loader;
+	private Context context;
+	private int col_not_returned;
+	private int col_returned;	
 	
 	public BookLoanedListAdapter(Context context) {
 		bookowns = new ArrayList<BookBorrow>();
 		options = Utils.getCloudOptions();
-		img_loader = Utils.getImageLoader(context);		
+		img_loader = Utils.getImageLoader(context);
+		col_not_returned = context.getResources().getColor(R.color.col_value);
+		col_returned = 0xFF000000;
 	}	
 	
 	public void addBookBorrow(BookBorrow borrow) {
@@ -57,26 +62,38 @@ public class BookLoanedListAdapter extends BaseAdapter {
 		BookBorrow borrow = (BookBorrow) getItem(position);
 		ImageView img_cover = (ImageView) view.findViewById(R.id.img_cover);
 		TextView txt_title = (TextView) view.findViewById(R.id.txt_title);
+		TextView txt_borrower = (TextView) view.findViewById(R.id.txt_borrower);
 		TextView txt_borrow_date = (TextView) view.findViewById(R.id.txt_borrow_date);
 		TextView txt_planed_return_date = (TextView) view.findViewById(R.id.txt_planed_return_date);
 		TextView txt_returned_date = (TextView) view.findViewById(R.id.txt_returned_date);
 		BookOwn own = borrow.getBookOwn();
 		img_loader.displayImage(own.getBook().getCover().replace("lpic", "spic"), img_cover, options);
 		txt_title.setText(own.getBook().getTitle());
+		txt_borrower.setText(borrow.getBorrower());
 		if ( borrow.getBorrowDate() != null ) {
-			txt_borrow_date.setText(borrow.getBorrowDate().toLocaleString());
+			txt_borrow_date.setText(Utils.formatDate(borrow.getBorrowDate()));
 		} else {
 			txt_borrow_date.setText("");
 		}
 		if ( borrow.getPlanedReturnDate() != null ) {
-			txt_planed_return_date.setText(borrow.getPlanedReturnDate().toLocaleString());
+			txt_planed_return_date.setText(Utils.formatDate(borrow.getPlanedReturnDate()));
 		} else {
 			txt_planed_return_date.setText("");
 		}
 		if ( borrow.getReturnedDate() != null ) {
-			txt_returned_date.setText(borrow.getReturnedDate().toLocaleString());
+			txt_returned_date.setText(Utils.formatDate(borrow.getReturnedDate()));
+			
+			txt_borrower.setTextColor(col_returned);
+			txt_borrow_date.setTextColor(col_returned);
+			txt_planed_return_date.setTextColor(col_returned);
+			txt_returned_date.setTextColor(col_returned);			
 		} else {
 			txt_returned_date.setText("Not returned yet!");
+			
+			txt_borrower.setTextColor(col_not_returned);
+			txt_borrow_date.setTextColor(col_not_returned);
+			txt_planed_return_date.setTextColor(col_not_returned);
+			txt_returned_date.setTextColor(col_not_returned);
 		}
 		
 		return view;

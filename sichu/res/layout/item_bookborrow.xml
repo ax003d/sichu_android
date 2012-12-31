@@ -8,30 +8,88 @@
         android:id="@+id/img_cover"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:padding="10dp" />
+        android:contentDescription="@string/img_cover"
+        android:padding="10dp"
+        android:src="@drawable/ic_book" />
 
-    <LinearLayout android:layout_width="fill_parent"
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:orientation="vertical">
+        android:paddingTop="10dp" >
 
         <TextView
             android:id="@+id/txt_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/txt_title" />
 
-        <TextView android:id="@+id/txt_borrow_date"
+        <ImageView
+            android:id="@+id/img_borrower"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_below="@id/txt_title"
+            android:contentDescription="@string/img_borrower"
+            android:src="@drawable/ic_contact" />
+
+        <TextView
+            android:id="@+id/txt_borrower"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        
-        <TextView android:id="@+id/txt_planed_return_date"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_title"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/img_borrower"
+            android:text="@string/txt_borrower" />
+
+        <ImageView
+            android:id="@+id/img_borrow_date"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_below="@id/img_borrower"
+            android:contentDescription="@string/img_borrow_date"
+            android:src="@drawable/ic_borrow" />
+
+        <TextView
+            android:id="@+id/txt_borrow_date"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        
-        <TextView android:id="@+id/txt_returned_date"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_borrower"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/img_borrow_date"
+            android:text="@string/txt_borrow_date" />
+
+        <ImageView
+            android:id="@+id/img_planed_return_date"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_below="@id/img_borrow_date"
+            android:contentDescription="@string/img_planed_return_date"
+            android:src="@drawable/ic_timer" />
+
+        <TextView
+            android:id="@+id/txt_planed_return_date"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_borrow_date"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/img_planed_return_date"
+            android:text="@string/txt_planed_return_date" />
+
+        <ImageView
+            android:id="@+id/img_returned_date"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_below="@id/img_planed_return_date"
+            android:contentDescription="@string/img_returned_date"
+            android:src="@drawable/ic_return" />
+
+        <TextView
+            android:id="@+id/txt_returned_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_planed_return_date"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/img_returned_date"
+            android:text="@string/txt_returned_date" />
+    </RelativeLayout>
 
 </LinearLayout>

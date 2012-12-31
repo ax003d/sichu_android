@@ -90,6 +90,10 @@ public class Utils {
 		return null;
 	}
 	
+	public static String formatDateTime(Date date) {
+		return dateTimeFmt.format(date);
+	}
+	
 	public static Date parseDateString(String date) {		
 		try {
 			Date dt = dateFmt.parse(date);
@@ -98,5 +102,9 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return null;
-	}	
+	}
+	
+	public static String formatDate(Date date) {
+		return dateFmt.format(date);
+	}
 }

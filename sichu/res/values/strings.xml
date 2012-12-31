@@ -11,5 +11,19 @@
     <string name="btn_login">Login</string>
     <string name="hint_no_network">No available network!</string>
     <string name="activity_login">Login</string>
+    <string name="img_cover">Book Cover</string>
+    <string name="txt_title">Book Title</string>
+    <string name="txt_borrower">Borrower</string>
+    <string name="txt_borrow_date">Borrow Date</string>
+    <string name="txt_planed_return_date">Planed Return Date</string>
+    <string name="txt_returned_date">Returned Date</string>
+    <string name="lbl_borrower">Borrower:</string>
+    <string name="lbl_borrow_date">Borrow Date:</string>
+    <string name="lbl_planed_return_date">Planed Return Date:</string>
+    <string name="lbl_returned_date">Returned Date:</string>
+    <string name="img_planed_return_date">Planed Return Date</string>
+    <string name="img_borrow_date">Borrow Date</string>
+    <string name="img_returned_date">Returned Date</string>
+    <string name="img_borrower">Borrower</string>
 
 </resources>
