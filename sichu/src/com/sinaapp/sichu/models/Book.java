@@ -57,6 +57,9 @@ public class Book {
 		this.cover = cover;
 	}
 
+	public Book() {
+	}
+
 	public long getGuid() {
 		return guid;
 	}

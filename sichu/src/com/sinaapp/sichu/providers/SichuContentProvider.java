@@ -30,10 +30,13 @@ public class SichuContentProvider extends ContentProvider {
 	private static final int BOOKOWN_BY_GUID = 5;
 	private static final int BOOKBORROWS = 6;
 	private static final int USERS = 7;
+	private static final int BOOKBORROWS_AS_OWNER = 8;
+	private static final int BOOKBORROWS_AS_BORROWER = 9;	
 
 	private static HashMap<String, String> booksProjectionMap;
 	private static HashMap<String, String> bookownsProjectionMap;
 	private static HashMap<String, String> bookownsWithBookProjectionMap;
+	private static HashMap<String, String> bookborrowsProjectionMap;
 
 	public static final String AUTHORITY = "com.sinaapp.sichu.providers.SichuContentProvider";
 
@@ -65,12 +68,11 @@ public class SichuContentProvider extends ContentProvider {
 					+ BookBorrows.BORROW_DATE + " TEXT, "
 					+ BookBorrows.PLANED_RETURN_DATE + " TEXT, "
 					+ BookBorrows.RETURNED_DATE + " TEXT" + " );");
-			db.execSQL("CREATE TABLE " + Users.TABLE_NAME + " ("
-					+ Users._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ Users.GUID + " INTEGER UNIQUE, "
-					+ Users.USERNAME + " TEXT, "
-					+ Users.LAST_NAME + " TEXT, "
-					+ Users.FIRST_NAME + " TEXT" + " );");			
+			db.execSQL("CREATE TABLE " + Users.TABLE_NAME + " (" + Users._ID
+					+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + Users.GUID
+					+ " INTEGER UNIQUE, " + Users.USERNAME + " TEXT, "
+					+ Users.LAST_NAME + " TEXT, " + Users.FIRST_NAME + " TEXT"
+					+ " );");
 		}
 
 		@Override
@@ -97,7 +99,8 @@ public class SichuContentProvider extends ContentProvider {
 			String[] selectionArgs, String sortOrder) {
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		SQLiteDatabase db = db_helper.getReadableDatabase();
-
+		boolean asBorrower = true;
+		
 		switch (URI_MATCHER.match(uri)) {
 		case BOOKOWNS_BY_OWNER:
 			queryBuilder.setTables(BookOwns.TABLE_NAME + " INNER JOIN "
@@ -117,6 +120,26 @@ public class SichuContentProvider extends ContentProvider {
 			queryBuilder.setTables(BookOwns.TABLE_NAME);
 			queryBuilder.setProjectionMap(bookownsProjectionMap);
 			selection = Books.GUID + " = " + uri.getLastPathSegment();
+			break;
+		case BOOKBORROWS_AS_OWNER:
+			asBorrower = false;
+		case BOOKBORROWS_AS_BORROWER:
+			queryBuilder.setTables(BookBorrows.TABLE_NAME + " INNER JOIN "
+					+ BookOwns.TABLE_NAME + " ON ( " + BookBorrows.BOOKOWNID
+					+ " = " + BookOwns.TABLE_NAME + "." + BookOwns.GUID
+					+ " ) INNER JOIN " + Users.TABLE_NAME + " ON ( "
+					+ BookOwns.TABLE_NAME + "." + BookOwns.OWNERID + " = "
+					+ Users.TABLE_NAME + "." + Users.GUID + " ) INNER JOIN "
+					+ Books.TABLE_NAME + " ON ( " + BookOwns.TABLE_NAME + "."
+					+ BookOwns.BOOKID + " = " + Books.TABLE_NAME + "."
+					+ Books.GUID + " ) INNER JOIN " + Users.TABLE_NAME
+					+ " AS Borrower ON ( " + BookBorrows.TABLE_NAME + "."
+					+ BookBorrows.BORROWERID + " = " + "Borrower." + Users.GUID
+					+ " )");
+			queryBuilder.setProjectionMap(bookborrowsProjectionMap);
+			selection = (selection == null ? "" : selection + " AND ");
+			selection = selection + ( asBorrower ? BookBorrows.BORROWERID : BookOwns.OWNERID ) + " = "
+					+ uri.getLastPathSegment();			
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -142,7 +165,8 @@ public class SichuContentProvider extends ContentProvider {
 		case BOOKS:
 			row_id = db.insertWithOnConflict(Books.TABLE_NAME, Books.GUID,
 					values, SQLiteDatabase.CONFLICT_IGNORE);
-			// to-do: this should return primary key when conflict, but it return -1, 
+			// to-do: this should return primary key when conflict, but it
+			// return -1,
 			// so I return null to walk around it
 			if (row_id > 0) {
 				Uri book_uri = ContentUris.withAppendedId(Books.CONTENT_URI,
@@ -174,15 +198,14 @@ public class SichuContentProvider extends ContentProvider {
 			}
 			return null;
 		case USERS:
-			row_id = db.insertWithOnConflict(Users.TABLE_NAME,
-					Users.GUID, values, SQLiteDatabase.CONFLICT_IGNORE);
+			row_id = db.insertWithOnConflict(Users.TABLE_NAME, Users.GUID,
+					values, SQLiteDatabase.CONFLICT_IGNORE);
 			if (row_id > 0) {
-				Uri user_uri = ContentUris.withAppendedId(
-						Users.CONTENT_URI, row_id);
-				getContext().getContentResolver().notifyChange(user_uri,
-						null);
+				Uri user_uri = ContentUris.withAppendedId(Users.CONTENT_URI,
+						row_id);
+				getContext().getContentResolver().notifyChange(user_uri, null);
 				return user_uri;
-			}			
+			}
 			return null;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -240,6 +263,10 @@ public class SichuContentProvider extends ContentProvider {
 				BOOKOWN_BY_GUID);
 		URI_MATCHER.addURI(AUTHORITY, BookBorrows.TABLE_NAME, BOOKBORROWS);
 		URI_MATCHER.addURI(AUTHORITY, Users.TABLE_NAME, USERS);
+		URI_MATCHER.addURI(AUTHORITY, BookBorrows.TABLE_NAME + "/owner/#",
+				BOOKBORROWS_AS_OWNER);
+		URI_MATCHER.addURI(AUTHORITY, BookBorrows.TABLE_NAME + "/borrower/#",
+				BOOKBORROWS_AS_BORROWER);		
 
 		bookownsWithBookProjectionMap = new HashMap<String, String>();
 		bookownsWithBookProjectionMap.put(BookOwns.TABLE_NAME + "."
@@ -271,5 +298,26 @@ public class SichuContentProvider extends ContentProvider {
 		booksProjectionMap.put(Books.AUTHOR, Books.AUTHOR);
 		booksProjectionMap.put(Books.DOUBAN_ID, Books.DOUBAN_ID);
 		booksProjectionMap.put(Books.COVER, Books.COVER);
+
+		bookborrowsProjectionMap = new HashMap<String, String>();
+		bookborrowsProjectionMap.put(BookBorrows.TABLE_NAME + "."
+				+ BookBorrows.GUID, BookBorrows.TABLE_NAME + "."
+				+ BookBorrows.GUID);
+		bookborrowsProjectionMap.put(BookBorrows.BOOKOWNID,
+				BookBorrows.BOOKOWNID);
+		bookborrowsProjectionMap.put(BookBorrows.BORROWERID,
+				BookBorrows.BORROWERID);
+		bookborrowsProjectionMap.put(BookBorrows.BORROW_DATE,
+				BookBorrows.BORROW_DATE);
+		bookborrowsProjectionMap.put(BookBorrows.PLANED_RETURN_DATE,
+				BookBorrows.PLANED_RETURN_DATE);
+		bookborrowsProjectionMap.put(BookBorrows.RETURNED_DATE,
+				BookBorrows.RETURNED_DATE);
+		bookborrowsProjectionMap.put("owner",
+				Users.TABLE_NAME + "." + Users.USERNAME + " AS owner");
+		bookborrowsProjectionMap.put(Books.TITLE, Books.TITLE);
+		bookborrowsProjectionMap.put(Books.COVER, Books.COVER);
+		bookborrowsProjectionMap.put("borrower", "Borrower."
+				+ Users.USERNAME + " AS borrower");
 	}
 }

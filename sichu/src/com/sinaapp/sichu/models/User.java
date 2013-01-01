@@ -48,6 +48,9 @@ public class User {
 		}
 	}
 
+	public User() {
+	}
+
 	public long getGuid() {
 		return guid;
 	}

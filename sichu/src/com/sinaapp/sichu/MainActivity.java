@@ -31,6 +31,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.sinaapp.sichu.api.ISichuAPI;
 import com.sinaapp.sichu.api.SichuAPI;
+import com.sinaapp.sichu.fragments.BooksBorrowedFragment;
 import com.sinaapp.sichu.fragments.BooksLoanedFragment;
 import com.sinaapp.sichu.fragments.BooksMineFragment;
 import com.sinaapp.sichu.models.BookBorrow;
@@ -167,13 +168,9 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		if (tab.getText().equals("Mine")) {
 			ft.replace(android.R.id.content, BooksMineFragment.getInstance());
 		} else if (tab.getText().equals("Loaned")) {
-			BooksLoanedFragment fragment = BooksLoanedFragment.getInstance();
-			fragment.setAsBorrower(false);
-			ft.replace(android.R.id.content, fragment);
+			ft.replace(android.R.id.content, BooksLoanedFragment.getInstance());
 		} else if (tab.getText().equals("Borrowed")) {
-			BooksLoanedFragment fragment = BooksLoanedFragment.getInstance();
-			fragment.setAsBorrower(true);
-			ft.replace(android.R.id.content, fragment);
+			ft.replace(android.R.id.content, BooksBorrowedFragment.getInstance());
 		}
 	}
 
@@ -239,7 +236,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 					if (!next.equals("null")) {
 						new GetBookOwnTask().execute(next);
 					} else {
-						new GetBooksLoanedTask().execute();
+						// new GetBooksLoanedTask().execute();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

@@ -92,6 +92,9 @@ public class BookOwn {
 				data.getString(idx_doubanID), data.getString(idx_cover));
 	}
 
+	public BookOwn() {
+	}
+
 	public long getBookID() {
 		return bookID;
 	}
@@ -123,13 +126,6 @@ public class BookOwn {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-
-	public static final String GUID = "guid";
-	public static final String BOOKID = "bookID";
-	public static final String OWNERID = "ownerID";
-	public static final String STATUS = "status";
-	public static final String HASEBOOK = "hasEbook";
-	public static final String REMARK = "remark";
 
 	public void setContentValues(ContentValues values) {
 		values.put(BookOwns.GUID, this.guid);

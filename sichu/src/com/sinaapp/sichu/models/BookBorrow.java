@@ -7,9 +7,13 @@ import org.json.JSONObject;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import com.sinaapp.sichu.models.Book.Books;
+import com.sinaapp.sichu.models.BookOwn.BookOwns;
+import com.sinaapp.sichu.models.User.Users;
 import com.sinaapp.sichu.providers.SichuContentProvider;
 import com.sinaapp.sichu.utils.Utils;
 
@@ -64,6 +68,37 @@ public class BookBorrow {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public BookBorrow(Cursor data) {
+		int idx_guid = data.getColumnIndex(BookBorrows.GUID);
+		int idx_bookOwnID = data.getColumnIndex(BookBorrows.BOOKOWNID);
+		int idx_borrowerID = data.getColumnIndex(BookBorrows.BORROWERID);
+		int idx_borrowDate = data.getColumnIndex(BookBorrows.BORROW_DATE);
+		int idx_planedReturnDate = data.getColumnIndex(BookBorrows.PLANED_RETURN_DATE);
+		int idx_returnedDate = data.getColumnIndex(BookBorrows.RETURNED_DATE);
+		int idx_owner = data.getColumnIndex("owner");
+		int idx_title = data.getColumnIndex(Books.TITLE);
+		int idx_cover = data.getColumnIndex(Books.COVER);
+		int idx_borrower = data.getColumnIndex("borrower");
+
+		this.guid = data.getLong(idx_guid);
+		this.bookOwnID = data.getLong(idx_bookOwnID);
+		this.borrowerID = data.getLong(idx_borrowerID);
+		this.borrowDate = Utils.parseDateTimeString(data.getString(idx_borrowDate));
+		this.planedReturnDate = Utils.parseDateString(data.getString(idx_planedReturnDate));
+		this.returnedDate = Utils.parseDateTimeString(data.getString(idx_returnedDate));
+		
+		Book book = new Book();
+		book.setTitle(data.getString(idx_title));
+		book.setCover(data.getString(idx_cover));
+		User owner = new User();
+		owner.setUsername(data.getString(idx_owner));
+		this.bookown = new BookOwn();
+		this.bookown.setBook(book);
+		this.bookown.setOwner(owner);
+		this.borrower = new User();
+		this.borrower.setUsername(data.getString(idx_borrower));
 	}
 
 	public BookOwn getBookOwn() {

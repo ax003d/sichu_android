@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 public class BookLoanedListAdapter extends BaseAdapter {
 
-	private ArrayList<BookBorrow> bookowns;
+	private ArrayList<BookBorrow> bookborrows;
 	private DisplayImageOptions options;
 	private ImageLoader img_loader;
 	private int col_not_returned;
@@ -28,7 +28,7 @@ public class BookLoanedListAdapter extends BaseAdapter {
 	private boolean asBorrower;	
 	
 	public BookLoanedListAdapter(Context context) {
-		bookowns = new ArrayList<BookBorrow>();
+		bookborrows = new ArrayList<BookBorrow>();
 		options = Utils.getCloudOptions();
 		img_loader = Utils.getImageLoader(context);
 		col_not_returned = context.getResources().getColor(R.color.col_value);
@@ -40,17 +40,17 @@ public class BookLoanedListAdapter extends BaseAdapter {
 	}
 	
 	public void addBookBorrow(BookBorrow borrow) {
-		bookowns.add(borrow);
+		bookborrows.add(borrow);
 	}
 	
 	@Override
 	public int getCount() {
-		return bookowns.size();
+		return bookborrows.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return bookowns.get(position);
+		return bookborrows.get(position);
 	}
 
 	@Override
@@ -110,6 +110,10 @@ public class BookLoanedListAdapter extends BaseAdapter {
 		}
 		
 		return view;
+	}
+
+	public void clearBookBorrow() {
+		this.bookborrows.clear();
 	}
 
 }
