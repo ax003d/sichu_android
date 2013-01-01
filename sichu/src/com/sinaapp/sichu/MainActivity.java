@@ -8,6 +8,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.ArrayAdapter;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.slidingmenu.SlidingMenu;
+import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -118,11 +119,10 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		ab.setDisplayHomeAsUpEnabled(true);
 
-		if (Preferences.getSyncTime(this) == 0) {
-			new GetBookOwnTask().execute();
-		} else {
-			new SyncTask().execute();
-		}
+//		if (Preferences.getSyncTime(this) == 0) {
+//		} else {
+//			new SyncTask().execute();
+//		}
 	}
 
 	private void replaceTabs(String title) {
@@ -170,7 +170,8 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		} else if (tab.getText().equals("Loaned")) {
 			ft.replace(android.R.id.content, BooksLoanedFragment.getInstance());
 		} else if (tab.getText().equals("Borrowed")) {
-			ft.replace(android.R.id.content, BooksBorrowedFragment.getInstance());
+			ft.replace(android.R.id.content,
+					BooksBorrowedFragment.getInstance());
 		}
 	}
 
@@ -183,142 +184,6 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 
 	}
-
-	private class GetBookOwnTask extends AsyncTask<String, Void, JSONObject> {
-		@Override
-		protected JSONObject doInBackground(String... params) {
-			JSONObject ret = null;
-			try {
-				if (params.length == 0) {
-					ret = api_client.bookown(null, null);
-				} else {
-					ret = api_client.bookown(params[0], null);
-				}
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			return ret;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			setSupportProgressBarIndeterminateVisibility(true);
-		}
-
-		@Override
-		protected void onPostExecute(JSONObject result) {
-			super.onPostExecute(result);
-
-			if (result != null && result.has("objects")) {
-				ContentResolver contentResolver = getContentResolver();
-				JSONArray jBookOwns;
-				try {
-					jBookOwns = result.getJSONArray("objects");
-					for (int i = 0; i < jBookOwns.length(); i++) {
-						BookOwn own = new BookOwn(jBookOwns.getJSONObject(i));
-						own.save(contentResolver);
-					}
-					setSupportProgressBarIndeterminateVisibility(false);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-
-			if (result != null && result.has("meta")) {
-				String next;
-				try {
-					next = result.getJSONObject("meta").getString("next");
-					if (!next.equals("null")) {
-						new GetBookOwnTask().execute(next);
-					} else {
-						// new GetBooksLoanedTask().execute();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		} // onPostExecute
-	} // GetBookOwnTask
-
-	private class GetBooksLoanedTask extends
-			AsyncTask<String, Void, JSONObject> {
-		@Override
-		protected JSONObject doInBackground(String... params) {
-			JSONObject ret = null;
-			try {
-				if (params.length == 0) {
-					ret = api_client.bookborrow(null, asBorrower, null);
-				} else {
-					ret = api_client.bookborrow(params[0], asBorrower, null);
-				}
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			return ret;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			setSupportProgressBarIndeterminateVisibility(true);
-		}
-
-		@Override
-		protected void onPostExecute(JSONObject result) {
-			super.onPostExecute(result);
-			BookOwn own = null;
-
-			if (result != null && result.has("objects")) {
-				ContentResolver contentResolver = getContentResolver();
-				JSONArray jBooksLoaned;
-				try {
-					jBooksLoaned = result.getJSONArray("objects");
-					for (int i = 0; i < jBooksLoaned.length(); i++) {
-						BookBorrow borrow = new BookBorrow(
-								jBooksLoaned.getJSONObject(i));
-						own = new BookOwn(jBooksLoaned.getJSONObject(i)
-								.getJSONObject("ownership"));
-						if (own != null) {
-							own.save(contentResolver);
-						}
-						borrow.setBookOwn(own);
-						borrow.save(contentResolver);
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-
-			setSupportProgressBarIndeterminateVisibility(false);
-			if (result != null && result.has("meta")) {
-				String next;
-				try {
-					next = result.getJSONObject("meta").getString("next");
-					if (!next.equals("null")) {
-						new GetBooksLoanedTask().execute(next);
-					} else {
-						if (asBorrower) {
-							Preferences.setSyncTime(MainActivity.this);
-						} else {
-							asBorrower = true;
-							new GetBooksLoanedTask().execute();
-						}
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		} // onPostExecute
-	} // GetBooksLoanedTask
 
 	private class SyncTask extends AsyncTask<String, LinearLayout, JSONObject> {
 

@@ -6,11 +6,12 @@ import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
-import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.Toast;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -27,6 +28,8 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegratorSupportV4;
 import com.google.zxing.integration.android.IntentResult;
+import com.markupartist.android.widget.PullToRefreshListView;
+import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
 import com.sinaapp.sichu.R;
 import com.sinaapp.sichu.adapters.BookOwnListAdapter;
 import com.sinaapp.sichu.api.ISichuAPI;
@@ -48,7 +51,7 @@ public class BooksMineFragment extends Fragment implements
 	}
 
 	private BookOwnListAdapter adapter;
-	private ListView lst_bookown;
+	private PullToRefreshListView lst_bookown;
 	private ISichuAPI api_client;
 	private SlidingActivity activity;
 	private long userID;
@@ -72,16 +75,17 @@ public class BooksMineFragment extends Fragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		lst_bookown = (ListView) getActivity().findViewById(R.id.lst_bookowns);
+		lst_bookown = (PullToRefreshListView) getActivity().findViewById(R.id.lst_bookowns);		
 		lst_bookown.setAdapter(adapter);
+		lst_bookown.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				new GetBookOwnTask().execute();
+			}
+		});
 		activity.setSupportProgressBarIndeterminateVisibility(false);
 		activity.getSupportLoaderManager().initLoader(BOOKOWN_LOADER, null,
 				this);
-		if (Preferences.getSyncTime(activity.getApplicationContext()) == 0) {
-			// new GetBookOwnTask().execute();
-		} else {
-			// new SyncTask().execute();
-		}
 	}
 
 	@Override
@@ -174,6 +178,7 @@ public class BooksMineFragment extends Fragment implements
 			adapter.addBookOwn(new BookOwn(data));
 		} while (data.moveToNext());
 		adapter.notifyDataSetChanged();
+		lst_bookown.onRefreshComplete();
 	}
 
 	@Override
@@ -181,4 +186,58 @@ public class BooksMineFragment extends Fragment implements
 		// TODO Auto-generated method stub
 
 	}
+	
+	private class GetBookOwnTask extends AsyncTask<String, Void, JSONObject> {
+		@Override
+		protected JSONObject doInBackground(String... params) {
+			JSONObject ret = null;
+			try {
+				if (params.length == 0) {
+					ret = api_client.bookown(null, null);
+				} else {
+					ret = api_client.bookown(params[0], null);
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return ret;
+		}
+
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			if (result != null && result.has("objects")) {
+				ContentResolver contentResolver = activity.getContentResolver();
+				JSONArray jBookOwns;
+				try {
+					jBookOwns = result.getJSONArray("objects");
+					for (int i = 0; i < jBookOwns.length(); i++) {
+						BookOwn own = new BookOwn(jBookOwns.getJSONObject(i));
+						own.save(contentResolver);
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (result != null && result.has("meta")) {
+				String next;
+				try {
+					next = result.getJSONObject("meta").getString("next");
+					if (!next.equals("null")) {
+						new GetBookOwnTask().execute(next);
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			lst_bookown.onRefreshComplete();
+			activity.getSupportLoaderManager().restartLoader(BOOKOWN_LOADER, null,
+					BooksMineFragment.this);			
+			super.onPostExecute(result);			
+		} // onPostExecute
+	} // GetBookOwnTask	
 }
