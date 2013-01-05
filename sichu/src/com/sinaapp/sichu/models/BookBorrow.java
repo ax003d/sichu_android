@@ -12,8 +12,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.sinaapp.sichu.models.Book.Books;
-import com.sinaapp.sichu.models.BookOwn.BookOwns;
-import com.sinaapp.sichu.models.User.Users;
 import com.sinaapp.sichu.providers.SichuContentProvider;
 import com.sinaapp.sichu.utils.Utils;
 

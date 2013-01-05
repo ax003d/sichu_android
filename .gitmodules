@@ -3,4 +3,4 @@
 	url = git://github.com/ChristopheVersieux/HoloEverywhere.git
 [submodule "submodules/pulltorefresh"]
 	path = submodules/pulltorefresh
-	url = git://github.com/johannilsson/android-pulltorefresh.git
+	url = git://github.com/ax003d/android-pulltorefresh.git
