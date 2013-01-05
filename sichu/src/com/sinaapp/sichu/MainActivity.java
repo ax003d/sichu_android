@@ -35,6 +35,8 @@ import com.sinaapp.sichu.api.SichuAPI;
 import com.sinaapp.sichu.fragments.BooksBorrowedFragment;
 import com.sinaapp.sichu.fragments.BooksLoanedFragment;
 import com.sinaapp.sichu.fragments.BooksMineFragment;
+import com.sinaapp.sichu.fragments.FollowerFragment;
+import com.sinaapp.sichu.fragments.FollowingFragment;
 import com.sinaapp.sichu.models.BookBorrow;
 import com.sinaapp.sichu.models.BookOwn;
 import com.sinaapp.sichu.models.BookOwn.BookOwns;
@@ -172,6 +174,12 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		} else if (tab.getText().equals("Borrowed")) {
 			ft.replace(android.R.id.content,
 					BooksBorrowedFragment.getInstance());
+		} else if (tab.getText().equals("Following")) {
+			ft.replace(android.R.id.content,
+					FollowingFragment.getInstance());
+		} else if (tab.getText().equals("Follower")) {
+			ft.replace(android.R.id.content,
+					FollowerFragment.getInstance());
 		}
 	}
 

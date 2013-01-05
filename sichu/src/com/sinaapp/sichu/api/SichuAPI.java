@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.sinaapp.sichu.R;
 import com.sinaapp.sichu.net.ApiBase;
@@ -128,7 +127,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		ApiResponse response = execute(request, progressListener);
 
 		String resp = response.getContentAsString();
-		Log.d("Sync", resp);
+		// Log.d("Sync", resp);
 		return new JSONObject(resp);
 	}
 
@@ -140,5 +139,23 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		ApiResponse response = execute(request, progressListener);
 
 		return new JSONObject(response.getContentAsString());
+	}
+
+	@Override
+	public JSONObject follow(String next, boolean asFollower,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException {
+		String url = null;
+		if ( next != null ) {
+			url = asFollower ? next + "&as_follower=1" : next;
+		} else {
+			url = asFollower ? "/v1/follow/?as_follower=1" : "/v1/follow/";
+		}
+		ApiRequest request = new ApiRequest(ApiRequest.GET, url);
+
+		ApiResponse response = execute(request, progressListener);
+
+		String resp = response.getContentAsString();
+		return new JSONObject(resp);
 	}
 }

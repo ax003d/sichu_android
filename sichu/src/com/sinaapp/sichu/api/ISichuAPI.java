@@ -27,5 +27,8 @@ public interface ISichuAPI {
 			throws ClientProtocolException, IOException, JSONException;	
 	
 	JSONObject bookborrow(String next, boolean asBorrower, ProgressListener progressListener)
-			throws ClientProtocolException, IOException, JSONException;	
+			throws ClientProtocolException, IOException, JSONException;
+	
+	JSONObject follow(String next, boolean asFollower, ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException;		
 }
