@@ -110,6 +110,10 @@ public class BookOwn {
 	public void setBook(Book book) {
 		this.book = book;
 	}
+	
+	public int getStatusRaw() {
+		return status;
+	}
 
 	public String getStatus() {
 		return book_status[this.status - 1];
@@ -120,6 +124,8 @@ public class BookOwn {
 	}
 
 	public String getRemark() {
+		if ( remark == null || remark.length() == 0 )
+			return "Remark";
 		return remark;
 	}
 

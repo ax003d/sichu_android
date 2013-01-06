@@ -2,23 +2,32 @@ package com.sinaapp.sichu.adapters;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sinaapp.sichu.R;
 import com.sinaapp.sichu.models.Follow;
+import com.sinaapp.sichu.utils.Utils;
 
 public class FollowListAdapter extends BaseAdapter {
 
 	private ArrayList<Follow> follows;
 	private boolean asFollower;
+	private DisplayImageOptions options;
+	private ImageLoader img_loader;			
 	
-	public FollowListAdapter() {
+	public FollowListAdapter(Context context) {
 		this.follows = new ArrayList<Follow>();
 		this.asFollower = false;
+		options = Utils.getCloudOptions();
+		img_loader = Utils.getImageLoader(context);		
 	}
 	
 	@Override
@@ -43,11 +52,14 @@ public class FollowListAdapter extends BaseAdapter {
 						R.layout.item_follow, null);
 		
 		Follow follow = (Follow) getItem(position);
+		ImageView img_avatar = (ImageView) view.findViewById(R.id.img_avatar);
 		TextView txt_username = (TextView) view.findViewById(R.id.txt_username);
 		TextView txt_remark = (TextView) view.findViewById(R.id.txt_remark);
 		if ( asFollower ) {
+			img_loader.displayImage(follow.getUser().getAvatar(), img_avatar, options);
 			txt_username.setText(follow.getUser().getUsername());
 		} else {
+			img_loader.displayImage(follow.getFollowing().getAvatar(), img_avatar, options);
 			txt_username.setText(follow.getFollowing().getUsername());
 			txt_remark.setText(follow.getRemark());
 		}

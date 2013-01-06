@@ -15,6 +15,7 @@ public class User {
 	private String username;
 	private String lastName;
 	private String firstName;
+	private String avatar;
 	
 	public static final class Users implements BaseColumns {
 		private Users() {
@@ -28,6 +29,7 @@ public class User {
 		public static final String USERNAME = "username";
 		public static final String LAST_NAME = "lastName";
 		public static final String FIRST_NAME = "firstName";
+		public static final String AVATAR = "avatar";
 	}
 	
 	private void setContentValues(ContentValues values) {
@@ -35,6 +37,7 @@ public class User {
 		values.put(Users.USERNAME, getUsername());
 		values.put(Users.LAST_NAME, lastName);
 		values.put(Users.FIRST_NAME, firstName);
+		values.put(Users.AVATAR, getAvatar());
 	}	
 	
 	public User(JSONObject jsonObject) {
@@ -43,6 +46,7 @@ public class User {
 			this.setUsername(jsonObject.getString("username"));
 			this.lastName = jsonObject.getString("last_name");
 			this.firstName = jsonObject.getString("first_name");
+			this.setAvatar(jsonObject.getString("avatar"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -71,5 +75,13 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 }

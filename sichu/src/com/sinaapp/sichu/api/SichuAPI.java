@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.sinaapp.sichu.R;
 import com.sinaapp.sichu.net.ApiBase;

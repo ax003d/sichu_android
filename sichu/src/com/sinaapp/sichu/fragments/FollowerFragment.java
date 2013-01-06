@@ -39,7 +39,8 @@ public class FollowerFragment extends Fragment implements
 	private static String[] followerProjection = new String[] {
 			Follows.TABLE_NAME + "." + Follows.GUID, Follows.FOLLOWINGID,
 			Follows.REMARK, Follows.USERID,
-			"Follower." + Users.USERNAME + " AS follower" };
+			"Follower." + Users.USERNAME + " AS followerName",
+			"Follower." + Users.AVATAR + " AS followerAvatar"};
 
 	public static FollowerFragment getInstance() {
 		if (FollowerFragment.instance == null) {
@@ -57,11 +58,11 @@ public class FollowerFragment extends Fragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		adapter = new FollowListAdapter();
-		adapter.setAsFollower(true);
 		api_client = SichuAPI.getInstance(getActivity());
 		activity = (SlidingActivity) getActivity();
 		userID = Preferences.getUserID(activity);
+		adapter = new FollowListAdapter(activity);
+		adapter.setAsFollower(true);		
 	}
 
 	@Override

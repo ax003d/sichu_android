@@ -59,21 +59,25 @@ public class Follow {
 		int idx_following_id = data.getColumnIndex(Follows.FOLLOWINGID);
 		int idx_remark = data.getColumnIndex(Follows.REMARK);
 		int idx_user_id = data.getColumnIndex(Follows.USERID);
-		int idx_following = data.getColumnIndex("following");
-		int idx_follower = data.getColumnIndex("follower");
+		int idx_following_username = data.getColumnIndex("followingName");
+		int idx_following_avatar = data.getColumnIndex("followingAvatar");
+		int idx_follower_username = data.getColumnIndex("followerName");
+		int idx_follower_avatar = data.getColumnIndex("followerAvatar");
 		
 		this.guid = data.getLong(idx_guid);
 		this.followingID = data.getLong(idx_following_id);
 		this.remark = data.getString(idx_remark);
 		this.userID = data.getLong(idx_user_id);
 		
-		if ( idx_following != -1 ) {
+		if ( idx_following_username != -1 ) {
 			this.following = new User();
-			this.following.setUsername(data.getString(idx_following	));
+			this.following.setUsername(data.getString(idx_following_username));
+			this.following.setAvatar(data.getString(idx_following_avatar));
 		}
-		if ( idx_follower != -1 ) {
+		if ( idx_follower_username != -1 ) {
 			this.setUser(new User());
-			this.getUser().setUsername(data.getString(idx_follower));
+			this.getUser().setUsername(data.getString(idx_follower_username));
+			this.getUser().setAvatar(data.getString(idx_follower_avatar));
 		}
 	}
 

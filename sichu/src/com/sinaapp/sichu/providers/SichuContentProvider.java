@@ -75,7 +75,8 @@ public class SichuContentProvider extends ContentProvider {
 			db.execSQL("CREATE TABLE " + Users.TABLE_NAME + " (" + Users._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + Users.GUID
 					+ " INTEGER UNIQUE, " + Users.USERNAME + " TEXT, "
-					+ Users.LAST_NAME + " TEXT, " + Users.FIRST_NAME + " TEXT"
+					+ Users.LAST_NAME + " TEXT, " + Users.FIRST_NAME + " TEXT, "
+					+ Users.AVATAR + " TEXT"
 					+ " );");
 			db.execSQL("CREATE TABLE " + Follows.TABLE_NAME + " ("
 					+ Follows._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "

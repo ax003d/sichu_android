@@ -59,11 +59,28 @@ public class BookOwnListAdapter extends BaseAdapter {
 		
 		BookOwn own = (BookOwn) getItem(position);
 		ImageView img_cover = (ImageView) view.findViewById(R.id.img_cover);
+		ImageView img_status = (ImageView) view.findViewById(R.id.img_status);
 		TextView txt_title = (TextView) view.findViewById(R.id.txt_title);
 		TextView txt_status = (TextView) view.findViewById(R.id.txt_status);
 		TextView txt_remark = (TextView) view.findViewById(R.id.txt_remark);
 		img_loader.displayImage(own.getBook().getCover().replace("lpic", "spic"), img_cover, options);
 		txt_title.setText(own.getBook().getTitle());
+		switch ( own.getStatusRaw() ) {
+		case 1:
+			img_status.setImageResource(R.drawable.ic_available);
+			break;
+		case 2:
+			img_status.setImageResource(R.drawable.ic_unavailable);
+			break;
+		case 3:
+			img_status.setImageResource(R.drawable.ic_borrow);
+			break;
+		case 4:
+			img_status.setImageResource(R.drawable.ic_lost);
+			break;
+		default:
+			break;
+		}
 		txt_status.setText(own.getStatus());
 		txt_remark.setText(own.getRemark());
 		
