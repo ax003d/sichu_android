@@ -38,7 +38,8 @@ public class FollowingFragment extends Fragment implements
 	private static FollowingFragment instance;
 	private static String[] followingProjection = new String[] {
 			Follows.TABLE_NAME + "." + Follows.GUID, Follows.FOLLOWINGID,
-			Follows.REMARK, Follows.USERID, Users.USERNAME };
+			Follows.REMARK, Follows.USERID,
+			Users.TABLE_NAME + "." + Users.USERNAME + " AS following" };
 
 	public static FollowingFragment getInstance() {
 		if (FollowingFragment.instance == null) {

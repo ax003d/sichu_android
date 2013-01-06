@@ -47,8 +47,8 @@ public class Follow {
 			this.following = new User(jsonObject.getJSONObject("following"));
 			this.followingID = this.following.getGuid();
 			this.remark = jsonObject.getString("remark");
-			this.user = new User(jsonObject.getJSONObject("user"));
-			this.userID = this.user.getGuid();
+			this.setUser(new User(jsonObject.getJSONObject("user")));
+			this.userID = this.getUser().getGuid();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -59,15 +59,22 @@ public class Follow {
 		int idx_following_id = data.getColumnIndex(Follows.FOLLOWINGID);
 		int idx_remark = data.getColumnIndex(Follows.REMARK);
 		int idx_user_id = data.getColumnIndex(Follows.USERID);
-		int idx_username = data.getColumnIndex(Users.USERNAME);
+		int idx_following = data.getColumnIndex("following");
+		int idx_follower = data.getColumnIndex("follower");
 		
 		this.guid = data.getLong(idx_guid);
 		this.followingID = data.getLong(idx_following_id);
 		this.remark = data.getString(idx_remark);
 		this.userID = data.getLong(idx_user_id);
 		
-		this.following = new User();
-		this.following.setUsername(data.getString(idx_username));
+		if ( idx_following != -1 ) {
+			this.following = new User();
+			this.following.setUsername(data.getString(idx_following	));
+		}
+		if ( idx_follower != -1 ) {
+			this.setUser(new User());
+			this.getUser().setUsername(data.getString(idx_follower));
+		}
 	}
 
 	public User getFollowing() {
@@ -90,11 +97,19 @@ public class Follow {
 		if (this.following != null) {
 			this.following.save(contentResolver);
 		}
-		if (this.user != null) {
-			this.user.save(contentResolver);
+		if (this.getUser() != null) {
+			this.getUser().save(contentResolver);
 		}
 		ContentValues values = new ContentValues();
 		setContentValues(values);
 		contentResolver.insert(Follows.CONTENT_URI, values);		
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

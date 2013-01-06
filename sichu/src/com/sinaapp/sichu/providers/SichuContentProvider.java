@@ -35,6 +35,7 @@ public class SichuContentProvider extends ContentProvider {
 	private static final int BOOKBORROWS_AS_BORROWER = 9;
 	private static final int FOLLOWS = 10;
 	private static final int FOLLOWINGS = 11;
+	private static final int FOLLOWERS = 12;	
 	
 	private static HashMap<String, String> booksProjectionMap;
 	private static HashMap<String, String> bookownsProjectionMap;
@@ -109,6 +110,7 @@ public class SichuContentProvider extends ContentProvider {
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		SQLiteDatabase db = db_helper.getReadableDatabase();
 		boolean asBorrower = true;
+		boolean asFollower = true;
 
 		switch (URI_MATCHER.match(uri)) {
 		case BOOKOWNS_BY_OWNER:
@@ -151,11 +153,16 @@ public class SichuContentProvider extends ContentProvider {
 					+ (asBorrower ? BookBorrows.BORROWERID : BookOwns.OWNERID)
 					+ " = " + uri.getLastPathSegment();
 			break;
-		case FOLLOWINGS:
+		case FOLLOWERS:			
+			asFollower = false;
+		case FOLLOWINGS:			
 			queryBuilder.setTables(Follows.TABLE_NAME + " INNER JOIN "
 					+ Users.TABLE_NAME + " ON ( " + Follows.FOLLOWINGID
-					+ " = " + Users.TABLE_NAME + "." + Users.GUID + " )");
-			selection = Follows.USERID + " = " + uri.getLastPathSegment();
+					+ " = " + Users.TABLE_NAME + "." + Users.GUID + " ) INNER JOIN "
+					+ Users.TABLE_NAME + " AS Follower ON ( " + Follows.USERID 
+					+ " = " + "Follower." + Users.GUID + " )");
+			selection = (selection == null ? "" : selection + " AND ");
+			selection = ( asFollower ? Follows.USERID : Follows.FOLLOWINGID ) + " = " + uri.getLastPathSegment();
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -296,6 +303,8 @@ public class SichuContentProvider extends ContentProvider {
 		URI_MATCHER.addURI(AUTHORITY, Follows.TABLE_NAME, FOLLOWS);
 		URI_MATCHER.addURI(AUTHORITY, Follows.TABLE_NAME + "/user/#", 
 				FOLLOWINGS);
+		URI_MATCHER.addURI(AUTHORITY, Follows.TABLE_NAME + "/following/#", 
+				FOLLOWERS);
 
 		bookownsWithBookProjectionMap = new HashMap<String, String>();
 		bookownsWithBookProjectionMap.put(BookOwns.TABLE_NAME + "."

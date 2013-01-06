@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.sinaapp.sichu.R;
 import com.sinaapp.sichu.net.ApiBase;
@@ -156,6 +157,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		ApiResponse response = execute(request, progressListener);
 
 		String resp = response.getContentAsString();
+		// Log.d("Follows", resp);
 		return new JSONObject(resp);
 	}
 }

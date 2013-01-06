@@ -14,9 +14,11 @@ import com.sinaapp.sichu.models.Follow;
 public class FollowListAdapter extends BaseAdapter {
 
 	private ArrayList<Follow> follows;
+	private boolean asFollower;
 	
 	public FollowListAdapter() {
 		this.follows = new ArrayList<Follow>();
+		this.asFollower = false;
 	}
 	
 	@Override
@@ -43,8 +45,12 @@ public class FollowListAdapter extends BaseAdapter {
 		Follow follow = (Follow) getItem(position);
 		TextView txt_username = (TextView) view.findViewById(R.id.txt_username);
 		TextView txt_remark = (TextView) view.findViewById(R.id.txt_remark);
-		txt_username.setText(follow.getFollowing().getUsername());
-		txt_remark.setText(follow.getRemark());
+		if ( asFollower ) {
+			txt_username.setText(follow.getUser().getUsername());
+		} else {
+			txt_username.setText(follow.getFollowing().getUsername());
+			txt_remark.setText(follow.getRemark());
+		}
 		
 		return view;
 	}
@@ -55,6 +61,10 @@ public class FollowListAdapter extends BaseAdapter {
 
 	public void addFollow(Follow follow) {
 		this.follows.add(follow);
+	}
+
+	public void setAsFollower(boolean asFollower) {
+		this.asFollower = asFollower;
 	}
 
 }
