@@ -75,7 +75,8 @@ public class BooksMineFragment extends Fragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		lst_bookown = (PullToRefreshListView) getActivity().findViewById(R.id.lst_bookowns);		
+		lst_bookown = (PullToRefreshListView) getActivity().findViewById(
+				R.id.lst_bookowns);
 		lst_bookown.setAdapter(adapter);
 		lst_bookown.setOnRefreshListener(new OnRefreshListener() {
 			@Override
@@ -147,10 +148,10 @@ public class BooksMineFragment extends Fragment implements
 				BookOwn own = new BookOwn(result);
 				adapter.addBookOwn(own);
 				adapter.notifyDataSetChanged();
-				Toast.makeText(activity, "Book added!", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(activity, R.string.success_add_book,
+						Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(activity, "Adid Book failed!",
+				Toast.makeText(activity, R.string.failed_add_book,
 						Toast.LENGTH_SHORT).show();
 			}
 		}
@@ -169,11 +170,11 @@ public class BooksMineFragment extends Fragment implements
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		adapter.clearBookOwn();
-		
-		if ( !data.moveToFirst() ) {
+
+		if (!data.moveToFirst()) {
 			return;
 		}
-		
+
 		do {
 			adapter.addBookOwn(new BookOwn(data));
 		} while (data.moveToNext());
@@ -186,7 +187,7 @@ public class BooksMineFragment extends Fragment implements
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	private class GetBookOwnTask extends AsyncTask<String, Void, JSONObject> {
 		@Override
 		protected JSONObject doInBackground(String... params) {
@@ -235,9 +236,9 @@ public class BooksMineFragment extends Fragment implements
 				}
 			}
 			lst_bookown.onRefreshComplete();
-			activity.getSupportLoaderManager().restartLoader(BOOKOWN_LOADER, null,
-					BooksMineFragment.this);			
-			super.onPostExecute(result);			
+			activity.getSupportLoaderManager().restartLoader(BOOKOWN_LOADER,
+					null, BooksMineFragment.this);
+			super.onPostExecute(result);
 		} // onPostExecute
-	} // GetBookOwnTask	
+	} // GetBookOwnTask
 }

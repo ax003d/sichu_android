@@ -96,13 +96,15 @@ public class BookLoanedListAdapter extends BaseAdapter {
 		if ( borrow.getReturnedDate() != null ) {
 			txt_returned_date.setText(Utils.formatDate(borrow.getReturnedDate()));
 			
+			txt_title.setTextColor(col_returned);
 			txt_borrower.setTextColor(col_returned);
 			txt_borrow_date.setTextColor(col_returned);
 			txt_planed_return_date.setTextColor(col_returned);
 			txt_returned_date.setTextColor(col_returned);			
 		} else {
-			txt_returned_date.setText("Not returned yet!");
+			txt_returned_date.setText(R.string.hint_not_returned);
 			
+			txt_title.setTextColor(col_not_returned);
 			txt_borrower.setTextColor(col_not_returned);
 			txt_borrow_date.setTextColor(col_not_returned);
 			txt_planed_return_date.setTextColor(col_not_returned);

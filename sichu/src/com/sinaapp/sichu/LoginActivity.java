@@ -105,8 +105,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 					Preferences.setLoginInfo(getApplicationContext(),
 							ret.getString("token"),
 							ret.getString("refresh_token"),
-							ret.getLong("expire"),
-							ret.getLong("uid"));
+							ret.getLong("expire"), ret.getLong("uid"));
 					return true;
 				} else {
 					Preferences.expireToken(getApplicationContext());
@@ -129,7 +128,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 						MainActivity.class));
 				LoginActivity.this.finish();
 			} else {
-				Toast.makeText(getApplicationContext(), "Login failed!",
+				Toast.makeText(getApplicationContext(), R.string.error_login,
 						Toast.LENGTH_SHORT).show();
 			}
 		}

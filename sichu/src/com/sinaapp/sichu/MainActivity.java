@@ -8,7 +8,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.ArrayAdapter;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.slidingmenu.SlidingMenu;
-import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +36,6 @@ import com.sinaapp.sichu.fragments.BooksLoanedFragment;
 import com.sinaapp.sichu.fragments.BooksMineFragment;
 import com.sinaapp.sichu.fragments.FollowerFragment;
 import com.sinaapp.sichu.fragments.FollowingFragment;
-import com.sinaapp.sichu.models.BookBorrow;
 import com.sinaapp.sichu.models.BookOwn;
 import com.sinaapp.sichu.models.BookOwn.BookOwns;
 import com.sinaapp.sichu.utils.Preferences;
@@ -45,15 +43,15 @@ import com.sinaapp.sichu.widget.NavigationItem;
 import com.sinaapp.sichu.widget.NavigationWidget;
 
 public class MainActivity extends SlidingActivity implements TabListener {
-	private final class ListNavigationAdapter extends ArrayAdapter<String>
+	private final class ListNavigationAdapter extends ArrayAdapter<Integer>
 			implements OnItemClickListener {
 		private int lastSelectedItem = 0;
 
 		public ListNavigationAdapter() {
-			this(new ArrayList<String>());
+			this(new ArrayList<Integer>());
 		}
 
-		public ListNavigationAdapter(List<String> list) {
+		public ListNavigationAdapter(List<Integer> list) {
 			super(MainActivity.this, android.R.id.text1, list);
 		}
 
@@ -66,7 +64,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 			} else {
 				view = (NavigationItem) convertView;
 			}
-			String item = getItem(position);
+			int item = getItem(position);
 			view.setLabel(item);
 			view.setSelectionHandlerVisiblity(lastSelectedItem == position ? View.VISIBLE
 					: View.INVISIBLE);
@@ -77,10 +75,10 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			lastSelectedItem = position;
-			String title = fragments[lastSelectedItem];
 			notifyDataSetInvalidated();
-			replaceTabs(title);
-			getSupportActionBar().setSubtitle(title);
+			int page = pages[lastSelectedItem];
+			replaceTabs(page);
+			getSupportActionBar().setSubtitle(page);
 			getSlidingMenu().showAbove(true);
 		}
 	}
@@ -88,11 +86,12 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	private ListNavigationAdapter adapter;
 	private ISichuAPI api_client;
 	private long userID;
-	private boolean asBorrower = false;
-	private static String[] fragments = { "Books", "Friends", "Messages",
-			"Account", "About" };
-	private static String[] books_tabs = { "Mine", "Loaned", "Borrowed" };
-	private static String[] friends_tabs = { "Following", "Follower" };
+	private static int[] pages = { R.string.page_books, R.string.page_friends,
+		R.string.page_messages, R.string.page_account, R.string.page_about}; 
+	private static int[] books_tabs = { R.string.books_mine, 
+		R.string.books_loaned, R.string.books_borrowed };
+	private static int[] friends_tabs = { R.string.friends_following, 
+		R.string.friends_follower };
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -102,8 +101,8 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		userID = Preferences.getUserID(this);
 
 		adapter = new ListNavigationAdapter();
-		for (int i = 0; i < fragments.length; i++) {
-			adapter.add(fragments[i]);
+		for (int i = 0; i < pages.length; i++) {
+			adapter.add(pages[i]);
 		}
 
 		NavigationWidget navigationWidget = new NavigationWidget(this);
@@ -127,21 +126,23 @@ public class MainActivity extends SlidingActivity implements TabListener {
 //		}
 	}
 
-	private void replaceTabs(String title) {
+	private void replaceTabs(int page) {
 		final ActionBar ab = getSupportActionBar();
 		ab.removeAllTabs();
 
-		if (title.equals("Books")) {
+		if (page == R.string.page_books) {
 			for (int i = 0; i < books_tabs.length; i++) {
 				ActionBar.Tab tab = ab.newTab();
 				tab.setText(books_tabs[i]);
+				tab.setTag(books_tabs[i]);
 				tab.setTabListener(this);
 				ab.addTab(tab);
 			}
-		} else if (title.equals("Friends")) {
+		} else if (page == R.string.page_friends) {
 			for (int i = 0; i < friends_tabs.length; i++) {
 				ActionBar.Tab tab = getSupportActionBar().newTab();
 				tab.setText(friends_tabs[i]);
+				tab.setTag(friends_tabs[i]);
 				tab.setTabListener(this);
 				ab.addTab(tab);
 			}
@@ -167,19 +168,28 @@ public class MainActivity extends SlidingActivity implements TabListener {
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		if (tab.getText().equals("Mine")) {
+		Integer tag = (Integer) tab.getTag();
+		switch(tag) {
+		case R.string.books_mine:
 			ft.replace(android.R.id.content, BooksMineFragment.getInstance());
-		} else if (tab.getText().equals("Loaned")) {
+			break;
+		case R.string.books_loaned:
 			ft.replace(android.R.id.content, BooksLoanedFragment.getInstance());
-		} else if (tab.getText().equals("Borrowed")) {
+			break;
+		case R.string.books_borrowed:
 			ft.replace(android.R.id.content,
-					BooksBorrowedFragment.getInstance());
-		} else if (tab.getText().equals("Following")) {
+					BooksBorrowedFragment.getInstance());			
+			break;
+		case R.string.friends_following:
 			ft.replace(android.R.id.content,
-					FollowingFragment.getInstance());
-		} else if (tab.getText().equals("Follower")) {
+					FollowingFragment.getInstance());			
+			break;
+		case R.string.friends_follower:
 			ft.replace(android.R.id.content,
-					FollowerFragment.getInstance());
+					FollowerFragment.getInstance());			
+			break;
+		default:
+			break;
 		}
 	}
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">私橱</string>
+    <string name="menu_scan">扫描</string>
+    <string name="hint_username">用户名</string>
+    <string name="hint_password">密码</string>
+    <string name="chk_remember">记住我</string>
+    <string name="btn_login">登录</string>
+    <string name="hint_no_network">无网络连接!</string>
+    <string name="activity_login">私橱</string>
+    <string name="img_cover">封面</string>
+    <string name="txt_title">标题</string>
+    <string name="txt_borrower">借阅人</string>
+    <string name="txt_borrow_date">借阅日期</string>
+    <string name="txt_planed_return_date">预计归还日期</string>
+    <string name="txt_returned_date">归还日期</string>
+    <string name="lbl_borrower">借阅人:</string>
+    <string name="lbl_borrow_date">借阅日期:</string>
+    <string name="lbl_planed_return_date">预计归还日期:</string>
+    <string name="lbl_returned_date">归还日期:</string>
+    <string name="img_planed_return_date">预计归还日期</string>
+    <string name="img_borrow_date">借阅日期</string>
+    <string name="img_returned_date">归还日期</string>
+    <string name="img_borrower">借阅人</string>
+    <string name="img_avatar">头像</string>
+    <string name="txt_username">用户名</string>
+    <string name="txt_remark">备注</string>
+    <string name="txt_status">状态</string>
+    <string name="img_status">状态</string>
+    <string name="img_remark">备注</string>
+    <string name="error_login">登录失败!</string>
+    <string name="page_books">书橱</string>
+    <string name="page_friends">橱友</string>
+	<string name="page_messages">消息</string>
+    <string name="page_account">账号设置</string>
+	<string name="page_about">关于私橱</string>
+	<string name="books_mine">我的</string>
+	<string name="books_loaned">借出</string>
+	<string name="books_borrowed">借入</string>
+	<string name="friends_following">关注</string>
+	<string name="friends_follower">粉丝</string>
+	<string name="success_add_book">成功添加书籍!</string>
+    <string name="failed_add_book">添加书籍失败!</string>
+	<string name="hint_no_remark">无备注</string>
+	<string name="status_available">可借</string>
+	<string name="status_unavailable">不可借</string>
+	<string name="status_loaned">借出</string>
+	<string name="status_lost">丢失</string>
+	<string name="hint_not_returned">未归还</string>
+	
+</resources>

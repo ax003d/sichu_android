@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">sichu</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
+    <string name="app_name">MYCabinet</string>
     <string name="menu_scan">Scan</string>
     <string name="hint_username">username</string>
     <string name="hint_password">password</string>
     <string name="chk_remember">remember me</string>
     <string name="btn_login">Login</string>
     <string name="hint_no_network">No available network!</string>
-    <string name="activity_login">Login</string>
+    <string name="activity_login">MYCabinet</string>
     <string name="img_cover">Cover</string>
     <string name="txt_title">Title</string>
     <string name="txt_borrower">Borrower</string>
     <string name="txt_borrow_date">Borrow Date</string>
-    <string name="txt_planed_return_date">Planed Return Date</string>
+    <string name="txt_planed_return_date">Planned Return Date</string>
     <string name="txt_returned_date">Returned Date</string>
     <string name="lbl_borrower">Borrower:</string>
     <string name="lbl_borrow_date">Borrow Date:</string>
-    <string name="lbl_planed_return_date">Planed Return Date:</string>
+    <string name="lbl_planed_return_date">Planned Return Date:</string>
     <string name="lbl_returned_date">Returned Date:</string>
-    <string name="img_planed_return_date">Planed Return Date</string>
+    <string name="img_planed_return_date">Planned Return Date</string>
     <string name="img_borrow_date">Borrow Date</string>
     <string name="img_returned_date">Returned Date</string>
     <string name="img_borrower">Borrower</string>
@@ -31,5 +29,24 @@
     <string name="txt_status">Status</string>
     <string name="img_status">Status</string>
     <string name="img_remark">Remark</string>
-
+    <string name="error_login">Login failed!</string>
+    <string name="page_books">Books</string>
+    <string name="page_friends">Friends</string>
+	<string name="page_messages">Messages</string>
+    <string name="page_account">Account</string>
+	<string name="page_about">About</string>
+	<string name="books_mine">Mine</string>
+	<string name="books_loaned">Loaned</string>
+	<string name="books_borrowed">Borrowed</string>
+	<string name="friends_following">Following</string>
+	<string name="friends_follower">Follower</string>
+	<string name="success_add_book">Book added!</string>
+    <string name="failed_add_book">Adid Book failed!</string>
+	<string name="hint_no_remark">No Remark</string>
+	<string name="status_available">Available</string>
+	<string name="status_unavailable">Unavailable</string>
+	<string name="status_loaned">Loaned</string>
+	<string name="status_lost">Lost</string>
+	<string name="hint_not_returned">Not returned yet</string>
+    
 </resources>

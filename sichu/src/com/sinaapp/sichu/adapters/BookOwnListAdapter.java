@@ -65,24 +65,32 @@ public class BookOwnListAdapter extends BaseAdapter {
 		TextView txt_remark = (TextView) view.findViewById(R.id.txt_remark);
 		img_loader.displayImage(own.getBook().getCover().replace("lpic", "spic"), img_cover, options);
 		txt_title.setText(own.getBook().getTitle());
-		switch ( own.getStatusRaw() ) {
+		switch ( own.getStatus() ) {
 		case 1:
 			img_status.setImageResource(R.drawable.ic_available);
+			txt_status.setText(R.string.status_available);
 			break;
 		case 2:
 			img_status.setImageResource(R.drawable.ic_unavailable);
+			txt_status.setText(R.string.status_unavailable);
 			break;
 		case 3:
 			img_status.setImageResource(R.drawable.ic_borrow);
+			txt_status.setText(R.string.status_loaned);
 			break;
 		case 4:
 			img_status.setImageResource(R.drawable.ic_lost);
+			txt_status.setText(R.string.status_lost);
 			break;
 		default:
 			break;
 		}
-		txt_status.setText(own.getStatus());
-		txt_remark.setText(own.getRemark());
+		String remark = own.getRemark();
+		if ( remark != null && remark.length() > 0) {
+			txt_remark.setText(remark);
+		} else {
+			txt_remark.setText(R.string.hint_no_remark);
+		}
 		
 		return view;
 	}

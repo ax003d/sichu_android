@@ -22,9 +22,6 @@ public class BookOwn {
 	private String remark;
 	private User owner;
 
-	private static final String[] book_status = { "Available", "Not Available",
-			"Loaned", "Lost" };
-
 	public static final class BookOwns implements BaseColumns {
 		private BookOwns() {
 		}
@@ -115,8 +112,8 @@ public class BookOwn {
 		return status;
 	}
 
-	public String getStatus() {
-		return book_status[this.status - 1];
+	public int getStatus() {
+		return this.status;
 	}
 
 	public void setStatus(String status) {
@@ -124,8 +121,6 @@ public class BookOwn {
 	}
 
 	public String getRemark() {
-		if ( remark == null || remark.length() == 0 )
-			return "Remark";
 		return remark;
 	}
 
