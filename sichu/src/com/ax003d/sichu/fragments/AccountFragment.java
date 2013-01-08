@@ -1,29 +1,16 @@
 package com.ax003d.sichu.fragments;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.Fragment;
+import org.holoeverywhere.preference.PreferenceFragment;
 
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.ax003d.sichu.R;
 
-public class AccountFragment extends Fragment {
+public class AccountFragment extends PreferenceFragment {
 
-    private static AccountFragment instance;
-
-    public static AccountFragment getInstance() {
-        if (AccountFragment.instance == null) {
-            return new AccountFragment();
-        }
-        return AccountFragment.instance;
-    }	
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_account, container, false);
-	}
-	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+    	super.onCreate(savedInstanceState);
+    	addPreferencesFromResource(R.xml.preferences);
+    }
 }

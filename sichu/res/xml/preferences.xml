@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <PreferenceCategory android:title="@string/pre_accounts">
+        <Preference android:title="@string/pre_logout"/>
+        <CheckBoxPreference 
+            android:title="Bind Weibo title"
+            android:summary="Bind weibo summary"
+            android:key="Bind weibo key"
+            android:summaryOn="Bind"
+            android:summaryOff="Unbind"/>
+    </PreferenceCategory>
+    
+</PreferenceScreen>

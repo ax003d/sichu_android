@@ -33,8 +33,7 @@
     <string name="page_books">书橱</string>
     <string name="page_friends">橱友</string>
 	<string name="page_messages">消息</string>
-    <string name="page_account">账号设置</string>
-	<string name="page_about">关于私橱</string>
+    <string name="page_account">设置</string>
 	<string name="books_mine">我的</string>
 	<string name="books_loaned">借出</string>
 	<string name="books_borrowed">借入</string>

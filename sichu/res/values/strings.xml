@@ -34,7 +34,6 @@
     <string name="page_friends">Friends</string>
 	<string name="page_messages">Messages</string>
     <string name="page_account">Account</string>
-	<string name="page_about">About</string>
 	<string name="books_mine">Mine</string>
 	<string name="books_loaned">Loaned</string>
 	<string name="books_borrowed">Borrowed</string>
@@ -48,5 +47,7 @@
 	<string name="status_loaned">Loaned</string>
 	<string name="status_lost">Lost</string>
 	<string name="hint_not_returned">Not returned yet</string>
+	<string name="pre_accounts">Accounts</string>
+	<string name="pre_logout">Logout</string>
     
 </resources>

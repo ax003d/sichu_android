@@ -31,6 +31,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
+import com.ax003d.sichu.fragments.AccountFragment;
 import com.ax003d.sichu.fragments.BooksBorrowedFragment;
 import com.ax003d.sichu.fragments.BooksLoanedFragment;
 import com.ax003d.sichu.fragments.BooksMineFragment;
@@ -87,11 +88,12 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	private ISichuAPI api_client;
 	private long userID;
 	private static int[] pages = { R.string.page_books, R.string.page_friends,
-		R.string.page_messages, R.string.page_account, R.string.page_about}; 
-	private static int[] books_tabs = { R.string.books_mine, 
-		R.string.books_loaned, R.string.books_borrowed };
-	private static int[] friends_tabs = { R.string.friends_following, 
-		R.string.friends_follower };
+			R.string.page_messages, R.string.page_account };
+	
+	private static int[] books_tabs = { R.string.books_mine,
+			R.string.books_loaned, R.string.books_borrowed };
+	private static int[] friends_tabs = { R.string.friends_following,
+			R.string.friends_follower }; 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -117,13 +119,13 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		si.setShadowWidth(0);
 
 		final ActionBar ab = getSupportActionBar();
-		ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		ab.setDisplayHomeAsUpEnabled(true);
+		ab.setDisplayShowHomeEnabled(true);
 
-//		if (Preferences.getSyncTime(this) == 0) {
-//		} else {
-//			new SyncTask().execute();
-//		}
+		// if (Preferences.getSyncTime(this) == 0) {
+		// } else {
+		// new SyncTask().execute();
+		// }
 	}
 
 	private void replaceTabs(int page) {
@@ -131,6 +133,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		ab.removeAllTabs();
 
 		if (page == R.string.page_books) {
+			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			for (int i = 0; i < books_tabs.length; i++) {
 				ActionBar.Tab tab = ab.newTab();
 				tab.setText(books_tabs[i]);
@@ -139,6 +142,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 				ab.addTab(tab);
 			}
 		} else if (page == R.string.page_friends) {
+			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			for (int i = 0; i < friends_tabs.length; i++) {
 				ActionBar.Tab tab = getSupportActionBar().newTab();
 				tab.setText(friends_tabs[i]);
@@ -146,6 +150,12 @@ public class MainActivity extends SlidingActivity implements TabListener {
 				tab.setTabListener(this);
 				ab.addTab(tab);
 			}
+		} else if (page == R.string.page_account) {
+			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+	        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+	        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	        ft.replace(android.R.id.content, new AccountFragment());
+	        ft.commit();
 		}
 	}
 
@@ -169,7 +179,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		Integer tag = (Integer) tab.getTag();
-		switch(tag) {
+		switch (tag) {
 		case R.string.books_mine:
 			ft.replace(android.R.id.content, BooksMineFragment.getInstance());
 			break;
@@ -178,15 +188,16 @@ public class MainActivity extends SlidingActivity implements TabListener {
 			break;
 		case R.string.books_borrowed:
 			ft.replace(android.R.id.content,
-					BooksBorrowedFragment.getInstance());			
+					BooksBorrowedFragment.getInstance());
 			break;
 		case R.string.friends_following:
-			ft.replace(android.R.id.content,
-					FollowingFragment.getInstance());			
+			ft.replace(android.R.id.content, FollowingFragment.getInstance());
 			break;
 		case R.string.friends_follower:
-			ft.replace(android.R.id.content,
-					FollowerFragment.getInstance());			
+			ft.replace(android.R.id.content, FollowerFragment.getInstance());
+			break;
+		case R.string.page_account:
+			ft.replace(android.R.id.content, new AccountFragment());
 			break;
 		default:
 			break;
