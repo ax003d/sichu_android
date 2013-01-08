@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MYCabinet</string>
+    <string name="app_name">MiCabinet</string>
     <string name="menu_scan">Scan</string>
     <string name="hint_username">username</string>
     <string name="hint_password">password</string>
     <string name="chk_remember">remember me</string>
     <string name="btn_login">Login</string>
     <string name="hint_no_network">No available network!</string>
-    <string name="activity_login">MYCabinet</string>
+    <string name="activity_login">MiCabinet</string>
     <string name="img_cover">Cover</string>
     <string name="txt_title">Title</string>
     <string name="txt_borrower">Borrower</string>
