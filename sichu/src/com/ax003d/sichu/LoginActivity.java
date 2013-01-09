@@ -14,9 +14,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,8 +22,7 @@ import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.utils.Preferences;
 import com.ax003d.sichu.utils.Utils;
 
-public class LoginActivity extends Activity implements OnClickListener,
-		OnCheckedChangeListener {
+public class LoginActivity extends Activity implements OnClickListener {
 
 	private boolean remember = false;
 	private ISichuAPI api_client;
@@ -60,10 +56,6 @@ public class LoginActivity extends Activity implements OnClickListener,
 
 		Button btn_login = (Button) findViewById(R.id.btn_login);
 		btn_login.setOnClickListener(this);
-
-		CheckBox chk_remember = (CheckBox) findViewById(R.id.chk_remember);
-		chk_remember.setOnCheckedChangeListener(this);
-		// to-do: save remember in preference
 	}
 
 	@Override
@@ -130,18 +122,6 @@ public class LoginActivity extends Activity implements OnClickListener,
 			} else {
 				Toast.makeText(getApplicationContext(), R.string.error_login,
 						Toast.LENGTH_SHORT).show();
-			}
-		}
-	}
-
-	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		if (buttonView.getId() == R.id.chk_remember) {
-			if (isChecked) {
-				remember = true;
-			} else {
-				remember = false;
-				Preferences.setRemember(getApplicationContext(), "", "");
 			}
 		}
 	}

@@ -17,13 +17,13 @@
         android:inputType="textPassword"
         android:hint="@string/hint_password"/>
     
-    <CheckBox android:id="@+id/chk_remember"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/chk_remember"/>
-    
     <Button android:id="@+id/btn_login"
         android:text="@string/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    
+    <Button android:id="@+id/btn_login_by_weibo"
+        android:text="@string/btn_login_by_weibo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:holo="http://schemas.android.com/apk/res-auto" >
+
+    <Preference
+        holo:icon="@drawable/ic_launcher"
+        holo:selectable="false"
+        holo:summary="@string/pref_summary"
+        holo:title="@string/pref_title" />
     
-    <PreferenceCategory android:title="@string/pre_accounts">
-        <Preference android:title="@string/pre_logout"/>
-        <CheckBoxPreference 
-            android:title="Bind Weibo title"
-            android:summary="Bind weibo summary"
-            android:key="Bind weibo key"
-            android:summaryOn="Bind"
-            android:summaryOff="Unbind"/>
+    <PreferenceCategory holo:title="@string/pref_accounts">
+<!-- 		<SwitchPreference
+			holo:key="pref_key_weibo" /> -->        
+        <Preference holo:selectable="true"
+            holo:title="Logout"
+            holo:key="pref_key_logout"/>
     </PreferenceCategory>
-    
+
 </PreferenceScreen>

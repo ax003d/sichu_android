@@ -22,6 +22,12 @@ public class Preferences {
 				.putString("refresh_token", refresh_token)
 				.putLong("expire", expire).putLong("uid", uid).commit();
 	}
+	
+	public static void clearLoginInfo(Context context) {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		preferences.edit().clear().commit();
+	}
 
 	public static void setRemember(Context context, String username,
 			String password) {

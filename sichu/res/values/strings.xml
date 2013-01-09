@@ -49,5 +49,10 @@
 	<string name="hint_not_returned">Not returned yet</string>
 	<string name="pre_accounts">Accounts</string>
 	<string name="pre_logout">Logout</string>
+	<string name="pref_summary">http://sichu.sinaapp.com</string>
+	<string name="pref_title">MiCabinet v1.0</string>
+	<string name="pref_accounts">Accounts</string>
+	<string name="pref_key_logout">pref_key_logout</string>
+	<string name="btn_login_by_weibo">Login by Weibo</string>
     
 </resources>
