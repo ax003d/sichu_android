@@ -47,5 +47,12 @@
 	<string name="status_loaned">借出</string>
 	<string name="status_lost">丢失</string>
 	<string name="hint_not_returned">未归还</string>
+    <string name="pref_summary">http://sichu.sinaapp.com</string>
+    <string name="pref_title">私橱 v1.0</string>
+    <string name="pref_accounts">账号设置</string>
+    <string name="pref_logout">登出</string>
+    <string name="btn_login_by_weibo">使用微博登录</string>
+    <string name="title_activity_splash">私橱</string>
+    <string name="txt_slogan">和朋友分享你的书籍</string>
 	
 </resources>

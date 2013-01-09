@@ -5,14 +5,15 @@
     <Preference
         holo:icon="@drawable/ic_launcher"
         holo:selectable="false"
-        holo:summary="@string/pref_summary"
+        holo:summary="@string/txt_slogan"
         holo:title="@string/pref_title" />
     
     <PreferenceCategory holo:title="@string/pref_accounts">
 <!-- 		<SwitchPreference
 			holo:key="pref_key_weibo" /> -->        
         <Preference holo:selectable="true"
-            holo:title="Logout"
+            holo:icon="@drawable/ic_logout"
+            holo:title="@string/pref_logout"
             holo:key="pref_key_logout"/>
     </PreferenceCategory>
 

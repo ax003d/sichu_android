@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg" >
+    
+    <TextView android:id="@+id/txt_micabinet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/app_name"
+        android:textColor="#FFB67023"
+        android:textSize="48sp" />
+    
+    <ImageView android:id="@+id/img_logo" 
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_launcher"
+        android:layout_above="@id/txt_micabinet"
+        android:layout_marginBottom="32dp"/>       
+
+    <TextView android:id="@+id/txt_slogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txt_micabinet"        
+        android:text="@string/txt_slogan"
+        android:textColor="#FF737373"
+        android:textSize="18sp" />
+
+</RelativeLayout>
