@@ -22,7 +22,7 @@ public class Preferences {
 				.putString("refresh_token", refresh_token)
 				.putLong("expire", expire).putLong("uid", uid).commit();
 	}
-	
+
 	public static void clearLoginInfo(Context context) {
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
@@ -37,10 +37,10 @@ public class Preferences {
 	}
 
 	public static long getUserID(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context)
-				.getLong("uid", -1);
+		return PreferenceManager.getDefaultSharedPreferences(context).getLong(
+				"uid", -1);
 	}
-	
+
 	public static String getRememberedUsername(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getString("username", "");
@@ -96,5 +96,16 @@ public class Preferences {
 	public static long getSyncTime(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context).getLong(
 				"sync_time", 0);
+	}
+
+	public static void storeWeiboUser(Context context, long uid,
+			String response, String name, String screenName,
+			String profileImageUrl) {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		preferences.edit().putString("wb_name", name).putLong("wb_uid", uid)
+				.putString("wb_screen_name", screenName)
+				.putString("wb_profile_image_url", profileImageUrl).commit();
+
 	}
 }

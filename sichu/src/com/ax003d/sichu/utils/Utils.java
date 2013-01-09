@@ -107,4 +107,8 @@ public class Utils {
 	public static String formatDate(Date date) {
 		return dateFmt.format(date);
 	}
+	
+	public static boolean isLogin(Context context) {
+		return Preferences.getUserID(context) != -1;
+	}
 }

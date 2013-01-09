@@ -13,7 +13,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,11 +20,15 @@ import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.utils.Preferences;
 import com.ax003d.sichu.utils.Utils;
+import com.ax003d.sichu.utils.WeiboAuthDialogListener;
+import com.ax003d.sichu.utils.WeiboUtils;
+import com.weibo.sdk.android.sso.SsoHandler;
 
 public class LoginActivity extends Activity implements OnClickListener {
 
 	private boolean remember = false;
 	private ISichuAPI api_client;
+	SsoHandler mSsoHandler;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,31 +57,42 @@ public class LoginActivity extends Activity implements OnClickListener {
 		EditText edit_username = (EditText) findViewById(R.id.edit_username);
 		edit_username.setText(username);
 
-		Button btn_login = (Button) findViewById(R.id.btn_login);
-		btn_login.setOnClickListener(this);
+		findViewById(R.id.btn_login).setOnClickListener(this);
+		findViewById(R.id.btn_login_by_weibo).setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId() == R.id.btn_login) {
-			if (!Utils.isNetworkAvailable(getBaseContext())) {
-				Toast.makeText(getBaseContext(), R.string.hint_no_network,
-						Toast.LENGTH_SHORT).show();
-				return;
+		switch (v.getId()) {
+		case R.id.btn_login:
+			if (v.getId() == R.id.btn_login) {
+				if (!Utils.isNetworkAvailable(getBaseContext())) {
+					Toast.makeText(getBaseContext(), R.string.hint_no_network,
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+				EditText edit_username = (EditText) findViewById(R.id.edit_username);
+				EditText edit_password = (EditText) findViewById(R.id.edit_password);
+
+				String username = edit_username.getText().toString();
+				String password = edit_password.getText().toString();
+
+				if (remember) {
+					Preferences.setRemember(getApplicationContext(), username,
+							password);
+				}
+
+				new LoginTask().execute(username, password);
 			}
-
-			EditText edit_username = (EditText) findViewById(R.id.edit_username);
-			EditText edit_password = (EditText) findViewById(R.id.edit_password);
-
-			String username = edit_username.getText().toString();
-			String password = edit_password.getText().toString();
-
-			if (remember) {
-				Preferences.setRemember(getApplicationContext(), username,
-						password);
-			}
-
-			new LoginTask().execute(username, password);
+			break;
+		case R.id.btn_login_by_weibo:
+            mSsoHandler = new SsoHandler(LoginActivity.this, WeiboUtils.getWeiboInstance());
+            mSsoHandler.authorize(new WeiboAuthDialogListener(this));			
+			break;
+		
+		default:
+			break;
 		}
 	}
 
@@ -125,4 +139,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 			}
 		}
 	}
+	
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (mSsoHandler != null) {
+            mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
+        }
+    }
 }
