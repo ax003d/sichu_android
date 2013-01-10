@@ -15,12 +15,25 @@ public class Preferences {
 	public static String SERVER;
 
 	public static void setLoginInfo(Context context, String token,
-			String refresh_token, long expire, long uid) {
+			String refresh_token, long expire, long uid, String username,
+			String avatar) {
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		preferences.edit().putString("token", token)
 				.putString("refresh_token", refresh_token)
-				.putLong("expire", expire).putLong("uid", uid).commit();
+				.putLong("expire", expire).putLong("uid", uid)
+				.putString("username", username).putString("avatar", avatar)
+				.commit();
+	}
+
+	public static String getUserName(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context)
+				.getString("username", "");
+	}
+
+	public static String getAvatar(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context)
+				.getString("avatar", "");
 	}
 
 	public static void clearLoginInfo(Context context) {
@@ -106,5 +119,10 @@ public class Preferences {
 				.putString("wb_screen_name", screenName)
 				.putString("wb_profile_image_url", profileImageUrl).commit();
 
+	}
+
+	public static String getWeiboScreenName(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context)
+				.getString("wb_screen_name", null);
 	}
 }

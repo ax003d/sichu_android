@@ -105,7 +105,9 @@ public class WeiboAuthDialogListener implements WeiboAuthListener {
 					if (ret.has("token")) {
 						Preferences.setLoginInfo(mActivity, ret.getString("token"),
 								ret.getString("refresh_token"),
-								ret.getLong("expire"), ret.getLong("uid"));
+								ret.getLong("expire"), ret.getLong("uid"),
+								ret.getString("username"),
+								ret.getString("avatar"));
 						mActivity.startActivity(new Intent(mActivity,
 								MainActivity.class));
 						mActivity.finish();

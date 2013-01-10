@@ -9,8 +9,10 @@
         holo:title="@string/pref_title" />
     
     <PreferenceCategory holo:title="@string/pref_accounts">
-<!-- 		<SwitchPreference
-			holo:key="pref_key_weibo" /> -->        
+		<Preference holo:key="pref_key_account"
+		    holo:icon="@drawable/ic_contact"/>
+		<Preference holo:key="pref_key_weibo"
+		    holo:icon="@drawable/ic_weibo"/>
         <Preference holo:selectable="true"
             holo:icon="@drawable/ic_logout"
             holo:title="@string/pref_logout"

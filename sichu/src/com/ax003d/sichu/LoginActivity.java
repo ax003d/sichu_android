@@ -87,10 +87,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.btn_login_by_weibo:
-            mSsoHandler = new SsoHandler(LoginActivity.this, WeiboUtils.getWeiboInstance());
-            mSsoHandler.authorize(new WeiboAuthDialogListener(this));			
+			mSsoHandler = new SsoHandler(LoginActivity.this,
+					WeiboUtils.getWeiboInstance());
+			mSsoHandler.authorize(new WeiboAuthDialogListener(this));
 			break;
-		
+
 		default:
 			break;
 		}
@@ -111,7 +112,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 					Preferences.setLoginInfo(getApplicationContext(),
 							ret.getString("token"),
 							ret.getString("refresh_token"),
-							ret.getLong("expire"), ret.getLong("uid"));
+							ret.getLong("expire"), ret.getLong("uid"),
+							ret.getString("username"), ret.getString("avatar"));
 					return true;
 				} else {
 					Preferences.expireToken(getApplicationContext());
@@ -139,12 +141,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 			}
 		}
 	}
-	
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (mSsoHandler != null) {
-            mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
-        }
-    }
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (mSsoHandler != null) {
+			mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
+		}
+	}
 }
