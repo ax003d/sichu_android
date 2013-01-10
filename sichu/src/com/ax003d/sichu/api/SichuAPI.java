@@ -68,6 +68,25 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 
 		return new JSONObject(response.getContentAsString());
 	}
+	
+	@Override
+	public JSONObject account_login_by_weibo(String uid, String screen_name,
+			String profile_image_url, String access_token, String expires_in,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.POST,
+				"/v1/account/login_by_weibo/");
+		request.addParameter("uid", uid);
+		request.addParameter("screen_name", screen_name);
+		request.addParameter("profile_image_url", profile_image_url);
+		request.addParameter("access_token", access_token);
+		request.addParameter("expires_in", expires_in);
+		request.addParameter("apikey", context.getString(R.string.apikey));
+
+		ApiResponse response = execute(request, progressListener);
+
+		return new JSONObject(response.getContentAsString());
+	}	
 
 	@Override
 	public JSONObject bookown(String next, ProgressListener progressListener)

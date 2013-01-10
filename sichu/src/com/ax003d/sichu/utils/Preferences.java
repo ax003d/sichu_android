@@ -99,11 +99,10 @@ public class Preferences {
 	}
 
 	public static void storeWeiboUser(Context context, long uid,
-			String response, String name, String screenName,
-			String profileImageUrl) {
+			String screenName, String profileImageUrl) {
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
-		preferences.edit().putString("wb_name", name).putLong("wb_uid", uid)
+		preferences.edit().putLong("wb_uid", uid)
 				.putString("wb_screen_name", screenName)
 				.putString("wb_profile_image_url", profileImageUrl).commit();
 

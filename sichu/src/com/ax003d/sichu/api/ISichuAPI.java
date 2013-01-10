@@ -13,22 +13,29 @@ public interface ISichuAPI {
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
 
+	JSONObject account_login_by_weibo(String uid, String screen_name,
+			String profile_image_url, String access_token, String expires_in,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException;
+
 	JSONObject bookown(String next, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
 
 	JSONObject bookownByID(String id, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
-	
+
 	JSONObject bookownAdd(String isbn, String status, String remark,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
-	
+
 	JSONObject oplog(String next, ProgressListener progressListener)
-			throws ClientProtocolException, IOException, JSONException;	
-	
-	JSONObject bookborrow(String next, boolean asBorrower, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
-	
-	JSONObject follow(String next, boolean asFollower, ProgressListener progressListener)
-			throws ClientProtocolException, IOException, JSONException;		
+
+	JSONObject bookborrow(String next, boolean asBorrower,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException;
+
+	JSONObject follow(String next, boolean asFollower,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException;
 }
