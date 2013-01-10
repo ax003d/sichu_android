@@ -54,5 +54,6 @@
     <string name="btn_login_by_weibo">Login by Weibo</string>
     <string name="title_activity_splash">MiCabinet</string>
     <string name="txt_slogan">Share Books with Your Friends</string>
+    <string name="hint_bind_weibo">Bind Weibo</string>
 
 </resources>

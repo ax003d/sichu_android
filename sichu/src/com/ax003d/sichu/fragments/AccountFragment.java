@@ -27,7 +27,9 @@ public class AccountFragment extends PreferenceFragment implements
 		Preference pref_key_logout = findPreference("pref_key_logout");
 		Preference pref_key_account = findPreference("pref_key_account");
 		String screenName = Preferences.getWeiboScreenName(mActivity);
-		pref_key_weibo.setTitle(screenName == null ? "Not Bind" : screenName);
+		if (screenName != null) {
+			pref_key_weibo.setTitle(screenName);			
+		}
 		pref_key_logout.setOnPreferenceClickListener(this);
 		// pref_key_weibo.setOnPreferenceChangeListener(this);
 		pref_key_account.setTitle(Preferences.getUserName(mActivity));
