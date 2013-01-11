@@ -44,7 +44,7 @@ public class FollowingFragment extends Fragment implements
 
 	public static FollowingFragment getInstance() {
 		if (FollowingFragment.instance == null) {
-			return new FollowingFragment();
+			FollowingFragment.instance = new FollowingFragment();
 		}
 		return FollowingFragment.instance;
 	}

@@ -87,23 +87,33 @@ public class WeiboAuthDialogListener implements WeiboAuthListener {
 				screenName = json.getString("screen_name");
 				profileImageUrl = json.getString("profile_image_url");
 				Preferences.storeWeiboUser(mActivity, uid, screenName,
-						profileImageUrl);				
+						profileImageUrl);
 			} catch (JSONException e) {
 				e.printStackTrace();
 				return;
 			}
-			
-			if (Utils.isLogin(mActivity)) {
-				// bind weibo
-			} else {
-				// login by weibo
-				JSONObject ret;
-				try {
+
+			JSONObject ret;
+			try {
+				if (Utils.isLogin(mActivity)) {
+					// bind weibo
+					ret = api_client.account_bind_weibo(uid + "", screenName,
+							profileImageUrl, accessToken.getToken(),
+							accessToken.getExpiresTime() + "", null);
+					if (ret.has("status")) {
+						// bind ok
+						MainActivity activity = (MainActivity) mActivity;
+						activity.sendMessage();
+					}
+				} else {
+					// login by weibo
 					ret = api_client.account_login_by_weibo(uid + "",
-							screenName, profileImageUrl, accessToken.getToken(),
+							screenName, profileImageUrl,
+							accessToken.getToken(),
 							accessToken.getExpiresTime() + "", null);
 					if (ret.has("token")) {
-						Preferences.setLoginInfo(mActivity, ret.getString("token"),
+						Preferences.setLoginInfo(mActivity,
+								ret.getString("token"),
 								ret.getString("refresh_token"),
 								ret.getLong("expire"), ret.getLong("uid"),
 								ret.getString("username"),
@@ -112,13 +122,13 @@ public class WeiboAuthDialogListener implements WeiboAuthListener {
 								MainActivity.class));
 						mActivity.finish();
 					}
-				} catch (ClientProtocolException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (JSONException e) {
-					e.printStackTrace();
 				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
 		}
 	} // UsersShowListener

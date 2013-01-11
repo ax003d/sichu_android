@@ -14,7 +14,7 @@ public class MessagesFragment extends Fragment {
 
     public static MessagesFragment getInstance() {
         if (MessagesFragment.instance == null) {
-            return new MessagesFragment();
+        	MessagesFragment.instance = new MessagesFragment();
         }
         return MessagesFragment.instance;
     }		

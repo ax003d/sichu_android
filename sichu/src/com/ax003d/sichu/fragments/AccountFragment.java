@@ -16,8 +16,8 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
+import com.ax003d.sichu.MainActivity;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
@@ -26,16 +26,24 @@ import com.ax003d.sichu.utils.Preferences;
 
 public class AccountFragment extends PreferenceFragment implements
 		OnPreferenceClickListener, OnPreferenceChangeListener {
-
-	private FragmentActivity mActivity;
+	
+	private static AccountFragment instance;
+	private MainActivity mActivity;
 	private String screenName;
 	public ISichuAPI api_client;
 	private Preference pref_key_weibo;
-
+	
+	public static AccountFragment getInstance() {
+		if (AccountFragment.instance == null) {
+			AccountFragment.instance = new AccountFragment();
+		}
+		return AccountFragment.instance;
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mActivity = getActivity();
+		mActivity = (MainActivity) getActivity();
 		api_client = SichuAPI.getInstance(mActivity);
 		addPreferencesFromResource(R.xml.preferences);
 
@@ -48,7 +56,7 @@ public class AccountFragment extends PreferenceFragment implements
 		pref_key_account.setTitle(Preferences.getUserName(mActivity));
 	}
 
-	private void setScreenName() {
+	public void setScreenName() {
 		screenName = Preferences.getWeiboScreenName(mActivity);
 		if (screenName != null) {
 			pref_key_weibo.setTitle(screenName);			
@@ -65,6 +73,7 @@ public class AccountFragment extends PreferenceFragment implements
 		} else if (preference.getKey().equals("pref_key_weibo")) {
 			if (screenName == null) {
 				// bind weibo
+				mActivity.bindWeibo();
 			} else {
 				// unbind weibo
 				Builder builder = new AlertDialog.Builder(mActivity);

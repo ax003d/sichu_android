@@ -45,7 +45,7 @@ public class BooksMineFragment extends Fragment implements
 
 	public static BooksMineFragment getInstance() {
 		if (BooksMineFragment.instance == null) {
-			return new BooksMineFragment();
+			BooksMineFragment.instance = new BooksMineFragment();
 		}
 		return BooksMineFragment.instance;
 	}

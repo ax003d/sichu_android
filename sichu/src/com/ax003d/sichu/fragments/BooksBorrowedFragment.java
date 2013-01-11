@@ -48,7 +48,7 @@ public class BooksBorrowedFragment extends Fragment implements
 
 	public static BooksBorrowedFragment getInstance() {
 		if (BooksBorrowedFragment.instance == null) {
-			return new BooksBorrowedFragment();
+			BooksBorrowedFragment.instance = new BooksBorrowedFragment();
 		}
 		return BooksBorrowedFragment.instance;
 	}

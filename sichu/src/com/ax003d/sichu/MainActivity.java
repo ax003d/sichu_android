@@ -1,6 +1,7 @@
 package com.ax003d.sichu;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -40,8 +44,12 @@ import com.ax003d.sichu.fragments.FollowingFragment;
 import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.models.BookOwn.BookOwns;
 import com.ax003d.sichu.utils.Preferences;
+import com.ax003d.sichu.utils.WeiboAuthDialogListener;
+import com.ax003d.sichu.utils.WeiboUtils;
 import com.ax003d.sichu.widget.NavigationItem;
 import com.ax003d.sichu.widget.NavigationWidget;
+import com.weibo.sdk.android.sso.SsoHandler;
+
 
 public class MainActivity extends SlidingActivity implements TabListener {
 	private final class ListNavigationAdapter extends ArrayAdapter<Integer>
@@ -86,7 +94,9 @@ public class MainActivity extends SlidingActivity implements TabListener {
 
 	private ListNavigationAdapter adapter;
 	private ISichuAPI api_client;
+	SsoHandler mSsoHandler;
 	private long userID;
+	private UpdatePreferHandler preferHandler;
 	private static int[] pages = { R.string.page_books, R.string.page_friends,
 			R.string.page_messages, R.string.page_account };
 	
@@ -122,6 +132,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setDisplayShowHomeEnabled(true);
 
+		preferHandler = new UpdatePreferHandler(this);
 		// if (Preferences.getSyncTime(this) == 0) {
 		// } else {
 		// new SyncTask().execute();
@@ -154,7 +165,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 	        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 	        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	        ft.replace(android.R.id.content, new AccountFragment());
+	        ft.replace(android.R.id.content, AccountFragment.getInstance());
 	        ft.commit();
 		}
 	}
@@ -171,9 +182,18 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		return true;
 	}
 
+	public void bindWeibo() {
+		mSsoHandler = new SsoHandler(this,
+				WeiboUtils.getWeiboInstance());
+		mSsoHandler.authorize(new WeiboAuthDialogListener(this));		
+	}
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		if (mSsoHandler != null) {
+			mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
+		}
 	}
 
 	@Override
@@ -195,9 +215,6 @@ public class MainActivity extends SlidingActivity implements TabListener {
 			break;
 		case R.string.friends_follower:
 			ft.replace(android.R.id.content, FollowerFragment.getInstance());
-			break;
-		case R.string.page_account:
-			ft.replace(android.R.id.content, new AccountFragment());
 			break;
 		default:
 			break;
@@ -317,4 +334,25 @@ public class MainActivity extends SlidingActivity implements TabListener {
 			setSupportProgressBarIndeterminateVisibility(false);
 		} // onPostExecute
 	} // SyncTask
+	
+	private static class UpdatePreferHandler extends Handler {
+		private final WeakReference<MainActivity> mActivity;
+		
+		public UpdatePreferHandler(MainActivity activity) {
+			mActivity = new WeakReference<MainActivity>(activity);
+		}
+		
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			MainActivity activity = mActivity.get();
+			if (activity != null) {
+				AccountFragment.getInstance().setScreenName();
+			}
+		}
+	}
+	
+	public void sendMessage() {
+		preferHandler.sendEmptyMessage(0);
+	}	
 }
