@@ -18,6 +18,9 @@ public interface ISichuAPI {
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
 
+	JSONObject account_unbind_weibo(ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException;
+
 	JSONObject bookown(String next, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
 

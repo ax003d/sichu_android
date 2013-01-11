@@ -121,6 +121,13 @@ public class Preferences {
 
 	}
 
+	public static void clearWeiboUser(Context context) {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		preferences.edit().remove("wb_uid").remove("wb_screen_name")
+				.remove("wb_profile_image_url").commit();
+	}
+
 	public static String getWeiboScreenName(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getString("wb_screen_name", null);

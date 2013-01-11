@@ -86,6 +86,17 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		ApiResponse response = execute(request, progressListener);
 
 		return new JSONObject(response.getContentAsString());
+	}
+	
+	@Override
+	public JSONObject account_unbind_weibo(ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.POST,
+				"/v1/account/unbind_weibo/");
+
+		ApiResponse response = execute(request, progressListener);
+
+		return new JSONObject(response.getContentAsString());
 	}	
 
 	@Override

@@ -55,5 +55,7 @@
     <string name="title_activity_splash">MiCabinet</string>
     <string name="txt_slogan">Share Books with Your Friends</string>
     <string name="hint_bind_weibo">Bind Weibo</string>
+    <string name="title_unbind_weibo">Unbind Weibo</string>
+    <string name="msg_unbind_weibo">Do you want to unbind weibo?</string>
 
 </resources>
