@@ -32,7 +32,6 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		}
 		return INSTANCE;
 	}
-	
 
 	@Override
 	public ApiResponse execute(ApiRequest request, ProgressListener listener)
@@ -68,7 +67,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 
 		return new JSONObject(response.getContentAsString());
 	}
-	
+
 	@Override
 	public JSONObject account_login_by_weibo(String uid, String screen_name,
 			String profile_image_url, String access_token, String expires_in,
@@ -87,7 +86,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 
 		return new JSONObject(response.getContentAsString());
 	}
-	
+
 	@Override
 	public JSONObject account_unbind_weibo(ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException {
@@ -98,7 +97,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 
 		return new JSONObject(response.getContentAsString());
 	}
-	
+
 	@Override
 	public JSONObject account_bind_weibo(String uid, String screen_name,
 			String profile_image_url, String access_token, String expires_in,
@@ -115,7 +114,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		ApiResponse response = execute(request, progressListener);
 
 		return new JSONObject(response.getContentAsString());
-	}	
+	}
 
 	@Override
 	public JSONObject bookown(String next, ProgressListener progressListener)
@@ -129,18 +128,17 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	}
 
 	@Override
-	public JSONObject bookownAdd(String isbn, String status,
-			String remark, ProgressListener progressListener)
-			throws ClientProtocolException, IOException, JSONException {
-		ApiRequest request = new ApiRequest(ApiRequest.POST,
-				"/v1/bookown/add/");
+	public JSONObject bookownAdd(String isbn, String status, String remark,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.POST, "/v1/bookown/add/");
 
 		request.addParameter("isbn", isbn);
 		request.addParameter("status", status == null ? "1" : status);
 		if (remark != null) {
 			request.addParameter("remark", remark);
 		}
-		
+
 		ApiResponse response = execute(request, progressListener);
 
 		return new JSONObject(response.getContentAsString());
@@ -162,13 +160,15 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	}
 
 	@Override
-	public JSONObject bookborrow(String next, boolean asBorrower, ProgressListener progressListener)
-			throws ClientProtocolException, IOException, JSONException {
+	public JSONObject bookborrow(String next, boolean asBorrower,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException {
 		String url = null;
-		if ( next != null ) {
+		if (next != null) {
 			url = asBorrower ? next + "&as_borrower=1" : next;
 		} else {
-			url = asBorrower ? "/v1/bookborrow/?as_borrower=1" : "/v1/bookborrow/";
+			url = asBorrower ? "/v1/bookborrow/?as_borrower=1"
+					: "/v1/bookborrow/";
 		}
 		ApiRequest request = new ApiRequest(ApiRequest.GET, url);
 
@@ -182,7 +182,8 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	@Override
 	public JSONObject bookownByID(String id, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException {
-		ApiRequest request = new ApiRequest(ApiRequest.GET, "/v1/bookown/?id__exact=" + id);
+		ApiRequest request = new ApiRequest(ApiRequest.GET,
+				"/v1/bookown/?id__exact=" + id);
 
 		ApiResponse response = execute(request, progressListener);
 
@@ -194,7 +195,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException {
 		String url = null;
-		if ( next != null ) {
+		if (next != null) {
 			url = asFollower ? next + "&as_follower=1" : next;
 		} else {
 			url = asFollower ? "/v1/follow/?as_follower=1" : "/v1/follow/";
@@ -206,5 +207,17 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		String resp = response.getContentAsString();
 		// Log.d("Follows", resp);
 		return new JSONObject(resp);
+	}
+
+	@Override
+	public JSONObject bookborrowrequest(String next,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.GET,
+				next == null ? "/v1/bookborrowreq/" : next);
+
+		ApiResponse response = execute(request, progressListener);
+
+		return new JSONObject(response.getContentAsString());
 	}
 }

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="10dp" >
+
+    <RelativeLayout
+        android:layout_width="70dp"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"    
+            android:src="@drawable/ic_contact" />
+
+        <TextView
+            android:id="@+id/txt_requester"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_avatar"
+            android:layout_centerHorizontal="true"
+            android:text="@string/txt_requester"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txt_datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_datetime"
+            android:textAppearance="?android:attr/textAppearanceSmall" />   
+        
+        <TextView
+            android:id="@+id/lbl_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_type"
+            android:layout_below="@id/txt_datetime"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/txt_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lbl_type"
+            android:text="@string/txt_book"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <ImageView
+            android:id="@+id/img_planed_return_date"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_below="@id/txt_book"
+            android:layout_marginRight="10dp"
+            android:contentDescription="@string/img_planed_return_date"
+            android:src="@drawable/ic_timer" />
+
+        <TextView
+            android:id="@+id/txt_planed_return_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_book"
+            android:layout_toRightOf="@id/img_planed_return_date"
+            android:text="@string/txt_planned_return_date"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <ImageView android:id="@+id/img_remark"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_below="@id/txt_planed_return_date"
+            android:src="@drawable/ic_remark"
+            android:layout_marginRight="10dp"
+            android:contentDescription="@string/img_remark"/>        
+
+        <TextView
+            android:id="@+id/txt_remark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_planed_return_date"
+            android:layout_toRightOf="@id/img_remark"
+            android:text="@string/txt_remark"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </RelativeLayout>
+
+</LinearLayout>

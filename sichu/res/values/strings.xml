@@ -25,7 +25,7 @@
     <string name="img_borrower">Borrower</string>
     <string name="img_avatar">Avatar</string>
     <string name="txt_username">Username</string>
-    <string name="txt_remark">Remark</string>
+    <string name="txt_remark">Thank you!</string>
     <string name="txt_status">Status</string>
     <string name="img_status">Status</string>
     <string name="img_remark">Remark</string>
@@ -57,5 +57,16 @@
     <string name="hint_bind_weibo">Bind Weibo</string>
     <string name="title_unbind_weibo">Unbind Weibo</string>
     <string name="msg_unbind_weibo">Do you want to unbind weibo?</string>
+    <string name="txt_requester">Requester</string>
+    <string name="txt_book">Book Title</string>
+    <string name="txt_planned_return_date">2013-01-16</string>
+    <string name="txt_datetime">2013-01-03 03:22</string>
+    <string name="btn_agree">Agree</string>
+    <string name="btn_reject">Reject</string>
+    <string name="lbl_request_time">Request Time:</string>
+    <string name="lbl_book">Want to Borrow:</string>
+    <string name="lbl_planned_return_date">Planned Return Date:</string>
+    <string name="lbl_remark">Remark:</string>
+    <string name="lbl_type">Want to Borrow</string>
 
 </resources>

@@ -41,6 +41,7 @@ import com.ax003d.sichu.fragments.BooksLoanedFragment;
 import com.ax003d.sichu.fragments.BooksMineFragment;
 import com.ax003d.sichu.fragments.FollowerFragment;
 import com.ax003d.sichu.fragments.FollowingFragment;
+import com.ax003d.sichu.fragments.MessagesFragment;
 import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.models.BookOwn.BookOwns;
 import com.ax003d.sichu.utils.Preferences;
@@ -161,6 +162,12 @@ public class MainActivity extends SlidingActivity implements TabListener {
 				tab.setTabListener(this);
 				ab.addTab(tab);
 			}
+		} else if (page == R.string.page_messages) {
+			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+	        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+	        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	        ft.replace(android.R.id.content, MessagesFragment.getInstance());
+	        ft.commit();
 		} else if (page == R.string.page_account) {
 			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 	        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
