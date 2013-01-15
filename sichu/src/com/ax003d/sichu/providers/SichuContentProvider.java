@@ -15,6 +15,7 @@ import android.net.Uri;
 
 import com.ax003d.sichu.models.Book.Books;
 import com.ax003d.sichu.models.BookBorrow.BookBorrows;
+import com.ax003d.sichu.models.BookBorrowReq.BookBorrowReqs;
 import com.ax003d.sichu.models.BookOwn.BookOwns;
 import com.ax003d.sichu.models.Follow.Follows;
 import com.ax003d.sichu.models.User.Users;
@@ -35,8 +36,9 @@ public class SichuContentProvider extends ContentProvider {
 	private static final int BOOKBORROWS_AS_BORROWER = 9;
 	private static final int FOLLOWS = 10;
 	private static final int FOLLOWINGS = 11;
-	private static final int FOLLOWERS = 12;	
-	
+	private static final int FOLLOWERS = 12;
+	private static final int BOOKBORROWREQS = 13;
+
 	private static HashMap<String, String> booksProjectionMap;
 	private static HashMap<String, String> bookownsProjectionMap;
 	private static HashMap<String, String> bookownsWithBookProjectionMap;
@@ -75,14 +77,23 @@ public class SichuContentProvider extends ContentProvider {
 			db.execSQL("CREATE TABLE " + Users.TABLE_NAME + " (" + Users._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + Users.GUID
 					+ " INTEGER UNIQUE, " + Users.USERNAME + " TEXT, "
-					+ Users.LAST_NAME + " TEXT, " + Users.FIRST_NAME + " TEXT, "
-					+ Users.AVATAR + " TEXT"
-					+ " );");
+					+ Users.LAST_NAME + " TEXT, " + Users.FIRST_NAME
+					+ " TEXT, " + Users.AVATAR + " TEXT" + " );");
 			db.execSQL("CREATE TABLE " + Follows.TABLE_NAME + " ("
 					+ Follows._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ Follows.GUID + " INTEGER UNIQUE, " + Follows.FOLLOWINGID
 					+ " INTEGER, " + Follows.REMARK + " TEXT, "
 					+ Follows.USERID + " INTEGER" + " );");
+			db.execSQL("CREATE TABLE " + BookBorrowReqs.TABLE_NAME + " ("
+					+ BookBorrowReqs._ID
+					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ BookBorrowReqs.GUID + " INTEGER UNIQUE, "
+					+ BookBorrowReqs.DATETIME + " TEXT, "
+					+ BookBorrowReqs.REQUESTERID + " INTEGER, "
+					+ BookBorrowReqs.BOOKOWNID + " INTEGER, "
+					+ BookBorrowReqs.PLANED_RETURN_DATE + " TEXT, "
+					+ BookBorrowReqs.REMARK + " TEXT, " + BookBorrowReqs.STATUS
+					+ " INTEGER" + " );");
 		}
 
 		@Override
@@ -92,6 +103,7 @@ public class SichuContentProvider extends ContentProvider {
 			db.execSQL("DROP TABLE IF EXISTS " + BookBorrows.TABLE_NAME);
 			db.execSQL("DROP TABLE IF EXISTS " + Users.TABLE_NAME);
 			db.execSQL("DROP TABLE IF EXISTS " + Follows.TABLE_NAME);
+			db.execSQL("DROP TABLE IF EXISTS " + BookBorrowReqs.TABLE_NAME);
 			onCreate(db);
 		}
 
@@ -154,16 +166,27 @@ public class SichuContentProvider extends ContentProvider {
 					+ (asBorrower ? BookBorrows.BORROWERID : BookOwns.OWNERID)
 					+ " = " + uri.getLastPathSegment();
 			break;
-		case FOLLOWERS:			
+		case FOLLOWERS:
 			asFollower = false;
-		case FOLLOWINGS:			
+		case FOLLOWINGS:
 			queryBuilder.setTables(Follows.TABLE_NAME + " INNER JOIN "
-					+ Users.TABLE_NAME + " ON ( " + Follows.FOLLOWINGID
-					+ " = " + Users.TABLE_NAME + "." + Users.GUID + " ) INNER JOIN "
-					+ Users.TABLE_NAME + " AS Follower ON ( " + Follows.USERID 
+					+ Users.TABLE_NAME + " ON ( " + Follows.FOLLOWINGID + " = "
+					+ Users.TABLE_NAME + "." + Users.GUID + " ) INNER JOIN "
+					+ Users.TABLE_NAME + " AS Follower ON ( " + Follows.USERID
 					+ " = " + "Follower." + Users.GUID + " )");
 			selection = (selection == null ? "" : selection + " AND ");
-			selection = ( asFollower ? Follows.USERID : Follows.FOLLOWINGID ) + " = " + uri.getLastPathSegment();
+			selection = (asFollower ? Follows.USERID : Follows.FOLLOWINGID)
+					+ " = " + uri.getLastPathSegment();
+			break;
+		case BOOKBORROWREQS:
+			queryBuilder.setTables(BookBorrowReqs.TABLE_NAME + " INNER JOIN "
+					+ Users.TABLE_NAME + " ON ( " + BookBorrowReqs.REQUESTERID + " = "
+					+ Users.TABLE_NAME + "." + Users.GUID + " ) INNER JOIN "
+					+ BookOwns.TABLE_NAME + " ON ( " + BookBorrowReqs.BOOKOWNID
+					+ " = " + BookOwns.TABLE_NAME + "." + BookOwns.GUID + " ) INNER JOIN "
+					+ Books.TABLE_NAME + " ON ( " + BookOwns.TABLE_NAME + "." + BookOwns.BOOKID
+					+ " = " + Books.TABLE_NAME + "." + Books.GUID + " )");
+			selection = (selection == null ? "" : selection);			
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -235,11 +258,23 @@ public class SichuContentProvider extends ContentProvider {
 			row_id = db.insertWithOnConflict(Follows.TABLE_NAME, Follows.GUID,
 					values, SQLiteDatabase.CONFLICT_IGNORE);
 			if (row_id > 0) {
-				Uri follow_uri = ContentUris.withAppendedId(Follows.CONTENT_URI,
-						row_id);
-				getContext().getContentResolver().notifyChange(follow_uri, null);
+				Uri follow_uri = ContentUris.withAppendedId(
+						Follows.CONTENT_URI, row_id);
+				getContext().getContentResolver()
+						.notifyChange(follow_uri, null);
 				return follow_uri;
-			}			
+			}
+			return null;
+		case BOOKBORROWREQS:
+			row_id = db.insertWithOnConflict(BookBorrowReqs.TABLE_NAME, BookBorrowReqs.GUID,
+					values, SQLiteDatabase.CONFLICT_IGNORE);
+			if (row_id > 0) {
+				Uri bookborrowreq_uri = ContentUris.withAppendedId(
+						BookBorrowReqs.CONTENT_URI, row_id);
+				getContext().getContentResolver()
+						.notifyChange(bookborrowreq_uri, null);
+				return bookborrowreq_uri;
+			}
 			return null;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -302,10 +337,11 @@ public class SichuContentProvider extends ContentProvider {
 		URI_MATCHER.addURI(AUTHORITY, BookBorrows.TABLE_NAME + "/borrower/#",
 				BOOKBORROWS_AS_BORROWER);
 		URI_MATCHER.addURI(AUTHORITY, Follows.TABLE_NAME, FOLLOWS);
-		URI_MATCHER.addURI(AUTHORITY, Follows.TABLE_NAME + "/user/#", 
+		URI_MATCHER.addURI(AUTHORITY, Follows.TABLE_NAME + "/user/#",
 				FOLLOWINGS);
-		URI_MATCHER.addURI(AUTHORITY, Follows.TABLE_NAME + "/following/#", 
+		URI_MATCHER.addURI(AUTHORITY, Follows.TABLE_NAME + "/following/#",
 				FOLLOWERS);
+		URI_MATCHER.addURI(AUTHORITY, BookBorrowReqs.TABLE_NAME, BOOKBORROWREQS);
 
 		bookownsWithBookProjectionMap = new HashMap<String, String>();
 		bookownsWithBookProjectionMap.put(BookOwns.TABLE_NAME + "."

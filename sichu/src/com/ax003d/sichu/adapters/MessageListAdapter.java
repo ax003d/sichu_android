@@ -97,4 +97,7 @@ public class MessageListAdapter extends BaseAdapter {
 		messages.add(req);
 	}
 
+	public void clearBookBorrowReq() {
+		messages.clear();
+	}
 }

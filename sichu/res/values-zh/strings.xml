@@ -55,5 +55,18 @@
     <string name="title_activity_splash">私橱</string>
     <string name="txt_slogan">和朋友分享你的书籍</string>
     <string name="hint_bind_weibo">绑定微博</string>
-
+    <string name="title_unbind_weibo">解除微博绑定</string>
+    <string name="msg_unbind_weibo">您确定要解除微博绑定？</string>
+    <string name="txt_requester">借阅人</string>
+    <string name="txt_book">书名</string>
+    <string name="txt_planned_return_date">2013-01-16</string>
+    <string name="txt_datetime">2013-01-03 03:22</string>
+    <string name="btn_agree">同意</string>
+    <string name="btn_reject">拒绝</string>
+    <string name="lbl_request_time">时间:</string>
+    <string name="lbl_book">想借:</string>
+    <string name="lbl_planned_return_date">预计归还日期:</string>
+    <string name="lbl_remark">备注:</string>
+    <string name="lbl_type">想借</string>    
+    
 </resources>

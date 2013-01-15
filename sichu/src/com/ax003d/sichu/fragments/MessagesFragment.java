@@ -11,8 +11,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,50 +25,66 @@ import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.MessageListAdapter;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
+import com.ax003d.sichu.models.Book.Books;
 import com.ax003d.sichu.models.BookBorrowReq;
+import com.ax003d.sichu.models.BookBorrowReq.BookBorrowReqs;
+import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.utils.Preferences;
 
-public class MessagesFragment extends Fragment {
-    private static MessagesFragment instance;
+public class MessagesFragment extends Fragment implements
+		LoaderManager.LoaderCallbacks<Cursor> {
+	private static final int BOOKBORROWREQ_LOADER = 5;
+	private static MessagesFragment instance;
+	private static String[] bookborrowreqProjection = new String[] {
+			BookBorrowReqs.TABLE_NAME + "." + BookBorrowReqs.GUID,
+			BookBorrowReqs.DATETIME, BookBorrowReqs.REQUESTERID,
+			BookBorrowReqs.BOOKOWNID, BookBorrowReqs.PLANED_RETURN_DATE,
+			BookBorrowReqs.TABLE_NAME + "." + BookBorrowReqs.REMARK,
+			BookBorrowReqs.TABLE_NAME + "." + BookBorrowReqs.STATUS,
+			Users.USERNAME, Users.AVATAR, Books.TITLE, Books.COVER };
 
-    public static MessagesFragment getInstance() {
-        if (MessagesFragment.instance == null) {
-        	MessagesFragment.instance = new MessagesFragment();
-        }
-        return MessagesFragment.instance;
-    }
+	public static MessagesFragment getInstance() {
+		if (MessagesFragment.instance == null) {
+			MessagesFragment.instance = new MessagesFragment();
+		}
+		return MessagesFragment.instance;
+	}
 
 	private ISichuAPI api_client;
 	private SlidingActivity activity;
 	private long userID;
 	private MessageListAdapter adapter;
-	private ListView lst_msg;		
-	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-    	super.onCreate(savedInstanceState);
+	private ListView lst_msg;
+	public boolean requery;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		api_client = SichuAPI.getInstance(getActivity());
 		activity = (SlidingActivity) getActivity();
 		userID = Preferences.getUserID(activity);
 		adapter = new MessageListAdapter(activity);
-    }
-    
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_messages, container, false);
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		lst_msg = (ListView) activity
-				.findViewById(R.id.lst_msg);
+		lst_msg = (ListView) activity.findViewById(R.id.lst_msg);
 		lst_msg.setAdapter(adapter);
+		activity.getSupportLoaderManager().initLoader(BOOKBORROWREQ_LOADER,
+				null, this);
+		requery = false;
 		new GetBookBorrowReqTask().execute();
 	}
-	
-	private class GetBookBorrowReqTask extends AsyncTask<String, Void, JSONObject> {
+
+	private class GetBookBorrowReqTask extends
+			AsyncTask<String, Void, JSONObject> {
 
 		@Override
 		protected JSONObject doInBackground(String... params) {
@@ -83,38 +104,73 @@ public class MessagesFragment extends Fragment {
 			}
 			return ret;
 		}
-		
+
 		@Override
 		protected void onPostExecute(JSONObject result) {
 			super.onPostExecute(result);
 			if (result != null && result.has("objects")) {
-				// ContentResolver contentResolver = activity.getContentResolver();
+				ContentResolver contentResolver = activity.getContentResolver();
 				JSONArray jBookBorrowRequests;
 				try {
 					jBookBorrowRequests = result.getJSONArray("objects");
 					for (int i = 0; i < jBookBorrowRequests.length(); i++) {
-						BookBorrowReq req = new BookBorrowReq(jBookBorrowRequests.getJSONObject(i));
-						adapter.addBookBorrowReq(req);
+						BookBorrowReq req = new BookBorrowReq(
+								jBookBorrowRequests.getJSONObject(i));
+						if (req.save(contentResolver) != null) {
+							requery = true;
+						}
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
 
-			adapter.notifyDataSetChanged();
 			if (result != null && result.has("meta")) {
 				String next;
 				try {
 					next = result.getJSONObject("meta").getString("next");
 					if (!next.equals("null")) {
 						new GetBookBorrowReqTask().execute(next);
+					} else if (requery) {
+						activity.getSupportLoaderManager().restartLoader(
+								BOOKBORROWREQ_LOADER, null,
+								MessagesFragment.this);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
-			super.onPostExecute(result);			
+			super.onPostExecute(result);
 		}
 
 	} // GetBookBorrowReqTask
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		if (id == BOOKBORROWREQ_LOADER) {
+			return new CursorLoader(activity, BookBorrowReqs.CONTENT_URI,
+					bookborrowreqProjection, null, null, null);
+		}
+		return null;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		adapter.clearBookBorrowReq();
+		
+		if (!data.moveToFirst()) {
+			return;
+		}
+
+		do {
+			adapter.addBookBorrowReq(new BookBorrowReq(data));
+		} while (data.moveToNext());
+		adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {
+		// TODO Auto-generated method stub
+
+	}
 }
