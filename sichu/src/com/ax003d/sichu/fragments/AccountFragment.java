@@ -23,6 +23,7 @@ import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.utils.AccessTokenKeeper;
 import com.ax003d.sichu.utils.Preferences;
+import com.umeng.fb.UMFeedbackService;
 
 public class AccountFragment extends PreferenceFragment implements
 		OnPreferenceClickListener, OnPreferenceChangeListener {
@@ -50,10 +51,12 @@ public class AccountFragment extends PreferenceFragment implements
 		pref_key_weibo = findPreference("pref_key_weibo");
 		Preference pref_key_logout = findPreference("pref_key_logout");
 		Preference pref_key_account = findPreference("pref_key_account");
+		Preference pref_key_feedback = findPreference("pref_key_feedback");
 		setScreenName();
 		pref_key_logout.setOnPreferenceClickListener(this);
 		pref_key_weibo.setOnPreferenceClickListener(this);
 		pref_key_account.setTitle(Preferences.getUserName(mActivity));
+		pref_key_feedback.setOnPreferenceClickListener(this);
 	}
 
 	public void setScreenName() {
@@ -89,6 +92,8 @@ public class AccountFragment extends PreferenceFragment implements
 				builder.setNegativeButton(android.R.string.cancel, null);
 				builder.create().show();				
 			}
+		} else if (preference.getKey().equals("pref_key_feedback")) {
+			UMFeedbackService.openUmengFeedbackSDK(mActivity);
 		}
 		return false;
 	}

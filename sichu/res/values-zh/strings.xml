@@ -67,6 +67,8 @@
     <string name="lbl_book">想借:</string>
     <string name="lbl_planned_return_date">预计归还日期:</string>
     <string name="lbl_remark">备注:</string>
-    <string name="lbl_type">想借</string>    
+    <string name="lbl_type">想借</string>
+    <string name="pref_others">其他</string>
+    <string name="pref_title_feedbacks">意见反馈</string>    
     
 </resources>

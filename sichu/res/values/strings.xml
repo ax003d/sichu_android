@@ -68,5 +68,7 @@
     <string name="lbl_planned_return_date">Planned Return Date:</string>
     <string name="lbl_remark">Remark:</string>
     <string name="lbl_type">Want to Borrow</string>
+    <string name="pref_others">Others</string>
+    <string name="pref_title_feedbacks">Feedbacks</string>
 
 </resources>

@@ -7,6 +7,8 @@ import java.util.TimerTask;
 import org.holoeverywhere.app.Activity;
 
 import com.ax003d.sichu.utils.Preferences;
+import com.umeng.fb.NotificationType;
+import com.umeng.fb.UMFeedbackService;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +19,8 @@ public class SplashActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
-
+		UMFeedbackService.enableNewReplyNotification(this, NotificationType.NotificationBar);
+		
 		TimerTask timerTask = new TimerTask() {
 			@Override
 			public void run() {

@@ -15,6 +15,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- umeng crash report -->
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <!-- umeng feedback -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -46,6 +50,15 @@
             android:authorities="com.ax003d.sichu.providers.SichuContentProvider"
             tools:ignore="ExportedContentProvider" >
         </provider>
+
+        <!-- umeng feedback activities -->
+        <activity
+            android:name="com.umeng.fb.ui.SendFeedback"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name="com.umeng.fb.ui.FeedbackConversations" />
+        <activity
+            android:name="com.umeng.fb.ui.FeedbackConversation"
+            android:configChanges="keyboard" />
 
         <meta-data
             android:name="UMENG_APPKEY"
