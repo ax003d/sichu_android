@@ -7,10 +7,14 @@
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="16" />
+        android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- get IMEI -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- umeng crash report -->
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
         android:allowBackup="true"
@@ -24,9 +28,10 @@
             android:theme="@style/Holo.Theme.NoActionBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>        
+        </activity>
         <activity
             android:name="com.ax003d.sichu.LoginActivity"
             android:label="@string/activity_login" >
@@ -41,6 +46,14 @@
             android:authorities="com.ax003d.sichu.providers.SichuContentProvider"
             tools:ignore="ExportedContentProvider" >
         </provider>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="50f6b7e652701568ed00001f" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="sichu" />
     </application>
 
 </manifest>
