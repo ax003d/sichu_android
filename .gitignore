@@ -1,4 +1,6 @@
 sichu/bin/
 sichu/gen/
 sichu/.settings/
+sichu/local.properties
+tools/*
 *~
