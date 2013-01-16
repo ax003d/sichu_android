@@ -18,3 +18,24 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# For weibo SDK
+-keep public class android.net.http.SslError
+-keep public class android.webkit.WebViewClient
+-dontwarn android.webkit.WebView
+-dontwarn android.net.http.SslError
+-dontwarn android.webkit.WebViewClient
+
+# For actionbarsherlock & holoeverywhere
+-keep class com.actionbarsherlock.** {*;}
+-keep class org.holoeverywhere.** {*;}
+
+# For umeng
+-keepclassmembers class * {
+   public <init>(org.json.JSONObject);
+}
+-keep public class com.ax003d.sichu.R$*{
+    public static final int *;
+}
+-keep public class com.umeng.fb.ui.ThreadView {
+}
