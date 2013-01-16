@@ -148,7 +148,7 @@ public class BookBorrow {
 		this.borrower = borrower;
 	}
 
-	public void save(ContentResolver contentResolver) {
+	public Uri save(ContentResolver contentResolver) {
 		if (this.bookown != null) {
 			this.bookown.save(contentResolver);
 		}
@@ -157,6 +157,6 @@ public class BookBorrow {
 		}
 		ContentValues values = new ContentValues();
 		setContentValues(values);
-		contentResolver.insert(BookBorrows.CONTENT_URI, values);
+		return contentResolver.insert(BookBorrows.CONTENT_URI, values);
 	}
 }

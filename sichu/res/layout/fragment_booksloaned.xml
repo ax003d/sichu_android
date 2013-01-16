@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.markupartist.android.widget.PullToRefreshListView
-        android:id="@+id/lst_bookowns"
+    <ListView
+        android:id="@+id/lst_books_loaned"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

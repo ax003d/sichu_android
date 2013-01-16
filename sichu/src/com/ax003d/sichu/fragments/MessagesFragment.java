@@ -29,7 +29,6 @@ import com.ax003d.sichu.models.Book.Books;
 import com.ax003d.sichu.models.BookBorrowReq;
 import com.ax003d.sichu.models.BookBorrowReq.BookBorrowReqs;
 import com.ax003d.sichu.models.User.Users;
-import com.ax003d.sichu.utils.Preferences;
 
 public class MessagesFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
@@ -52,7 +51,7 @@ public class MessagesFragment extends Fragment implements
 
 	private ISichuAPI api_client;
 	private SlidingActivity activity;
-	private long userID;
+	// private long userID;
 	private MessageListAdapter adapter;
 	private ListView lst_msg;
 	public boolean requery;
@@ -62,7 +61,7 @@ public class MessagesFragment extends Fragment implements
 		super.onCreate(savedInstanceState);
 		api_client = SichuAPI.getInstance(getActivity());
 		activity = (SlidingActivity) getActivity();
-		userID = Preferences.getUserID(activity);
+		// userID = Preferences.getUserID(activity);
 		adapter = new MessageListAdapter(activity);
 	}
 
@@ -85,6 +84,11 @@ public class MessagesFragment extends Fragment implements
 
 	private class GetBookBorrowReqTask extends
 			AsyncTask<String, Void, JSONObject> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			activity.setSupportProgressBarIndeterminateVisibility(true);
+		}
 
 		@Override
 		protected JSONObject doInBackground(String... params) {
@@ -125,16 +129,19 @@ public class MessagesFragment extends Fragment implements
 				}
 			}
 
+			if (requery) {
+				activity.getSupportLoaderManager().restartLoader(
+						BOOKBORROWREQ_LOADER, null, MessagesFragment.this);
+				requery = false;
+			}
+			activity.setSupportProgressBarIndeterminateVisibility(false);
+
 			if (result != null && result.has("meta")) {
 				String next;
 				try {
 					next = result.getJSONObject("meta").getString("next");
 					if (!next.equals("null")) {
 						new GetBookBorrowReqTask().execute(next);
-					} else if (requery) {
-						activity.getSupportLoaderManager().restartLoader(
-								BOOKBORROWREQ_LOADER, null,
-								MessagesFragment.this);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -157,7 +164,7 @@ public class MessagesFragment extends Fragment implements
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		adapter.clearBookBorrowReq();
-		
+
 		if (!data.moveToFirst()) {
 			return;
 		}

@@ -6,6 +6,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
+import org.holoeverywhere.widget.ListView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,8 +30,6 @@ import com.ax003d.sichu.models.Follow;
 import com.ax003d.sichu.models.Follow.Follows;
 import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.utils.Preferences;
-import com.markupartist.android.widget.PullToRefreshListView;
-import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
 
 public class FollowingFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
@@ -40,7 +39,7 @@ public class FollowingFragment extends Fragment implements
 			Follows.TABLE_NAME + "." + Follows.GUID, Follows.FOLLOWINGID,
 			Follows.REMARK, Follows.USERID,
 			Users.TABLE_NAME + "." + Users.USERNAME + " AS followingName",
-			Users.TABLE_NAME + "." + Users.AVATAR + " AS followingAvatar"};
+			Users.TABLE_NAME + "." + Users.AVATAR + " AS followingAvatar" };
 
 	public static FollowingFragment getInstance() {
 		if (FollowingFragment.instance == null) {
@@ -50,10 +49,11 @@ public class FollowingFragment extends Fragment implements
 	}
 
 	private FollowListAdapter adapter;
-	private PullToRefreshListView lst_following;
+	private ListView lst_following;
 	private ISichuAPI api_client;
 	private SlidingActivity activity;
 	private long userID;
+	private boolean requery;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,17 +73,12 @@ public class FollowingFragment extends Fragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		lst_following = (PullToRefreshListView) activity
-				.findViewById(R.id.lst_following);
+		lst_following = (ListView) activity.findViewById(R.id.lst_following);
 		lst_following.setAdapter(adapter);
-		lst_following.setOnRefreshListener(new OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				new GetFollowingTask().execute();
-			}
-		});
 		activity.getSupportLoaderManager().initLoader(FOLLOWING_LOADER, null,
 				this);
+		requery = false;
+		new GetFollowingTask().execute();
 	}
 
 	@Override
@@ -108,7 +103,6 @@ public class FollowingFragment extends Fragment implements
 			adapter.addFollow(new Follow(data));
 		} while (data.moveToNext());
 		adapter.notifyDataSetChanged();
-		lst_following.onRefreshComplete();
 	}
 
 	@Override
@@ -118,6 +112,12 @@ public class FollowingFragment extends Fragment implements
 	}
 
 	private class GetFollowingTask extends AsyncTask<String, Void, JSONObject> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			activity.setSupportProgressBarIndeterminateVisibility(true);
+		}
+
 		@Override
 		protected JSONObject doInBackground(String... params) {
 			JSONObject ret = null;
@@ -146,12 +146,21 @@ public class FollowingFragment extends Fragment implements
 					jFollows = result.getJSONArray("objects");
 					for (int i = 0; i < jFollows.length(); i++) {
 						Follow follow = new Follow(jFollows.getJSONObject(i));
-						follow.save(contentResolver);
+						if (follow.save(contentResolver) != null) {
+							requery = true;
+						}
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
+
+			if (requery) {
+				activity.getSupportLoaderManager().restartLoader(
+						FOLLOWING_LOADER, null, FollowingFragment.this);
+				requery = false;
+			}
+			activity.setSupportProgressBarIndeterminateVisibility(false);
 
 			if (result != null && result.has("meta")) {
 				String next;
@@ -164,9 +173,6 @@ public class FollowingFragment extends Fragment implements
 					e.printStackTrace();
 				}
 			}
-			lst_following.onRefreshComplete();
-			activity.getSupportLoaderManager().restartLoader(FOLLOWING_LOADER,
-					null, FollowingFragment.this);
 			super.onPostExecute(result);
 		} // onPostExecute
 	} // GetBookOwnTask

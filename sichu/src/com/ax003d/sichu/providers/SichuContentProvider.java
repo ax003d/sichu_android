@@ -60,12 +60,16 @@ public class SichuContentProvider extends ContentProvider {
 					+ Books.TITLE + " VARCHAR(128), " + Books.AUTHOR
 					+ " VARCHAR(128), " + Books.DOUBAN_ID + " VARCHAR(32), "
 					+ Books.COVER + " VARCHAR(128)" + " );");
+			db.execSQL("CREATE INDEX IF NOT EXISTS books_guid_index on " + Books.TABLE_NAME + "(" + Books.GUID + " DESC);");
+			
 			db.execSQL("CREATE TABLE " + BookOwns.TABLE_NAME + " ("
 					+ BookOwns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ BookOwns.GUID + " INTEGER UNIQUE, " + BookOwns.BOOKID
 					+ " INTEGER, " + BookOwns.OWNERID + " INTEGER, "
 					+ BookOwns.STATUS + " VARCHAR(16), " + BookOwns.HASEBOOK
 					+ " BOOLEAN, " + BookOwns.REMARK + " TEXT" + " );");
+			db.execSQL("CREATE INDEX IF NOT EXISTS bookowns_guid_index on " + BookOwns.TABLE_NAME + "(" + BookOwns.GUID + " DESC);");
+			
 			db.execSQL("CREATE TABLE " + BookBorrows.TABLE_NAME + " ("
 					+ BookBorrows._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ BookBorrows.GUID + " INTEGER UNIQUE, "
@@ -74,16 +78,22 @@ public class SichuContentProvider extends ContentProvider {
 					+ BookBorrows.BORROW_DATE + " TEXT, "
 					+ BookBorrows.PLANED_RETURN_DATE + " TEXT, "
 					+ BookBorrows.RETURNED_DATE + " TEXT" + " );");
+			db.execSQL("CREATE INDEX IF NOT EXISTS bookborrows_guid_index on " + BookBorrows.TABLE_NAME + "(" + BookBorrows.GUID + " DESC);");
+			
 			db.execSQL("CREATE TABLE " + Users.TABLE_NAME + " (" + Users._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + Users.GUID
 					+ " INTEGER UNIQUE, " + Users.USERNAME + " TEXT, "
 					+ Users.LAST_NAME + " TEXT, " + Users.FIRST_NAME
 					+ " TEXT, " + Users.AVATAR + " TEXT" + " );");
+			db.execSQL("CREATE INDEX IF NOT EXISTS users_guid_index on " + Users.TABLE_NAME + "(" + Users.GUID + " DESC);");
+			
 			db.execSQL("CREATE TABLE " + Follows.TABLE_NAME + " ("
 					+ Follows._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ Follows.GUID + " INTEGER UNIQUE, " + Follows.FOLLOWINGID
 					+ " INTEGER, " + Follows.REMARK + " TEXT, "
 					+ Follows.USERID + " INTEGER" + " );");
+			db.execSQL("CREATE INDEX IF NOT EXISTS follows_guid_index on " + Follows.TABLE_NAME + "(" + Follows.GUID + " DESC);");
+			
 			db.execSQL("CREATE TABLE " + BookBorrowReqs.TABLE_NAME + " ("
 					+ BookBorrowReqs._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -94,6 +104,7 @@ public class SichuContentProvider extends ContentProvider {
 					+ BookBorrowReqs.PLANED_RETURN_DATE + " TEXT, "
 					+ BookBorrowReqs.REMARK + " TEXT, " + BookBorrowReqs.STATUS
 					+ " INTEGER" + " );");
+			db.execSQL("CREATE INDEX IF NOT EXISTS bookborrowreqs_guid_index on " + BookBorrowReqs.TABLE_NAME + "(" + BookBorrowReqs.GUID + " DESC);");
 		}
 
 		@Override

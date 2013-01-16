@@ -6,6 +6,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
+import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,8 +36,6 @@ import com.ax003d.sichu.models.BookOwn.BookOwns;
 import com.ax003d.sichu.utils.Preferences;
 import com.google.zxing.integration.android.IntentIntegratorSupportV4;
 import com.google.zxing.integration.android.IntentResult;
-import com.markupartist.android.widget.PullToRefreshListView;
-import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
 
 public class BooksMineFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
@@ -51,10 +50,11 @@ public class BooksMineFragment extends Fragment implements
 	}
 
 	private BookOwnListAdapter adapter;
-	private PullToRefreshListView lst_bookown;
+	private ListView lst_bookown;
 	private ISichuAPI api_client;
 	private SlidingActivity activity;
 	private long userID;
+	private boolean requery;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -69,24 +69,19 @@ public class BooksMineFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_mybooks, container, false);
+		return inflater.inflate(R.layout.fragment_booksmine, container, false);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		lst_bookown = (PullToRefreshListView) getActivity().findViewById(
+		lst_bookown = (ListView) getActivity().findViewById(
 				R.id.lst_bookowns);
 		lst_bookown.setAdapter(adapter);
-		lst_bookown.setOnRefreshListener(new OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				new GetBookOwnTask().execute();
-			}
-		});
-		activity.setSupportProgressBarIndeterminateVisibility(false);
 		activity.getSupportLoaderManager().initLoader(BOOKOWN_LOADER, null,
 				this);
+		requery = false;
+		new GetBookOwnTask().execute();
 	}
 
 	@Override
@@ -179,7 +174,6 @@ public class BooksMineFragment extends Fragment implements
 			adapter.addBookOwn(new BookOwn(data));
 		} while (data.moveToNext());
 		adapter.notifyDataSetChanged();
-		lst_bookown.onRefreshComplete();
 	}
 
 	@Override
@@ -189,6 +183,12 @@ public class BooksMineFragment extends Fragment implements
 	}
 
 	private class GetBookOwnTask extends AsyncTask<String, Void, JSONObject> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			activity.setSupportProgressBarIndeterminateVisibility(true);			
+		}
+		
 		@Override
 		protected JSONObject doInBackground(String... params) {
 			JSONObject ret = null;
@@ -217,13 +217,22 @@ public class BooksMineFragment extends Fragment implements
 					jBookOwns = result.getJSONArray("objects");
 					for (int i = 0; i < jBookOwns.length(); i++) {
 						BookOwn own = new BookOwn(jBookOwns.getJSONObject(i));
-						own.save(contentResolver);
+						if (own.save(contentResolver) != null) {
+							requery = true;
+						}
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
 
+			if (requery) {
+				activity.getSupportLoaderManager().restartLoader(BOOKOWN_LOADER,
+						null, BooksMineFragment.this);
+				requery = false;
+			}
+			activity.setSupportProgressBarIndeterminateVisibility(false);
+			
 			if (result != null && result.has("meta")) {
 				String next;
 				try {
@@ -235,9 +244,6 @@ public class BooksMineFragment extends Fragment implements
 					e.printStackTrace();
 				}
 			}
-			lst_bookown.onRefreshComplete();
-			activity.getSupportLoaderManager().restartLoader(BOOKOWN_LOADER,
-					null, BooksMineFragment.this);
 			super.onPostExecute(result);
 		} // onPostExecute
 	} // GetBookOwnTask

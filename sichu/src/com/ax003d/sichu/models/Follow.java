@@ -97,7 +97,7 @@ public class Follow {
 		this.remark = remark;
 	}
 
-	public void save(ContentResolver contentResolver) {
+	public Uri save(ContentResolver contentResolver) {
 		if (this.following != null) {
 			this.following.save(contentResolver);
 		}
@@ -106,7 +106,7 @@ public class Follow {
 		}
 		ContentValues values = new ContentValues();
 		setContentValues(values);
-		contentResolver.insert(Follows.CONTENT_URI, values);		
+		return contentResolver.insert(Follows.CONTENT_URI, values);		
 	}
 
 	public User getUser() {

@@ -141,7 +141,7 @@ public class BookOwn {
 		return this.guid;
 	}
 
-	public void save(ContentResolver contentResolver) {
+	public Uri save(ContentResolver contentResolver) {
 		if (this.book != null) {
 			this.book.save(contentResolver);
 		}
@@ -150,7 +150,7 @@ public class BookOwn {
 		}
 		ContentValues values = new ContentValues();
 		setContentValues(values);
-		contentResolver.insert(BookOwns.CONTENT_URI, values);
+		return contentResolver.insert(BookOwns.CONTENT_URI, values);
 	}
 
 	public User getOwner() {

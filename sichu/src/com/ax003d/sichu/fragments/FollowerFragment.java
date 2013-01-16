@@ -6,6 +6,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
+import org.holoeverywhere.widget.ListView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,8 +30,6 @@ import com.ax003d.sichu.models.Follow;
 import com.ax003d.sichu.models.Follow.Follows;
 import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.utils.Preferences;
-import com.markupartist.android.widget.PullToRefreshListView;
-import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
 
 public class FollowerFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
@@ -40,7 +39,7 @@ public class FollowerFragment extends Fragment implements
 			Follows.TABLE_NAME + "." + Follows.GUID, Follows.FOLLOWINGID,
 			Follows.REMARK, Follows.USERID,
 			"Follower." + Users.USERNAME + " AS followerName",
-			"Follower." + Users.AVATAR + " AS followerAvatar"};
+			"Follower." + Users.AVATAR + " AS followerAvatar" };
 
 	public static FollowerFragment getInstance() {
 		if (FollowerFragment.instance == null) {
@@ -50,10 +49,11 @@ public class FollowerFragment extends Fragment implements
 	}
 
 	private FollowListAdapter adapter;
-	private PullToRefreshListView lst_follower;
+	private ListView lst_follower;
 	private ISichuAPI api_client;
 	private SlidingActivity activity;
 	private long userID;
+	private boolean requery;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class FollowerFragment extends Fragment implements
 		activity = (SlidingActivity) getActivity();
 		userID = Preferences.getUserID(activity);
 		adapter = new FollowListAdapter(activity);
-		adapter.setAsFollower(true);		
+		adapter.setAsFollower(true);
 	}
 
 	@Override
@@ -74,17 +74,12 @@ public class FollowerFragment extends Fragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		lst_follower = (PullToRefreshListView) activity
-				.findViewById(R.id.lst_follower);
+		lst_follower = (ListView) activity.findViewById(R.id.lst_follower);
 		lst_follower.setAdapter(adapter);
-		lst_follower.setOnRefreshListener(new OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				new GetFollowerTask().execute();
-			}
-		});
 		activity.getSupportLoaderManager().initLoader(FOLLOWER_LOADER, null,
 				this);
+		requery = false;
+		new GetFollowerTask().execute();
 	}
 
 	@Override
@@ -109,14 +104,19 @@ public class FollowerFragment extends Fragment implements
 			adapter.addFollow(new Follow(data));
 		} while (data.moveToNext());
 		adapter.notifyDataSetChanged();
-		lst_follower.onRefreshComplete();
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> data) {
 	}
-	
+
 	private class GetFollowerTask extends AsyncTask<String, Void, JSONObject> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			activity.setSupportProgressBarIndeterminateVisibility(true);
+		}
+
 		@Override
 		protected JSONObject doInBackground(String... params) {
 			JSONObject ret = null;
@@ -145,12 +145,21 @@ public class FollowerFragment extends Fragment implements
 					jFollows = result.getJSONArray("objects");
 					for (int i = 0; i < jFollows.length(); i++) {
 						Follow follow = new Follow(jFollows.getJSONObject(i));
-						follow.save(contentResolver);
+						if (follow.save(contentResolver) != null) {
+							requery = true;
+						}
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
+
+			if (requery) {
+				activity.getSupportLoaderManager().restartLoader(
+						FOLLOWER_LOADER, null, FollowerFragment.this);
+				requery = false;
+			}
+			activity.setSupportProgressBarIndeterminateVisibility(false);
 
 			if (result != null && result.has("meta")) {
 				String next;
@@ -163,10 +172,7 @@ public class FollowerFragment extends Fragment implements
 					e.printStackTrace();
 				}
 			}
-			lst_follower.onRefreshComplete();
-			activity.getSupportLoaderManager().restartLoader(FOLLOWER_LOADER,
-					null, FollowerFragment.this);
 			super.onPostExecute(result);
 		} // onPostExecute
-	} // GetFollowerTask	
+	} // GetFollowerTask
 }

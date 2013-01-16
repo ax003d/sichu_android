@@ -6,6 +6,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
+import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,8 +32,6 @@ import com.ax003d.sichu.models.BookBorrow;
 import com.ax003d.sichu.models.BookBorrow.BookBorrows;
 import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.utils.Preferences;
-import com.markupartist.android.widget.PullToRefreshListView;
-import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
 
 public class BooksBorrowedFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
@@ -56,8 +55,9 @@ public class BooksBorrowedFragment extends Fragment implements
 	private BookLoanedListAdapter adapter;
 	private SlidingActivity activity;
 	private ISichuAPI api_client;
-	private PullToRefreshListView lst_books_borrowed;
+	private ListView lst_books_borrowed;
 	private long userID;
+	private boolean requery;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,24 +73,20 @@ public class BooksBorrowedFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_borrowedbooks, container,
+		return inflater.inflate(R.layout.fragment_booksborrowed, container,
 				false);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		lst_books_borrowed = (PullToRefreshListView) getActivity()
-				.findViewById(R.id.lst_books_borrowed);
+		lst_books_borrowed = (ListView) getActivity().findViewById(
+				R.id.lst_books_borrowed);
 		lst_books_borrowed.setAdapter(adapter);
-		lst_books_borrowed.setOnRefreshListener(new OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				new GetBooksBorrowedTask().execute();
-			}
-		});
 		activity.getSupportLoaderManager().initLoader(BOOKBORROW_BORROW_LOADER,
 				null, this);
+		requery = false;
+		new GetBooksBorrowedTask().execute();
 	}
 
 	@Override
@@ -116,7 +112,6 @@ public class BooksBorrowedFragment extends Fragment implements
 			adapter.addBookBorrow(new BookBorrow(data));
 		} while (data.moveToNext());
 		adapter.notifyDataSetChanged();
-		lst_books_borrowed.onRefreshComplete();
 	}
 
 	@Override
@@ -126,6 +121,12 @@ public class BooksBorrowedFragment extends Fragment implements
 
 	private class GetBooksBorrowedTask extends
 			AsyncTask<String, Void, JSONObject> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			activity.setSupportProgressBarIndeterminateVisibility(true);
+		}
+
 		@Override
 		protected JSONObject doInBackground(String... params) {
 			JSONObject ret = null;
@@ -163,7 +164,9 @@ public class BooksBorrowedFragment extends Fragment implements
 							own.save(contentResolver);
 						}
 						borrow.setBookOwn(own);
-						borrow.save(contentResolver);
+						if (borrow.save(contentResolver) != null) {
+							requery = true;
+						}
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -171,6 +174,14 @@ public class BooksBorrowedFragment extends Fragment implements
 							Toast.LENGTH_SHORT).show();
 				}
 			}
+
+			if (requery) {
+				activity.getSupportLoaderManager().restartLoader(
+						BOOKBORROW_BORROW_LOADER, null,
+						BooksBorrowedFragment.this);
+				requery = false;
+			}
+			activity.setSupportProgressBarIndeterminateVisibility(false);
 
 			if (result != null && result.has("meta")) {
 				String next;
@@ -183,9 +194,6 @@ public class BooksBorrowedFragment extends Fragment implements
 					e.printStackTrace();
 				}
 			}
-			activity.getSupportLoaderManager().restartLoader(BOOKBORROW_BORROW_LOADER, null,
-					BooksBorrowedFragment.this);									
-			lst_books_borrowed.onRefreshComplete();
 			super.onPostExecute(result);
 		} // onPostExecute
 	} // GetBooksBorrowedTask
