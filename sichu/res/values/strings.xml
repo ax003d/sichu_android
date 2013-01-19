@@ -70,5 +70,6 @@
     <string name="lbl_type">Want to Borrow</string>
     <string name="pref_others">Others</string>
     <string name="pref_title_feedbacks">Feedbacks</string>
+    <string name="menu_sync">Sync</string>
 
 </resources>

@@ -21,6 +21,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.MessageListAdapter;
 import com.ax003d.sichu.api.ISichuAPI;
@@ -59,6 +60,7 @@ public class MessagesFragment extends Fragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		api_client = SichuAPI.getInstance(getActivity());
 		activity = (SlidingActivity) getActivity();
 		// userID = Preferences.getUserID(activity);
@@ -78,9 +80,19 @@ public class MessagesFragment extends Fragment implements
 		lst_msg.setAdapter(adapter);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROWREQ_LOADER,
 				null, this);
-		requery = false;
-		new GetBookBorrowReqTask().execute();
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()){
+		case R.id.menu_sync:
+			requery = false;
+			new GetBookBorrowReqTask().execute();
+			break;
+		}		
+
+		return super.onOptionsItemSelected(item);
+	}	
 
 	private class GetBookBorrowReqTask extends
 			AsyncTask<String, Void, JSONObject> {

@@ -69,6 +69,7 @@
     <string name="lbl_remark">备注:</string>
     <string name="lbl_type">想借</string>
     <string name="pref_others">其他</string>
-    <string name="pref_title_feedbacks">意见反馈</string>    
+    <string name="pref_title_feedbacks">意见反馈</string>
+    <string name="menu_sync">同步</string>    
     
 </resources>

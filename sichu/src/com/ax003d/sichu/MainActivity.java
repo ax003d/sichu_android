@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.ActionBar.TabListener;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.ax003d.sichu.api.ISichuAPI;
@@ -53,6 +54,8 @@ import com.weibo.sdk.android.sso.SsoHandler;
 
 
 public class MainActivity extends SlidingActivity implements TabListener {
+	public int page;
+
 	private final class ListNavigationAdapter extends ArrayAdapter<Integer>
 			implements OnItemClickListener {
 		private int lastSelectedItem = 0;
@@ -86,7 +89,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 				long id) {
 			lastSelectedItem = position;
 			notifyDataSetInvalidated();
-			int page = pages[lastSelectedItem];
+			page = pages[lastSelectedItem];
 			replaceTabs(page);
 			getSupportActionBar().setSubtitle(page);
 			getSlidingMenu().showAbove(true);
@@ -139,6 +142,14 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		// } else {
 		// new SyncTask().execute();
 		// }
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		if (page != R.string.page_account) {
+			getSupportMenuInflater().inflate(R.menu.main, menu);
+		}
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	private void replaceTabs(int page) {

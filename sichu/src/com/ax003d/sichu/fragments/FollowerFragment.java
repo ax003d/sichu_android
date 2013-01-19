@@ -22,6 +22,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.FollowListAdapter;
 import com.ax003d.sichu.api.ISichuAPI;
@@ -58,6 +59,7 @@ public class FollowerFragment extends Fragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		api_client = SichuAPI.getInstance(getActivity());
 		activity = (SlidingActivity) getActivity();
 		userID = Preferences.getUserID(activity);
@@ -78,9 +80,19 @@ public class FollowerFragment extends Fragment implements
 		lst_follower.setAdapter(adapter);
 		activity.getSupportLoaderManager().initLoader(FOLLOWER_LOADER, null,
 				this);
-		requery = false;
-		new GetFollowerTask().execute();
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()){
+		case R.id.menu_sync:
+			requery = false;
+			new GetFollowerTask().execute();
+			break;
+		}		
+
+		return super.onOptionsItemSelected(item);
+	}	
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {

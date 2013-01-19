@@ -75,28 +75,34 @@ public class BooksMineFragment extends Fragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		activity.setSupportProgressBarIndeterminateVisibility(false);
 		lst_bookown = (ListView) getActivity().findViewById(
 				R.id.lst_bookowns);
 		lst_bookown.setAdapter(adapter);
 		activity.getSupportLoaderManager().initLoader(BOOKOWN_LOADER, null,
 				this);
-		requery = false;
-		new GetBookOwnTask().execute();
 	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.fragment_mybooks, menu);
+		inflater.inflate(R.menu.fragment_booksmine, menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.menu_scan) {
+		switch(item.getItemId()){
+		case R.id.menu_scan:
 			IntentIntegratorSupportV4 integrator = new IntentIntegratorSupportV4(
 					this);
 			integrator.initiateScan();
+			break;
+		case R.id.menu_sync:
+			requery = false;
+			new GetBookOwnTask().execute();
+			break;
 		}
+		 
 		return super.onOptionsItemSelected(item);
 	}
 

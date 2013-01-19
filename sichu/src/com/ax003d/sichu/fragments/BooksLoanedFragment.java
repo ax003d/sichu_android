@@ -22,6 +22,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.ax003d.sichu.MainActivity;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.BookLoanedListAdapter;
@@ -85,8 +86,18 @@ public class BooksLoanedFragment extends Fragment implements
 		lst_books_loaned.setAdapter(adapter);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROW_LOADER, null,
 				this);
-		requery = false;
-		new GetBooksLoanedTask().execute();
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()){
+		case R.id.menu_sync:
+			requery = false;
+			new GetBooksLoanedTask().execute();
+			break;
+		}		
+
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
