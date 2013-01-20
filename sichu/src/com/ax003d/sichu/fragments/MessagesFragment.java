@@ -173,7 +173,8 @@ public class MessagesFragment extends Fragment implements
 		if (id == BOOKBORROWREQ_LOADER) {
 			return new CursorLoader(activity, Uri.withAppendedPath(
 					BookBorrowReqs.CONTENT_URI, "user/" + userID),
-					bookborrowreqProjection, null, null, null);
+					bookborrowreqProjection, null, null, 
+					BookBorrowReqs.TABLE_NAME + "." + BookBorrowReqs.STATUS + " ASC");
 		}
 		return null;
 	}
