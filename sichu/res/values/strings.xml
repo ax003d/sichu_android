@@ -72,5 +72,8 @@
     <string name="pref_title_feedbacks">Feedbacks</string>
     <string name="menu_sync">Sync</string>
     <string name="msg_login">Login, Please wait...</string>
-
+    <string name="title_following">Follow us</string>
+    <string name="txt_auth_ok">Your weibo account is authorized!</string>
+	<string name="msg_following">Follow us in weibo.</string>
+    
 </resources>

@@ -24,7 +24,7 @@ public class Utils {
 	// private static String TAG = Utils.class.getSimpleName();
 	private static ImageLoader img_loader;
 	private static DisplayImageOptions cloud_options;
-	private static SimpleDateFormat dateTimeFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static SimpleDateFormat dateTimeFmt =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
 	
 	public static boolean isNetworkAvailable(Context context) {

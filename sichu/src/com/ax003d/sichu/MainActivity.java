@@ -52,6 +52,7 @@ import com.ax003d.sichu.utils.WeiboUtils;
 import com.ax003d.sichu.widget.NavigationItem;
 import com.ax003d.sichu.widget.NavigationWidget;
 import com.umeng.analytics.MobclickAgent;
+import com.weibo.sdk.android.Weibo;
 import com.weibo.sdk.android.sso.SsoHandler;
 
 
@@ -143,10 +144,10 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		ab.setDisplayShowHomeEnabled(true);
 
 		preferHandler = new UpdatePreferHandler(this);
-		// if (Preferences.getSyncTime(this) == 0) {
-		// } else {
-		// new SyncTask().execute();
-		// }
+		Bundle extras = getIntent().getExtras();
+		if (extras != null && extras.getBoolean("ask_following") && (!WeiboUtils.isFollower())) {
+			WeiboUtils.askFollowing(this);
+		}		
 	}
 	
 	@Override
@@ -388,6 +389,9 @@ public class MainActivity extends SlidingActivity implements TabListener {
 			if (activity != null) {
 				activity.closeDialog();
 				AccountFragment.getInstance().setScreenName();
+				if (!WeiboUtils.isFollower()) {
+					WeiboUtils.askFollowing(activity);
+				}
 			}
 		}
 	}

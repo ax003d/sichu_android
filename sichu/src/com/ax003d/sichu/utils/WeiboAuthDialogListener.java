@@ -41,6 +41,12 @@ public class WeiboAuthDialogListener implements WeiboAuthListener {
 		accessToken = new Oauth2AccessToken(token, expires_in);
 		if (accessToken.isSessionValid()) {
 			AccessTokenKeeper.keepAccessToken(mActivity, accessToken);
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					WeiboUtils.checkIsFollower(mActivity, uid);
+				}
+			}).start();
 			UsersAPI users = new UsersAPI(accessToken);
 			users.show(uid, new UsersShowListener());
 		}
@@ -114,8 +120,10 @@ public class WeiboAuthDialogListener implements WeiboAuthListener {
 								ret.getLong("expire"), ret.getLong("uid"),
 								ret.getString("username"),
 								ret.getString("avatar"));
-						mActivity.startActivity(new Intent(mActivity,
-								MainActivity.class));
+						Intent intent = new Intent(mActivity,
+								MainActivity.class);
+						intent.putExtra("ask_following", true);
+						mActivity.startActivity(intent);
 						mActivity.finish();
 					}
 				}
