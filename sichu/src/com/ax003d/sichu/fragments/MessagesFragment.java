@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -30,6 +31,7 @@ import com.ax003d.sichu.models.Book.Books;
 import com.ax003d.sichu.models.BookBorrowReq;
 import com.ax003d.sichu.models.BookBorrowReq.BookBorrowReqs;
 import com.ax003d.sichu.models.User.Users;
+import com.ax003d.sichu.utils.Preferences;
 
 public class MessagesFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
@@ -52,7 +54,7 @@ public class MessagesFragment extends Fragment implements
 
 	private ISichuAPI api_client;
 	private SlidingActivity activity;
-	// private long userID;
+	private long userID;
 	private MessageListAdapter adapter;
 	private ListView lst_msg;
 	public boolean requery;
@@ -63,7 +65,7 @@ public class MessagesFragment extends Fragment implements
 		setHasOptionsMenu(true);
 		api_client = SichuAPI.getInstance(getActivity());
 		activity = (SlidingActivity) getActivity();
-		// userID = Preferences.getUserID(activity);
+		userID = Preferences.getUserID(activity);
 		adapter = new MessageListAdapter(activity);
 	}
 
@@ -167,7 +169,8 @@ public class MessagesFragment extends Fragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		if (id == BOOKBORROWREQ_LOADER) {
-			return new CursorLoader(activity, BookBorrowReqs.CONTENT_URI,
+			return new CursorLoader(activity, Uri.withAppendedPath(
+					BookBorrowReqs.CONTENT_URI, "user/" + userID),
 					bookborrowreqProjection, null, null, null);
 		}
 		return null;

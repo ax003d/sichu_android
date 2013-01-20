@@ -38,6 +38,7 @@ public class SichuContentProvider extends ContentProvider {
 	private static final int FOLLOWINGS = 11;
 	private static final int FOLLOWERS = 12;
 	private static final int BOOKBORROWREQS = 13;
+	private static final int BOOKBORROWREQS_BY_USER = 14;
 
 	private static HashMap<String, String> booksProjectionMap;
 	private static HashMap<String, String> bookownsProjectionMap;
@@ -60,16 +61,18 @@ public class SichuContentProvider extends ContentProvider {
 					+ Books.TITLE + " VARCHAR(128), " + Books.AUTHOR
 					+ " VARCHAR(128), " + Books.DOUBAN_ID + " VARCHAR(32), "
 					+ Books.COVER + " VARCHAR(128)" + " );");
-			db.execSQL("CREATE INDEX IF NOT EXISTS books_guid_index on " + Books.TABLE_NAME + "(" + Books.GUID + " DESC);");
-			
+			db.execSQL("CREATE INDEX IF NOT EXISTS books_guid_index on "
+					+ Books.TABLE_NAME + "(" + Books.GUID + " DESC);");
+
 			db.execSQL("CREATE TABLE " + BookOwns.TABLE_NAME + " ("
 					+ BookOwns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ BookOwns.GUID + " INTEGER UNIQUE, " + BookOwns.BOOKID
 					+ " INTEGER, " + BookOwns.OWNERID + " INTEGER, "
 					+ BookOwns.STATUS + " VARCHAR(16), " + BookOwns.HASEBOOK
 					+ " BOOLEAN, " + BookOwns.REMARK + " TEXT" + " );");
-			db.execSQL("CREATE INDEX IF NOT EXISTS bookowns_guid_index on " + BookOwns.TABLE_NAME + "(" + BookOwns.GUID + " DESC);");
-			
+			db.execSQL("CREATE INDEX IF NOT EXISTS bookowns_guid_index on "
+					+ BookOwns.TABLE_NAME + "(" + BookOwns.GUID + " DESC);");
+
 			db.execSQL("CREATE TABLE " + BookBorrows.TABLE_NAME + " ("
 					+ BookBorrows._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ BookBorrows.GUID + " INTEGER UNIQUE, "
@@ -78,22 +81,26 @@ public class SichuContentProvider extends ContentProvider {
 					+ BookBorrows.BORROW_DATE + " TEXT, "
 					+ BookBorrows.PLANED_RETURN_DATE + " TEXT, "
 					+ BookBorrows.RETURNED_DATE + " TEXT" + " );");
-			db.execSQL("CREATE INDEX IF NOT EXISTS bookborrows_guid_index on " + BookBorrows.TABLE_NAME + "(" + BookBorrows.GUID + " DESC);");
-			
+			db.execSQL("CREATE INDEX IF NOT EXISTS bookborrows_guid_index on "
+					+ BookBorrows.TABLE_NAME + "(" + BookBorrows.GUID
+					+ " DESC);");
+
 			db.execSQL("CREATE TABLE " + Users.TABLE_NAME + " (" + Users._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + Users.GUID
 					+ " INTEGER UNIQUE, " + Users.USERNAME + " TEXT, "
 					+ Users.LAST_NAME + " TEXT, " + Users.FIRST_NAME
 					+ " TEXT, " + Users.AVATAR + " TEXT" + " );");
-			db.execSQL("CREATE INDEX IF NOT EXISTS users_guid_index on " + Users.TABLE_NAME + "(" + Users.GUID + " DESC);");
-			
+			db.execSQL("CREATE INDEX IF NOT EXISTS users_guid_index on "
+					+ Users.TABLE_NAME + "(" + Users.GUID + " DESC);");
+
 			db.execSQL("CREATE TABLE " + Follows.TABLE_NAME + " ("
 					+ Follows._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ Follows.GUID + " INTEGER UNIQUE, " + Follows.FOLLOWINGID
 					+ " INTEGER, " + Follows.REMARK + " TEXT, "
 					+ Follows.USERID + " INTEGER" + " );");
-			db.execSQL("CREATE INDEX IF NOT EXISTS follows_guid_index on " + Follows.TABLE_NAME + "(" + Follows.GUID + " DESC);");
-			
+			db.execSQL("CREATE INDEX IF NOT EXISTS follows_guid_index on "
+					+ Follows.TABLE_NAME + "(" + Follows.GUID + " DESC);");
+
 			db.execSQL("CREATE TABLE " + BookBorrowReqs.TABLE_NAME + " ("
 					+ BookBorrowReqs._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -104,7 +111,11 @@ public class SichuContentProvider extends ContentProvider {
 					+ BookBorrowReqs.PLANED_RETURN_DATE + " TEXT, "
 					+ BookBorrowReqs.REMARK + " TEXT, " + BookBorrowReqs.STATUS
 					+ " INTEGER" + " );");
-			db.execSQL("CREATE INDEX IF NOT EXISTS bookborrowreqs_guid_index on " + BookBorrowReqs.TABLE_NAME + "(" + BookBorrowReqs.GUID + " DESC);");
+			db.execSQL("CREATE INDEX IF NOT EXISTS bookborrowreqs_guid_index on "
+					+ BookBorrowReqs.TABLE_NAME
+					+ "("
+					+ BookBorrowReqs.GUID
+					+ " DESC);");
 		}
 
 		@Override
@@ -189,15 +200,18 @@ public class SichuContentProvider extends ContentProvider {
 			selection = (asFollower ? Follows.USERID : Follows.FOLLOWINGID)
 					+ " = " + uri.getLastPathSegment();
 			break;
-		case BOOKBORROWREQS:
+		case BOOKBORROWREQS_BY_USER:
 			queryBuilder.setTables(BookBorrowReqs.TABLE_NAME + " INNER JOIN "
-					+ Users.TABLE_NAME + " ON ( " + BookBorrowReqs.REQUESTERID + " = "
-					+ Users.TABLE_NAME + "." + Users.GUID + " ) INNER JOIN "
-					+ BookOwns.TABLE_NAME + " ON ( " + BookBorrowReqs.BOOKOWNID
-					+ " = " + BookOwns.TABLE_NAME + "." + BookOwns.GUID + " ) INNER JOIN "
-					+ Books.TABLE_NAME + " ON ( " + BookOwns.TABLE_NAME + "." + BookOwns.BOOKID
+					+ Users.TABLE_NAME + " ON ( " + BookBorrowReqs.REQUESTERID
+					+ " = " + Users.TABLE_NAME + "." + Users.GUID
+					+ " ) INNER JOIN " + BookOwns.TABLE_NAME + " ON ( "
+					+ BookBorrowReqs.BOOKOWNID + " = " + BookOwns.TABLE_NAME
+					+ "." + BookOwns.GUID + " ) INNER JOIN " + Books.TABLE_NAME
+					+ " ON ( " + BookOwns.TABLE_NAME + "." + BookOwns.BOOKID
 					+ " = " + Books.TABLE_NAME + "." + Books.GUID + " )");
-			selection = (selection == null ? "" : selection);			
+			selection = (selection == null ? "" : selection + " AND ");
+			selection = BookOwns.TABLE_NAME + "." + BookOwns.OWNERID + " = "
+					+ uri.getLastPathSegment();
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -277,13 +291,15 @@ public class SichuContentProvider extends ContentProvider {
 			}
 			return null;
 		case BOOKBORROWREQS:
-			row_id = db.insertWithOnConflict(BookBorrowReqs.TABLE_NAME, BookBorrowReqs.GUID,
-					values, SQLiteDatabase.CONFLICT_IGNORE);
+			row_id = db
+					.insertWithOnConflict(BookBorrowReqs.TABLE_NAME,
+							BookBorrowReqs.GUID, values,
+							SQLiteDatabase.CONFLICT_IGNORE);
 			if (row_id > 0) {
 				Uri bookborrowreq_uri = ContentUris.withAppendedId(
 						BookBorrowReqs.CONTENT_URI, row_id);
-				getContext().getContentResolver()
-						.notifyChange(bookborrowreq_uri, null);
+				getContext().getContentResolver().notifyChange(
+						bookborrowreq_uri, null);
 				return bookborrowreq_uri;
 			}
 			return null;
@@ -352,7 +368,10 @@ public class SichuContentProvider extends ContentProvider {
 				FOLLOWINGS);
 		URI_MATCHER.addURI(AUTHORITY, Follows.TABLE_NAME + "/following/#",
 				FOLLOWERS);
-		URI_MATCHER.addURI(AUTHORITY, BookBorrowReqs.TABLE_NAME, BOOKBORROWREQS);
+		URI_MATCHER.addURI(AUTHORITY, BookBorrowReqs.TABLE_NAME,
+				BOOKBORROWREQS);
+		URI_MATCHER.addURI(AUTHORITY, BookBorrowReqs.TABLE_NAME + "/user/#",
+				BOOKBORROWREQS_BY_USER);
 
 		bookownsWithBookProjectionMap = new HashMap<String, String>();
 		bookownsWithBookProjectionMap.put(BookOwns.TABLE_NAME + "."
