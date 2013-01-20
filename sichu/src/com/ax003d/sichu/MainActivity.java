@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.ArrayAdapter;
+import org.holoeverywhere.app.ProgressDialog;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.slidingmenu.SlidingMenu;
 import org.json.JSONArray;
@@ -45,6 +46,7 @@ import com.ax003d.sichu.fragments.MessagesFragment;
 import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.models.BookOwn.BookOwns;
 import com.ax003d.sichu.utils.Preferences;
+import com.ax003d.sichu.utils.Utils;
 import com.ax003d.sichu.utils.WeiboAuthDialogListener;
 import com.ax003d.sichu.utils.WeiboUtils;
 import com.ax003d.sichu.widget.NavigationItem;
@@ -103,6 +105,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	SsoHandler mSsoHandler;
 	private long userID;
 	private UpdatePreferHandler preferHandler;
+	private ProgressDialog mDialog;
 	private static int[] pages = { R.string.page_books, R.string.page_friends,
 			R.string.page_messages, R.string.page_account };
 	
@@ -217,6 +220,18 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (mSsoHandler != null) {
 			mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
+			if (mDialog == null) {
+				mDialog = Utils.createLoginDialog(this);			
+			}
+			if (resultCode == RESULT_OK) {
+				mDialog.show();
+			}
+		}
+	}
+	
+	public void closeDialog() {
+		if (mDialog != null) {
+			mDialog.dismiss();
 		}
 	}
 
@@ -371,6 +386,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 			super.handleMessage(msg);
 			MainActivity activity = mActivity.get();
 			if (activity != null) {
+				activity.closeDialog();
 				AccountFragment.getInstance().setScreenName();
 			}
 		}

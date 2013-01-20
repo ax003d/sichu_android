@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.app.Activity;
+import org.holoeverywhere.app.ProgressDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,6 +30,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private boolean remember = false;
 	private ISichuAPI api_client;
 	SsoHandler mSsoHandler;
+	private ProgressDialog mDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -147,6 +149,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (mSsoHandler != null) {
 			mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
+			if (mDialog == null) {
+				mDialog = Utils.createLoginDialog(this);			
+			}
+			if (resultCode == RESULT_OK) {
+				mDialog.show();
+			}
 		}
 	}
 }

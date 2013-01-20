@@ -2,13 +2,6 @@ package com.ax003d.sichu.adapters;
 
 import java.util.ArrayList;
 
-import com.ax003d.sichu.R;
-import com.ax003d.sichu.models.Follow;
-import com.ax003d.sichu.models.BookBorrowReq;
-import com.ax003d.sichu.utils.Utils;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +9,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.ax003d.sichu.R;
+import com.ax003d.sichu.models.BookBorrowReq;
+import com.ax003d.sichu.utils.Utils;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MessageListAdapter extends BaseAdapter {
 

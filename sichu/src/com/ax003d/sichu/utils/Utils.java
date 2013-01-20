@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.holoeverywhere.app.ProgressDialog;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -111,4 +113,12 @@ public class Utils {
 	public static boolean isLogin(Context context) {
 		return Preferences.getUserID(context) != -1;
 	}
+	
+	public static ProgressDialog createLoginDialog(Context context) {
+		ProgressDialog dialog = new ProgressDialog(context);
+		dialog.setCancelable(false);
+		dialog.setMessage(context.getResources().getString(R.string.msg_login));
+		dialog.setIndeterminate(true);
+		return dialog;
+	}	
 }

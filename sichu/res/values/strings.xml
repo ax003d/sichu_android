@@ -71,5 +71,6 @@
     <string name="pref_others">Others</string>
     <string name="pref_title_feedbacks">Feedbacks</string>
     <string name="menu_sync">Sync</string>
+    <string name="msg_login">Login, Please wait...</string>
 
 </resources>

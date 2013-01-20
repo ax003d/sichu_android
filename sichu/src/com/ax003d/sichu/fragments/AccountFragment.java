@@ -100,9 +100,6 @@ public class AccountFragment extends PreferenceFragment implements
 
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
-		if (preference.getKey().equals("pref_key_weibo")) {
-			Toast.makeText(mActivity, "Bind", Toast.LENGTH_SHORT).show();
-		}
 		return false;
 	}
 	

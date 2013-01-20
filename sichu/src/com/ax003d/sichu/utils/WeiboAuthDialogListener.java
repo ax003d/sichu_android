@@ -10,9 +10,7 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.ax003d.sichu.LoginActivity;
 import com.ax003d.sichu.MainActivity;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
@@ -50,19 +48,17 @@ public class WeiboAuthDialogListener implements WeiboAuthListener {
 
 	@Override
 	public void onError(WeiboDialogError e) {
-		Toast.makeText(mActivity, "Auth error : " + e.getMessage(),
-				Toast.LENGTH_LONG).show();
+		Log.d("weibo", "error", e);
 	}
 
 	@Override
 	public void onCancel() {
-		Toast.makeText(mActivity, "Auth cancel", Toast.LENGTH_LONG).show();
+		Log.d("weibo", "cancel");
 	}
 
 	@Override
 	public void onWeiboException(WeiboException e) {
-		Toast.makeText(mActivity, "Auth exception : " + e.getMessage(),
-				Toast.LENGTH_LONG).show();
+		Log.d("weibo", "exception", e);
 	}
 
 	private class UsersShowListener implements RequestListener {
