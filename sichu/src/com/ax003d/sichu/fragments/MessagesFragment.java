@@ -30,6 +30,7 @@ import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.models.Book.Books;
 import com.ax003d.sichu.models.BookBorrowReq;
 import com.ax003d.sichu.models.BookBorrowReq.BookBorrowReqs;
+import com.ax003d.sichu.models.BookOwn.BookOwns;
 import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.utils.Preferences;
 
@@ -43,6 +44,7 @@ public class MessagesFragment extends Fragment implements
 			BookBorrowReqs.BOOKOWNID, BookBorrowReqs.PLANED_RETURN_DATE,
 			BookBorrowReqs.TABLE_NAME + "." + BookBorrowReqs.REMARK,
 			BookBorrowReqs.TABLE_NAME + "." + BookBorrowReqs.STATUS,
+			BookOwns.TABLE_NAME + "." + BookOwns.OWNERID,
 			Users.USERNAME, Users.AVATAR, Books.TITLE, Books.COVER };
 
 	public static MessagesFragment getInstance() {

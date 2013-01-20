@@ -54,7 +54,8 @@ import com.weibo.sdk.android.sso.SsoHandler;
 
 
 public class MainActivity extends SlidingActivity implements TabListener {
-	public int page;
+	public int pre_page = -1;
+	public int page = -1;
 
 	private final class ListNavigationAdapter extends ArrayAdapter<Integer>
 			implements OnItemClickListener {
@@ -89,8 +90,9 @@ public class MainActivity extends SlidingActivity implements TabListener {
 				long id) {
 			lastSelectedItem = position;
 			notifyDataSetInvalidated();
+			pre_page = page;
 			page = pages[lastSelectedItem];
-			replaceTabs(page);
+			replaceTabs();
 			getSupportActionBar().setSubtitle(page);
 			getSlidingMenu().showAbove(true);
 		}
@@ -152,7 +154,10 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	private void replaceTabs(int page) {
+	private void replaceTabs() {
+		if (page == pre_page) {
+			return;
+		}
 		final ActionBar ab = getSupportActionBar();
 		ab.removeAllTabs();
 
