@@ -75,5 +75,8 @@
     <string name="title_following">关注我们</string>
     <string name="txt_auth_ok">微博授权成功!</string>
 	<string name="msg_following">在微博上关注私橱.</string>
+	<string name="hint_borrow_to">同意借给 %1$s?</string>
+	<string name="menu_agree">同意</string>
+	<string name="menu_reject">拒绝</string>	
     
 </resources>

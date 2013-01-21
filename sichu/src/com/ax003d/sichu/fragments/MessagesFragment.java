@@ -7,6 +7,7 @@ import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.widget.ListView;
+import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +22,12 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.MessageListAdapter;
@@ -35,7 +41,7 @@ import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.utils.Preferences;
 
 public class MessagesFragment extends Fragment implements
-		LoaderManager.LoaderCallbacks<Cursor> {
+		LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
 	private static final int BOOKBORROWREQ_LOADER = 5;
 	private static MessagesFragment instance;
 	private static String[] bookborrowreqProjection = new String[] {
@@ -44,8 +50,8 @@ public class MessagesFragment extends Fragment implements
 			BookBorrowReqs.BOOKOWNID, BookBorrowReqs.PLANED_RETURN_DATE,
 			BookBorrowReqs.TABLE_NAME + "." + BookBorrowReqs.REMARK,
 			BookBorrowReqs.TABLE_NAME + "." + BookBorrowReqs.STATUS,
-			BookOwns.TABLE_NAME + "." + BookOwns.OWNERID,
-			Users.USERNAME, Users.AVATAR, Books.TITLE, Books.COVER };
+			BookOwns.TABLE_NAME + "." + BookOwns.OWNERID, Users.USERNAME,
+			Users.AVATAR, Books.TITLE, Books.COVER };
 
 	public static MessagesFragment getInstance() {
 		if (MessagesFragment.instance == null) {
@@ -60,6 +66,7 @@ public class MessagesFragment extends Fragment implements
 	private MessageListAdapter adapter;
 	private ListView lst_msg;
 	public boolean requery;
+	private int mActionPosition;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,21 +89,22 @@ public class MessagesFragment extends Fragment implements
 		super.onActivityCreated(savedInstanceState);
 		lst_msg = (ListView) activity.findViewById(R.id.lst_msg);
 		lst_msg.setAdapter(adapter);
+		lst_msg.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROWREQ_LOADER,
 				null, this);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()){
+		switch (item.getItemId()) {
 		case R.id.menu_sync:
 			requery = false;
 			new GetBookBorrowReqTask().execute();
 			break;
-		}		
+		}
 
 		return super.onOptionsItemSelected(item);
-	}	
+	}
 
 	private class GetBookBorrowReqTask extends
 			AsyncTask<String, Void, JSONObject> {
@@ -173,8 +181,9 @@ public class MessagesFragment extends Fragment implements
 		if (id == BOOKBORROWREQ_LOADER) {
 			return new CursorLoader(activity, Uri.withAppendedPath(
 					BookBorrowReqs.CONTENT_URI, "user/" + userID),
-					bookborrowreqProjection, null, null, 
-					BookBorrowReqs.TABLE_NAME + "." + BookBorrowReqs.STATUS + " ASC");
+					bookborrowreqProjection, null, null,
+					BookBorrowReqs.TABLE_NAME + "." + BookBorrowReqs.STATUS
+							+ " ASC");
 		}
 		return null;
 	}
@@ -197,5 +206,57 @@ public class MessagesFragment extends Fragment implements
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		mActionPosition = position;
+		activity.startActionMode(new ActionMode.Callback() {
+
+			@Override
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public void onDestroyActionMode(ActionMode mode) {
+			}
+
+			@Override
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				activity.getSupportMenuInflater().inflate(
+						R.menu.actionmode_messages, menu);
+				BookBorrowReq req = (BookBorrowReq) adapter
+						.getItem(mActionPosition);
+				mode.setTitle(String.format(activity
+						.getString(R.string.hint_borrow_to), req.getRequester()
+						.getUsername()));
+				mode.setSubtitle(req.getBookown().getBook().getTitle());
+				return true;
+			}
+
+			@Override
+			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				boolean handled = false;
+				switch (item.getItemId()) {
+				case R.id.menu_agree:
+					Toast.makeText(activity, "agree", Toast.LENGTH_SHORT)
+							.show();
+					handled = true;
+					break;
+				case R.id.menu_reject:
+					Toast.makeText(activity, "reject", Toast.LENGTH_SHORT)
+							.show();
+					handled = true;
+					break;
+				}
+				if (handled) {
+					mode.finish();
+				}
+				return handled;
+			}
+		});
 	}
 }

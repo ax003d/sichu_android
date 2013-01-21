@@ -75,5 +75,8 @@
     <string name="title_following">Follow us</string>
     <string name="txt_auth_ok">Your weibo account is authorized!</string>
 	<string name="msg_following">Follow us in weibo.</string>
+	<string name="hint_borrow_to">Borrow to %1$s?</string>
+	<string name="menu_agree">Agree</string>
+	<string name="menu_reject">Reject</string>
     
 </resources>
