@@ -78,5 +78,7 @@
 	<string name="hint_borrow_to">Borrow to %1$s?</string>
 	<string name="menu_agree">Agree</string>
 	<string name="menu_reject">Reject</string>
+	<string name="menu_edit">Edit</string>
+	<string name="menu_share">Share</string>
     
 </resources>

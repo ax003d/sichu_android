@@ -23,7 +23,10 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -31,6 +34,7 @@ import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.BookOwnListAdapter;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
+import com.ax003d.sichu.models.BookBorrowReq;
 import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.models.BookOwn.BookOwns;
 import com.ax003d.sichu.utils.Preferences;
@@ -38,7 +42,7 @@ import com.google.zxing.integration.android.IntentIntegratorSupportV4;
 import com.google.zxing.integration.android.IntentResult;
 
 public class BooksMineFragment extends Fragment implements
-		LoaderManager.LoaderCallbacks<Cursor> {
+		LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
 	private static final int BOOKOWN_LOADER = 0;
 	private static BooksMineFragment instance;
 
@@ -55,6 +59,7 @@ public class BooksMineFragment extends Fragment implements
 	private SlidingActivity activity;
 	private long userID;
 	private boolean requery;
+	private int mActionPosition;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,7 @@ public class BooksMineFragment extends Fragment implements
 		lst_bookown = (ListView) getActivity().findViewById(
 				R.id.lst_bookowns);
 		lst_bookown.setAdapter(adapter);
+		lst_bookown.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(BOOKOWN_LOADER, null,
 				this);
 	}
@@ -253,4 +259,52 @@ public class BooksMineFragment extends Fragment implements
 			super.onPostExecute(result);
 		} // onPostExecute
 	} // GetBookOwnTask
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		mActionPosition = position;
+		activity.startActionMode(new ActionMode.Callback() {
+
+			@Override
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public void onDestroyActionMode(ActionMode mode) {
+			}
+
+			@Override
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				activity.getSupportMenuInflater().inflate(
+						R.menu.actionmode_booksmine, menu);
+				BookOwn own = (BookOwn) adapter.getItem(mActionPosition);
+				mode.setTitle(own.getBook().getTitle());
+				return true;
+			}
+
+			@Override
+			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				boolean handled = false;
+				switch (item.getItemId()) {
+				case R.id.menu_edit:
+					Toast.makeText(activity, "edit", Toast.LENGTH_SHORT)
+							.show();
+					handled = true;
+					break;
+				case R.id.menu_share:
+					Toast.makeText(activity, "share", Toast.LENGTH_SHORT)
+							.show();
+					handled = true;
+					break;
+				}
+				if (handled) {
+					mode.finish();
+				}
+				return handled;
+			}
+		});
+	}
 }

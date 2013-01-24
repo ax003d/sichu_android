@@ -96,7 +96,8 @@ public class WeiboUtils {
 					}
 					
 					@Override
-					public void onComplete(String arg0) {	
+					public void onComplete(String arg0) {
+						WeiboUtils.isFollower = true;
 					}
 				});
 			}

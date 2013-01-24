@@ -78,5 +78,7 @@
 	<string name="hint_borrow_to">同意借给 %1$s?</string>
 	<string name="menu_agree">同意</string>
 	<string name="menu_reject">拒绝</string>	
+	<string name="menu_edit">编辑</string>
+	<string name="menu_share">分享</string>	
     
 </resources>
