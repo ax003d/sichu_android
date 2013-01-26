@@ -38,6 +38,7 @@ import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.fragments.AccountFragment;
 import com.ax003d.sichu.fragments.BooksBorrowedFragment;
+import com.ax003d.sichu.fragments.BooksEditFragment;
 import com.ax003d.sichu.fragments.BooksLoanedFragment;
 import com.ax003d.sichu.fragments.BooksMineFragment;
 import com.ax003d.sichu.fragments.FollowerFragment;
@@ -52,7 +53,6 @@ import com.ax003d.sichu.utils.WeiboUtils;
 import com.ax003d.sichu.widget.NavigationItem;
 import com.ax003d.sichu.widget.NavigationWidget;
 import com.umeng.analytics.MobclickAgent;
-import com.weibo.sdk.android.Weibo;
 import com.weibo.sdk.android.sso.SsoHandler;
 
 
@@ -195,6 +195,23 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	        ft.replace(android.R.id.content, AccountFragment.getInstance());
 	        ft.commit();
+		}
+	}
+	
+	public void replaceFragment(int fragment) {
+		switch (fragment) {
+		case R.string.title_booksedit:
+			final ActionBar ab = getSupportActionBar();
+	        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+	        ft.addToBackStack(null);
+	        ft.replace(android.R.id.content, BooksEditFragment.getInstance());
+	        ft.commit();
+	        ab.setSubtitle(fragment);
+			getSlidingMenu().showAbove(true);			
+			break;
+
+		default:
+			break;
 		}
 	}
 

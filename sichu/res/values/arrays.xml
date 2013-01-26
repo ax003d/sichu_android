@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="bookown_status">
+        <item>Available</item>
+        <item>Unavailable</item>
+        <item>Loaned</item>
+        <item>Lost</item>
+        <item>Deleted</item>
+    </array>
+
+</resources>

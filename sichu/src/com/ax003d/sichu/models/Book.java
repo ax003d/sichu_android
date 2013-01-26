@@ -97,5 +97,13 @@ public class Book {
 		ContentValues values = new ContentValues();
 		setContentValues(values);
 		contentResolver.insert(Books.CONTENT_URI, values);				
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public String getISBN() {
+		return ISBN;
 	}	
 }

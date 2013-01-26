@@ -80,5 +80,6 @@
 	<string name="menu_reject">Reject</string>
 	<string name="menu_edit">Edit</string>
 	<string name="menu_share">Share</string>
+	<string name="title_booksedit">Edit</string>
     
 </resources>

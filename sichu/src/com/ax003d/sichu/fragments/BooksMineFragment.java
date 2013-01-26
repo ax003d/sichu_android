@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
@@ -30,11 +29,11 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.ax003d.sichu.MainActivity;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.BookOwnListAdapter;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
-import com.ax003d.sichu.models.BookBorrowReq;
 import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.models.BookOwn.BookOwns;
 import com.ax003d.sichu.utils.Preferences;
@@ -56,7 +55,7 @@ public class BooksMineFragment extends Fragment implements
 	private BookOwnListAdapter adapter;
 	private ListView lst_bookown;
 	private ISichuAPI api_client;
-	private SlidingActivity activity;
+	private MainActivity activity;
 	private long userID;
 	private boolean requery;
 	private int mActionPosition;
@@ -67,7 +66,7 @@ public class BooksMineFragment extends Fragment implements
 		setHasOptionsMenu(true);
 		adapter = new BookOwnListAdapter(getActivity());
 		api_client = SichuAPI.getInstance(getActivity());
-		activity = (SlidingActivity) getActivity();
+		activity = (MainActivity) getActivity();
 		userID = Preferences.getUserID(activity);
 	}
 
@@ -81,8 +80,7 @@ public class BooksMineFragment extends Fragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		activity.setSupportProgressBarIndeterminateVisibility(false);
-		lst_bookown = (ListView) getActivity().findViewById(
-				R.id.lst_bookowns);
+		lst_bookown = (ListView) getActivity().findViewById(R.id.lst_bookowns);
 		lst_bookown.setAdapter(adapter);
 		lst_bookown.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(BOOKOWN_LOADER, null,
@@ -97,7 +95,7 @@ public class BooksMineFragment extends Fragment implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()){
+		switch (item.getItemId()) {
 		case R.id.menu_scan:
 			IntentIntegratorSupportV4 integrator = new IntentIntegratorSupportV4(
 					this);
@@ -108,7 +106,7 @@ public class BooksMineFragment extends Fragment implements
 			new GetBookOwnTask().execute();
 			break;
 		}
-		 
+
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -198,9 +196,9 @@ public class BooksMineFragment extends Fragment implements
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			activity.setSupportProgressBarIndeterminateVisibility(true);			
+			activity.setSupportProgressBarIndeterminateVisibility(true);
 		}
-		
+
 		@Override
 		protected JSONObject doInBackground(String... params) {
 			JSONObject ret = null;
@@ -239,12 +237,12 @@ public class BooksMineFragment extends Fragment implements
 			}
 
 			if (requery) {
-				activity.getSupportLoaderManager().restartLoader(BOOKOWN_LOADER,
-						null, BooksMineFragment.this);
+				activity.getSupportLoaderManager().restartLoader(
+						BOOKOWN_LOADER, null, BooksMineFragment.this);
 				requery = false;
 			}
 			activity.setSupportProgressBarIndeterminateVisibility(false);
-			
+
 			if (result != null && result.has("meta")) {
 				String next;
 				try {
@@ -290,8 +288,9 @@ public class BooksMineFragment extends Fragment implements
 				boolean handled = false;
 				switch (item.getItemId()) {
 				case R.id.menu_edit:
-					Toast.makeText(activity, "edit", Toast.LENGTH_SHORT)
-							.show();
+					BooksEditFragment.getInstance().setBookOwn(
+							(BookOwn) adapter.getItem(mActionPosition));
+					activity.replaceFragment(R.string.title_booksedit);
 					handled = true;
 					break;
 				case R.id.menu_share:
