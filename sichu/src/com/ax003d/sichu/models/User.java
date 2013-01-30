@@ -6,11 +6,13 @@ import org.json.JSONObject;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 
 import com.ax003d.sichu.providers.SichuContentProvider;
 
-public class User {
+public class User implements Parcelable {
 	private long guid;
 	private String username;
 	private String lastName;
@@ -55,6 +57,14 @@ public class User {
 	public User() {
 	}
 
+	public User(Parcel source) {
+		guid = source.readLong();
+		username = source.readString();
+		lastName = source.readString();
+		firstName = source.readString();
+		avatar = source.readString();
+	}
+
 	public long getGuid() {
 		return guid;
 	}
@@ -84,4 +94,33 @@ public class User {
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {		
+		dest.writeLong(guid);
+		dest.writeString(username);
+		dest.writeString(lastName);
+		dest.writeString(firstName);
+		dest.writeString(avatar);
+	}
+	
+	public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+
+		@Override
+		public User createFromParcel(Parcel source) {
+			return new User(source);
+		}
+
+		@Override
+		public User[] newArray(int size) {
+			return new User[size];
+		}
+		
+	};
 }

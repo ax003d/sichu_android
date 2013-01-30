@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="Title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ImageView
+        android:id="@+id/img_cover"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@id/txt_title"
+        android:src="@drawable/ic_book" />
+
+    <TextView
+        android:id="@+id/lbl_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_title"
+        android:layout_toRightOf="@id/img_cover"
+        android:text="Author:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FF999999" />
+
+    <TextView
+        android:id="@+id/txt_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_title"
+        android:layout_toRightOf="@id/lbl_author"
+        android:layout_marginLeft="5dp"
+        android:text="Author"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFD57B51" />
+
+    <TextView
+        android:id="@+id/lbl_isbn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_author"
+        android:layout_toRightOf="@id/img_cover"
+        android:text="ISBN:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FF999999" />
+
+    <TextView
+        android:id="@+id/txt_isbn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_author"
+        android:layout_toRightOf="@id/lbl_isbn"
+        android:text="ISBN"
+        android:layout_marginLeft="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFD57B51" />
+
+    <Button
+        android:id="@+id/btn_douban"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_isbn"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/img_cover"
+        android:background="@drawable/btn_green"
+        android:drawableLeft="@drawable/ic_douban_24"
+        android:minHeight="28dp"
+        android:padding="8dp"
+        android:text=" DouBan"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <Spinner
+        android:id="@+id/spin_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_cover"
+        android:layout_marginTop="10dp"
+        android:drawSelectorOnTop="true"
+        android:entries="@array/bookown_status" />
+
+    <EditText
+        android:id="@+id/edit_remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spin_status"
+        android:layout_marginTop="10dp"
+        android:hint="Remark"
+        android:gravity="top"
+        android:lines="3"
+        android:singleLine="false" />
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/edit_remark"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_brown"
+        android:text="Save" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_remark"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@id/btn_save"
+        android:background="@drawable/btn_brown"
+        android:text="Cancel" />
+
+</RelativeLayout>

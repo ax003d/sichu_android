@@ -7,12 +7,14 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 
 import com.ax003d.sichu.models.Book.Books;
 import com.ax003d.sichu.providers.SichuContentProvider;
 
-public class BookOwn {
+public class BookOwn implements Parcelable {
 	private long guid;
 	private long bookID;
 	private Book book;
@@ -159,5 +161,47 @@ public class BookOwn {
 
 	public void setOwner(User owner) {
 		this.owner = owner;
+	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeLong(guid);
+		dest.writeLong(bookID);
+		dest.writeLong(ownerID);
+		dest.writeInt(status);
+		dest.writeInt(hasEbook ? 1 : 0);
+		dest.writeString(remark);
+		dest.writeParcelable(book, flags);
+		dest.writeParcelable(owner, flags);
+	}
+	
+	public static final Parcelable.Creator<BookOwn> CREATOR = new Parcelable.Creator<BookOwn>() {
+
+		@Override
+		public BookOwn createFromParcel(Parcel source) {
+			return new BookOwn(source);
+		}
+
+		@Override
+		public BookOwn[] newArray(int size) {
+			return new BookOwn[size];
+		}
+	};
+	
+	private BookOwn(Parcel source) {
+		guid = source.readLong();
+		bookID = source.readLong();
+		ownerID = source.readLong();
+		status = source.readInt();
+		hasEbook = (source.readInt() == 1);
+		remark = source.readString();
+		book = source.readParcelable(Book.class.getClassLoader());
+		owner = source.readParcelable(User.class.getClassLoader());
 	}
 }

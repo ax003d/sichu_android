@@ -29,6 +29,7 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.ax003d.sichu.BooksEditActivity;
 import com.ax003d.sichu.MainActivity;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.BookOwnListAdapter;
@@ -80,7 +81,7 @@ public class BooksMineFragment extends Fragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		activity.setSupportProgressBarIndeterminateVisibility(false);
-		lst_bookown = (ListView) getActivity().findViewById(R.id.lst_bookowns);
+		lst_bookown = (ListView) activity.findViewById(R.id.lst_bookowns);
 		lst_bookown.setAdapter(adapter);
 		lst_bookown.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(BOOKOWN_LOADER, null,
@@ -262,48 +263,9 @@ public class BooksMineFragment extends Fragment implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		mActionPosition = position;
-		activity.startActionMode(new ActionMode.Callback() {
-
-			@Override
-			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public void onDestroyActionMode(ActionMode mode) {
-			}
-
-			@Override
-			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-				activity.getSupportMenuInflater().inflate(
-						R.menu.actionmode_booksmine, menu);
-				BookOwn own = (BookOwn) adapter.getItem(mActionPosition);
-				mode.setTitle(own.getBook().getTitle());
-				return true;
-			}
-
-			@Override
-			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-				boolean handled = false;
-				switch (item.getItemId()) {
-				case R.id.menu_edit:
-					BooksEditFragment.getInstance().setBookOwn(
-							(BookOwn) adapter.getItem(mActionPosition));
-					activity.replaceFragment(R.string.title_booksedit);
-					handled = true;
-					break;
-				case R.id.menu_share:
-					Toast.makeText(activity, "share", Toast.LENGTH_SHORT)
-							.show();
-					handled = true;
-					break;
-				}
-				if (handled) {
-					mode.finish();
-				}
-				return handled;
-			}
-		});
+		Intent intent = new Intent(activity, BooksEditActivity.class);
+		intent.putExtra("bookown",
+				(BookOwn) adapter.getItem(mActionPosition));
+		startActivity(intent);
 	}
 }

@@ -38,7 +38,6 @@ import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.fragments.AccountFragment;
 import com.ax003d.sichu.fragments.BooksBorrowedFragment;
-import com.ax003d.sichu.fragments.BooksEditFragment;
 import com.ax003d.sichu.fragments.BooksLoanedFragment;
 import com.ax003d.sichu.fragments.BooksMineFragment;
 import com.ax003d.sichu.fragments.FollowerFragment;
@@ -197,23 +196,6 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	        ft.commit();
 		}
 	}
-	
-	public void replaceFragment(int fragment) {
-		switch (fragment) {
-		case R.string.title_booksedit:
-			final ActionBar ab = getSupportActionBar();
-	        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-	        ft.addToBackStack(null);
-	        ft.replace(android.R.id.content, BooksEditFragment.getInstance());
-	        ft.commit();
-	        ab.setSubtitle(fragment);
-			getSlidingMenu().showAbove(true);			
-			break;
-
-		default:
-			break;
-		}
-	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -257,7 +239,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		Integer tag = (Integer) tab.getTag();
 		switch (tag) {
-		case R.string.books_mine:
+		case R.string.books_mine:			
 			ft.replace(android.R.id.content, BooksMineFragment.getInstance());
 			break;
 		case R.string.books_loaned:

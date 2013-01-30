@@ -6,11 +6,13 @@ import org.json.JSONObject;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 
 import com.ax003d.sichu.providers.SichuContentProvider;
 
-public class Book {
+public class Book implements Parcelable {
 	private long guid;
 	private String ISBN;
 	private String title;
@@ -60,6 +62,15 @@ public class Book {
 	public Book() {
 	}
 
+	public Book(Parcel source) {
+		guid = source.readLong();
+		ISBN = source.readString();
+		title = source.readString();
+		author = source.readString();
+		doubanID = source.readString();
+		cover = source.readString();
+	}
+
 	public long getGuid() {
 		return guid;
 	}
@@ -105,5 +116,35 @@ public class Book {
 
 	public String getISBN() {
 		return ISBN;
-	}	
+	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeLong(guid);
+		dest.writeString(ISBN);
+		dest.writeString(title);
+		dest.writeString(author);
+		dest.writeString(doubanID);
+		dest.writeString(cover);
+	}
+	
+	public static final Parcelable.Creator<Book> CREATOR = new Parcelable.Creator<Book>() {
+
+		@Override
+		public Book createFromParcel(Parcel source) {
+			return new Book(source);
+		}
+
+		@Override
+		public Book[] newArray(int size) {
+			return new Book[size];
+		}
+		
+	};
 }
