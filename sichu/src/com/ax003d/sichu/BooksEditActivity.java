@@ -11,6 +11,9 @@ import org.holoeverywhere.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -24,6 +27,7 @@ import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.models.Book;
 import com.ax003d.sichu.models.BookOwn;
+import com.ax003d.sichu.models.BookOwn.BookOwns;
 import com.ax003d.sichu.utils.Utils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -48,6 +52,7 @@ public class BooksEditActivity extends Activity implements OnClickListener {
 
 		findViewById(R.id.btn_douban).setOnClickListener(this);
 		findViewById(R.id.btn_save).setOnClickListener(this);
+		findViewById(R.id.btn_delete).setOnClickListener(this);
 
 		ImageView img_cover = (ImageView) findViewById(R.id.img_cover);
 		TextView txt_title = (TextView) findViewById(R.id.txt_title);
@@ -66,7 +71,7 @@ public class BooksEditActivity extends Activity implements OnClickListener {
 		txt_isbn.setText(book.getISBN());
 		spin_status.setSelection(mBookOwn.getStatus() - 1);
 		edit_remark.setText(mBookOwn.getRemark());
-		
+
 		setSupportProgressBarIndeterminateVisibility(false);
 	}
 
@@ -84,9 +89,67 @@ public class BooksEditActivity extends Activity implements OnClickListener {
 					(spin_status.getSelectedItemPosition() + 1) + "",
 					edit_remark.getText().toString());
 			break;
+		case R.id.btn_delete:
+			Builder builder = new AlertDialog.Builder(this);
+			builder.setCancelable(false);
+			builder.setTitle(R.string.title_delete_bookown);
+			builder.setMessage(R.string.msg_delete_bookown);
+			builder.setPositiveButton(android.R.string.ok,
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							new DeleteBookOwnTask().execute(mBookOwn.getGuid()
+									+ "");
+						}
+					});
+			builder.setNegativeButton(android.R.string.cancel, null);
+			builder.create().show();
+			break;
 
 		default:
 			break;
+		}
+	}
+
+	private class DeleteBookOwnTask extends AsyncTask<String, Void, Boolean> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			setSupportProgressBarIndeterminateVisibility(true);
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			JSONObject ret;
+			try {
+				ret = api_client.bookownDelete(params[0], null);
+				if (ret.has("status")) {
+					return true;
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			return false;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if (result) {
+				getContentResolver().delete(
+						Uri.withAppendedPath(BookOwns.CONTENT_URI, "guid/"
+								+ mBookOwn.getGuid()), null, null);
+				finish();
+			} else {
+				Toast.makeText(BooksEditActivity.this,
+						R.string.err_delete_bookown, Toast.LENGTH_SHORT).show();
+			}
+			super.onPostExecute(result);
 		}
 	}
 
@@ -121,7 +184,8 @@ public class BooksEditActivity extends Activity implements OnClickListener {
 		protected void onPostExecute(Boolean result) {
 			setSupportProgressBarIndeterminateVisibility(false);
 			if (result) {
-				mBookOwn.setStatus((spin_status.getSelectedItemPosition() + 1) + "");
+				mBookOwn.setStatus((spin_status.getSelectedItemPosition() + 1)
+						+ "");
 				mBookOwn.setRemark(edit_remark.getText().toString());
 				mBookOwn.update(getContentResolver());
 				Toast.makeText(BooksEditActivity.this,

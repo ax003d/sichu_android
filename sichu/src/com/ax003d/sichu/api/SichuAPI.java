@@ -232,4 +232,14 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		String resp = response.getContentAsString();
 		return new JSONObject(resp);
 	}
+
+	@Override
+	public JSONObject bookownDelete(String guid,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.POST, "/v1/bookown/delete/" + guid + "/");
+		ApiResponse response = execute(request, progressListener);
+		String resp = response.getContentAsString();
+		return new JSONObject(resp);
+	}
 }

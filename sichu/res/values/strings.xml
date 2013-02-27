@@ -83,5 +83,8 @@
 	<string name="title_booksedit">Edit</string>
 	<string name="msg_edit_bookown">Save bookownership info success!</string>
 	<string name="err_edit_bookown">Save bookownership info failed!</string>
+	<string name="title_delete_bookown">Remove Book</string>
+	<string name="msg_delete_bookown">Do you really want to remove this book?</string>
+	<string name="err_delete_bookown">Remove book failed!</string>
     
 </resources>
