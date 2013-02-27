@@ -42,7 +42,7 @@ public class Book implements Parcelable {
 			this.ISBN = jsonObject.getString("isbn");
 			this.setTitle(jsonObject.getString("title"));
 			this.author = jsonObject.getString("author");
-			this.doubanID = jsonObject.getString("douban_id");
+			this.setDoubanID(jsonObject.getString("douban_id"));
 			this.setCover(jsonObject.getString("cover"));
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -55,7 +55,7 @@ public class Book implements Parcelable {
 		this.ISBN = ISBN;
 		this.title = title;
 		this.author = author;
-		this.doubanID = doubanID;
+		this.setDoubanID(doubanID);
 		this.cover = cover;
 	}
 
@@ -67,7 +67,7 @@ public class Book implements Parcelable {
 		ISBN = source.readString();
 		title = source.readString();
 		author = source.readString();
-		doubanID = source.readString();
+		setDoubanID(source.readString());
 		cover = source.readString();
 	}
 
@@ -100,7 +100,7 @@ public class Book implements Parcelable {
 		values.put(Books.ISBN, this.ISBN);
 		values.put(Books.TITLE, this.title);
 		values.put(Books.AUTHOR, this.author);
-		values.put(Books.DOUBAN_ID, this.doubanID);
+		values.put(Books.DOUBAN_ID, this.getDoubanID());
 		values.put(Books.COVER, this.cover);
 	}
 
@@ -130,10 +130,18 @@ public class Book implements Parcelable {
 		dest.writeString(ISBN);
 		dest.writeString(title);
 		dest.writeString(author);
-		dest.writeString(doubanID);
+		dest.writeString(getDoubanID());
 		dest.writeString(cover);
 	}
 	
+	public String getDoubanID() {
+		return doubanID;
+	}
+
+	public void setDoubanID(String doubanID) {
+		this.doubanID = doubanID;
+	}
+
 	public static final Parcelable.Creator<Book> CREATOR = new Parcelable.Creator<Book>() {
 
 		@Override

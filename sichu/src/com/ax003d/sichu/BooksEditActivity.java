@@ -5,7 +5,11 @@ import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.Spinner;
 import org.holoeverywhere.widget.TextView;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.ax003d.sichu.models.Book;
@@ -14,7 +18,7 @@ import com.ax003d.sichu.utils.Utils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class BooksEditActivity extends Activity {
+public class BooksEditActivity extends Activity implements OnClickListener {
 	private DisplayImageOptions options;
 	private ImageLoader img_loader;
 	private BookOwn mBookOwn;
@@ -25,7 +29,9 @@ public class BooksEditActivity extends Activity {
 		setContentView(R.layout.activity_booksedit);
 		options = Utils.getCloudOptions();
 		img_loader = Utils.getImageLoader(this);
-		
+
+		findViewById(R.id.btn_douban).setOnClickListener(this);
+
 		ImageView img_cover = (ImageView) findViewById(R.id.img_cover);
 		TextView txt_title = (TextView) findViewById(R.id.txt_title);
 		TextView txt_author = (TextView) findViewById(R.id.txt_author);
@@ -42,6 +48,21 @@ public class BooksEditActivity extends Activity {
 		txt_author.setText(book.getAuthor());
 		txt_isbn.setText(book.getISBN());
 		spin_status.setSelection(mBookOwn.getStatus() - 1);
-		edit_remark.setText(mBookOwn.getRemark());		
-	}	
+		edit_remark.setText(mBookOwn.getRemark());
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btn_douban:
+			Intent intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("http://book.douban.com/subject/"
+							+ mBookOwn.getBook().getDoubanID() + "/"));
+			startActivity(intent);
+			break;
+
+		default:
+			break;
+		}
+	}
 }
