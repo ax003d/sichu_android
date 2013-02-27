@@ -81,5 +81,7 @@
 	<string name="menu_edit">Edit</string>
 	<string name="menu_share">Share</string>
 	<string name="title_booksedit">Edit</string>
+	<string name="msg_edit_bookown">Save bookownership info success!</string>
+	<string name="err_edit_bookown">Save bookownership info failed!</string>
     
 </resources>

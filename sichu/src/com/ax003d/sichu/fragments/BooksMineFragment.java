@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -119,6 +118,12 @@ public class BooksMineFragment extends Fragment implements
 		if (scanResult != null) {
 			new AddBookOwnTask().execute(scanResult.getContents());
 		}
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		activity.getSupportLoaderManager().restartLoader(BOOKOWN_LOADER, null, this);
 	}
 
 	private class AddBookOwnTask extends AsyncTask<String, Void, JSONObject> {

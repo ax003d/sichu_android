@@ -35,6 +35,10 @@ public interface ISichuAPI {
 	JSONObject bookownAdd(String isbn, String status, String remark,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
+	
+	JSONObject bookownEdit(String guid, String status, String remark,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException;
 
 	JSONObject oplog(String next, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;

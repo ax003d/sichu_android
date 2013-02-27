@@ -109,7 +109,7 @@ public class BookOwn implements Parcelable {
 	public void setBook(Book book) {
 		this.book = book;
 	}
-	
+
 	public int getStatusRaw() {
 		return status;
 	}
@@ -155,6 +155,14 @@ public class BookOwn implements Parcelable {
 		return contentResolver.insert(BookOwns.CONTENT_URI, values);
 	}
 
+	public int update(ContentResolver contentResolver) {
+		ContentValues values = new ContentValues();
+		setContentValues(values);
+		return contentResolver
+				.update(Uri.withAppendedPath(BookOwns.CONTENT_URI, "guid/"
+						+ this.guid), values, null, null);
+	}
+
 	public User getOwner() {
 		return owner;
 	}
@@ -180,7 +188,7 @@ public class BookOwn implements Parcelable {
 		dest.writeParcelable(book, flags);
 		dest.writeParcelable(owner, flags);
 	}
-	
+
 	public static final Parcelable.Creator<BookOwn> CREATOR = new Parcelable.Creator<BookOwn>() {
 
 		@Override
@@ -193,7 +201,7 @@ public class BookOwn implements Parcelable {
 			return new BookOwn[size];
 		}
 	};
-	
+
 	private BookOwn(Parcel source) {
 		guid = source.readLong();
 		bookID = source.readLong();

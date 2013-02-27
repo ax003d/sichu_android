@@ -220,4 +220,16 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 
 		return new JSONObject(response.getContentAsString());
 	}
+
+	@Override
+	public JSONObject bookownEdit(String guid, String status, String remark,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.POST, "/v1/bookown/" + guid + "/");
+		request.addParameter("status", status);
+		request.addParameter("remark", remark);
+		ApiResponse response = execute(request, progressListener);
+		String resp = response.getContentAsString();
+		return new JSONObject(resp);
+	}
 }
