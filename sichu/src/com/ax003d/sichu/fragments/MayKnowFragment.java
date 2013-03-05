@@ -24,6 +24,13 @@ public class MayKnowFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 	}
 	
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		// 1. get 200 weibo friends
+		// 2. request sichu backend for these 200 ids
+		// 3. iterate through all weibo friends, follow if the id in sichu, else invite
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

@@ -26,6 +26,10 @@ public interface ISichuAPI {
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
 
+	JSONObject account__may_know(String wb_ids,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException;
+
 	JSONObject bookown(String next, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
 
