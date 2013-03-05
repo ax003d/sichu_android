@@ -42,6 +42,7 @@ import com.ax003d.sichu.fragments.BooksLoanedFragment;
 import com.ax003d.sichu.fragments.BooksMineFragment;
 import com.ax003d.sichu.fragments.FollowerFragment;
 import com.ax003d.sichu.fragments.FollowingFragment;
+import com.ax003d.sichu.fragments.MayKnowFragment;
 import com.ax003d.sichu.fragments.MessagesFragment;
 import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.models.BookOwn.BookOwns;
@@ -112,7 +113,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	private static int[] books_tabs = { R.string.books_mine,
 			R.string.books_loaned, R.string.books_borrowed };
 	private static int[] friends_tabs = { R.string.friends_following,
-			R.string.friends_follower }; 
+			R.string.friends_follower, R.string.friends_may_know }; 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -255,6 +256,10 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		case R.string.friends_follower:
 			ft.replace(android.R.id.content, FollowerFragment.getInstance());
 			break;
+		case R.string.friends_may_know:
+			ft.replace(android.R.id.content, MayKnowFragment.getInstance());
+			break;
+			
 		default:
 			break;
 		}

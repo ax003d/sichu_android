@@ -86,5 +86,6 @@
 	<string name="title_delete_bookown">Remove Book</string>
 	<string name="msg_delete_bookown">Do you really want to remove this book?</string>
 	<string name="err_delete_bookown">Remove book failed!</string>
+	<string name="friends_may_know">May Know</string>
     
 </resources>
