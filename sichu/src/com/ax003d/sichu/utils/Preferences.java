@@ -132,4 +132,9 @@ public class Preferences {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getString("wb_screen_name", null);
 	}
+	
+	public static long getWeiboUID(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context)
+				.getLong("wb_uid", -1);
+	}
 }
