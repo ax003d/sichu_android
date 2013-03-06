@@ -1,6 +1,10 @@
 package com.ax003d.sichu.adapters;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+import org.holoeverywhere.widget.Button;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -53,10 +57,16 @@ public class MayKnowListAdapter extends BaseAdapter {
 		ImageView img_avatar = (ImageView) view.findViewById(R.id.img_avatar);
 		TextView txt_username = (TextView) view.findViewById(R.id.txt_username);
 		TextView txt_remark = (TextView) view.findViewById(R.id.txt_remark);
-
+		Button btn_action = (Button) view.findViewById(R.id.btn_action);
+		
 		img_loader.displayImage(mk.getAvatar(), img_avatar, options);
 		txt_username.setText(mk.getUsername());
 		txt_remark.setText(mk.getRemark());
+		if (mk.getIsSichuUser()) {
+			btn_action.setText("Follow");
+		} else {
+			btn_action.setText("Invite");
+		}
 
 		return view;
 	}
@@ -65,4 +75,27 @@ public class MayKnowListAdapter extends BaseAdapter {
 		mMayKnows.add(mk);
 	}
 
+	public void setSichuUser(String wb_id) {
+		for (MayKnow mk : mMayKnows) {
+			if (mk.getID().equals(wb_id)) {
+				mk.setIsSichuUser(true);
+			}
+		}
+
+		MayKnowComparator comparator = new MayKnowComparator();
+		Collections.sort(mMayKnows, comparator);
+	}
+
+	private class MayKnowComparator implements Comparator<MayKnow> {
+		@Override
+		public int compare(MayKnow mk1, MayKnow mk2) {
+			if (mk1.getIsSichuUser() && (!mk2.getIsSichuUser())) {
+				return -1;
+			} else if ((!mk1.getIsSichuUser()) && mk2.getIsSichuUser()) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+	}
 }

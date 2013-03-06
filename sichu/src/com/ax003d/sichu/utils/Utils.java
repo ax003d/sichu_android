@@ -13,6 +13,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.ax003d.sichu.R;
+import com.ax003d.sichu.SplashActivity;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -111,7 +112,7 @@ public class Utils {
 	}
 	
 	public static boolean isLogin(Context context) {
-		return Preferences.getUserID(context) != -1;
+		return (Preferences.getUserID(context) != -1) && (!isExpired(context));
 	}
 	
 	public static ProgressDialog createLoginDialog(Context context) {
@@ -120,5 +121,16 @@ public class Utils {
 		dialog.setMessage(context.getResources().getString(R.string.msg_login));
 		dialog.setIndeterminate(true);
 		return dialog;
-	}	
+	}
+	
+	public static boolean isExpired(Context context) {
+		Date now = new Date();
+		long expire = Preferences.getExpire(context) * 1000;
+		if (Preferences.getToken(context) != null
+				&& now.getTime() < expire) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 }

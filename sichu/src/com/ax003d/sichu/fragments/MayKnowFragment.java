@@ -3,6 +3,7 @@ package com.ax003d.sichu.fragments;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
+import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
@@ -11,14 +12,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.MayKnowListAdapter;
+import com.ax003d.sichu.api.ISichuAPI;
+import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.models.MayKnow;
 import com.ax003d.sichu.utils.AccessTokenKeeper;
 import com.ax003d.sichu.utils.Preferences;
@@ -42,11 +47,13 @@ public class MayKnowFragment extends Fragment {
 	private ListView lst_may_know;
 	private long mWBuid;
 	private MayKnowHandler mHandler;
+	private ISichuAPI api_client;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		activity = (SlidingActivity) getActivity();
+		api_client = SichuAPI.getInstance(activity);
 		adapter = new MayKnowListAdapter(activity);
 		mHandler = new MayKnowHandler(this);
 	}
@@ -80,13 +87,17 @@ public class MayKnowFragment extends Fragment {
 							if (!json.has("users")) {
 								return;
 							}
+							StringBuilder wb_ids = new StringBuilder();
 							JSONArray users = json.getJSONArray("users");
 							for (int i = 0; i < users.length(); i++) {
 								MayKnow mk = new MayKnow(users.getJSONObject(i));
 								adapter.addMayKnow(mk);
 								mFriendCursor++;
+								wb_ids.append(mk.getID());
+								wb_ids.append(",");
 							}
-							mHandler.sendEmptyMessage(0);
+							new GetMayKnowTask().execute(wb_ids.toString());
+							// mHandler.sendEmptyMessage(0);
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
@@ -128,5 +139,39 @@ public class MayKnowFragment extends Fragment {
 				fragment.updateMayKnowList();
 			}
 		}
-	}	
+	}
+	
+	private class GetMayKnowTask extends AsyncTask<String, Void, JSONObject> {
+
+		@Override
+		protected JSONObject doInBackground(String... params) {
+			try {
+				return api_client.account__may_know(params[0], null);
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			super.onPostExecute(result);
+			// Log.d("may_know", result.toString());
+			JSONArray array;
+			try {
+				array = result.getJSONArray("may_know");
+				for ( int i = 0; i < array.length(); i++ ) {
+					Log.d("may_know", array.getString(i));
+					adapter.setSichuUser(array.getString(i));
+				}		
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			adapter.notifyDataSetChanged();
+		}
+	}
 }

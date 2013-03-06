@@ -1,17 +1,16 @@
 package com.ax003d.sichu;
 
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.holoeverywhere.app.Activity;
 
-import com.ax003d.sichu.utils.Preferences;
-import com.umeng.fb.NotificationType;
-import com.umeng.fb.UMFeedbackService;
-
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.ax003d.sichu.utils.Utils;
+import com.umeng.fb.NotificationType;
+import com.umeng.fb.UMFeedbackService;
 
 public class SplashActivity extends Activity {
 
@@ -24,18 +23,14 @@ public class SplashActivity extends Activity {
 		TimerTask timerTask = new TimerTask() {
 			@Override
 			public void run() {
-				Date now = new Date();
-				long expire = Preferences.getExpire(SplashActivity.this) * 1000;
-
-				finish();
-				if (Preferences.getToken(SplashActivity.this) != null
-						&& now.getTime() < expire) {
+				if (!Utils.isExpired(SplashActivity.this)) {
 					startActivity(new Intent(SplashActivity.this,
 							MainActivity.class));
 				} else {
 					startActivity(new Intent(SplashActivity.this,
 							LoginActivity.class));
 				}
+				finish();
 			}
 		};
 		
