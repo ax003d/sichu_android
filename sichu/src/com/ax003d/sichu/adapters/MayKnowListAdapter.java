@@ -98,4 +98,13 @@ public class MayKnowListAdapter extends BaseAdapter {
 			}
 		}
 	}
+
+	public void remove(String wb_id) {
+		for (MayKnow mk : mMayKnows) {
+			if (mk.getID().equals(wb_id)) {
+				mMayKnows.remove(mk);
+				break;
+			}
+		}
+	}
 }

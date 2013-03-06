@@ -165,9 +165,12 @@ public class MayKnowFragment extends Fragment {
 			try {
 				array = result.getJSONArray("may_know");
 				for ( int i = 0; i < array.length(); i++ ) {
-					Log.d("may_know", array.getString(i));
 					adapter.setSichuUser(array.getString(i));
-				}		
+				}
+				array = result.getJSONArray("friends");
+				for ( int i = 0 ; i < array.length(); i++ ) {
+					adapter.remove(array.getString(i));
+				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
