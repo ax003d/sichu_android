@@ -52,6 +52,7 @@ import com.ax003d.sichu.utils.WeiboAuthDialogListener;
 import com.ax003d.sichu.utils.WeiboUtils;
 import com.ax003d.sichu.widget.NavigationItem;
 import com.ax003d.sichu.widget.NavigationWidget;
+import com.igexin.slavesdk.MessageManager;
 import com.umeng.analytics.MobclickAgent;
 import com.weibo.sdk.android.sso.SsoHandler;
 
@@ -118,7 +119,10 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// umeng sdk
 		MobclickAgent.onError(this);
+		// gexin sdk
+		MessageManager.getInstance().initialize(getApplicationContext());
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		api_client = SichuAPI.getInstance(this);
 		userID = Preferences.getUserID(this);

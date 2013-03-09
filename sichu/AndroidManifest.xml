@@ -19,6 +19,11 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- gexin sdk -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
 
     <application
         android:allowBackup="true"
@@ -42,12 +47,13 @@
         </activity>
         <activity
             android:name="com.ax003d.sichu.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleTop" >
         </activity>
         <activity
             android:name="com.ax003d.sichu.BooksEditActivity"
             android:label="@string/app_name" >
-        </activity>        
+        </activity>
 
         <provider
             android:name="com.ax003d.sichu.providers.SichuContentProvider"
@@ -71,6 +77,72 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="sichu" />
+
+        <!-- gexin sdk -->
+        <meta-data
+            android:name="appid"
+            android:value="vF6mDpZ6T38RsZzSGtbIl8" />
+        <meta-data
+            android:name="appkey"
+            android:value="rcBr6LPA2Y5xyUIxK0tLF7" />
+        <meta-data
+            android:name="appsecret"
+            android:value="bLQyFbXOPQ6CNGiY4xHVV1" />
+
+        <activity
+            android:name="com.igexin.sdk.GexinSdkActivity"
+            android:excludeFromRecents="true"
+            android:process="com.ax003d.sichu.pushservice"
+            android:taskAffinity="android.task.GexinSdkActivityTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            <intent-filter>
+                <action android:name="com.igexin.action.popupact.com.ax003d.sichu" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name="com.igexin.sdk.aidl.GexinMsgService"
+            android:label="NotificationCenterAIDL"
+            android:process="com.ax003d.sichu.pushservice" >
+            <intent-filter>
+                <action android:name="com.igexin.sdk.aidl.action.com.ax003d.sichu" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.igexin.sdk.GexinMainService"
+            android:label="NotificationCenter"
+            android:process="com.ax003d.sichu.pushservice" >
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.com.ax003d.sichu" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name="com.igexin.sdk.GexinSdkReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="sdk.download.DownloadService"
+            android:process="com.ax003d.sichu.pushservice" />
+
+        <receiver
+            android:name="sdk.download.DownloadReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name="sdk.download.DownloadProvider"
+            android:authorities="sdk.download.com.ax003d.sichu"
+            android:process="com.ax003d.sichu.pushservice" />
     </application>
 
 </manifest>
