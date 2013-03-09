@@ -225,7 +225,8 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	public JSONObject bookownEdit(String guid, String status, String remark,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException {
-		ApiRequest request = new ApiRequest(ApiRequest.POST, "/v1/bookown/" + guid + "/");
+		ApiRequest request = new ApiRequest(ApiRequest.POST, "/v1/bookown/"
+				+ guid + "/");
 		request.addParameter("status", status);
 		request.addParameter("remark", remark);
 		ApiResponse response = execute(request, progressListener);
@@ -237,7 +238,8 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	public JSONObject bookownDelete(String guid,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException {
-		ApiRequest request = new ApiRequest(ApiRequest.POST, "/v1/bookown/delete/" + guid + "/");
+		ApiRequest request = new ApiRequest(ApiRequest.POST,
+				"/v1/bookown/delete/" + guid + "/");
 		ApiResponse response = execute(request, progressListener);
 		String resp = response.getContentAsString();
 		return new JSONObject(resp);
@@ -247,8 +249,21 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	public JSONObject account__may_know(String wb_ids,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException {
-		ApiRequest request = new ApiRequest(ApiRequest.POST, "/v1/account/may_know/");
+		ApiRequest request = new ApiRequest(ApiRequest.POST,
+				"/v1/account/may_know/");
 		request.addParameter("wb_ids", wb_ids);
+		ApiResponse response = execute(request, progressListener);
+		String resp = response.getContentAsString();
+		return new JSONObject(resp);
+	}
+
+	@Override
+	public JSONObject account__update_gexinid(String client_id,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.POST,
+				"/v1/account/update_gexinid/");
+		request.addParameter("client_id", client_id);
 		ApiResponse response = execute(request, progressListener);
 		String resp = response.getContentAsString();
 		return new JSONObject(resp);

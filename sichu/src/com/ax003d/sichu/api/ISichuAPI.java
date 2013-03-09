@@ -30,6 +30,10 @@ public interface ISichuAPI {
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
 
+	JSONObject account__update_gexinid(String client_id,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException;
+
 	JSONObject bookown(String next, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
 
