@@ -39,3 +39,9 @@
 }
 -keep public class com.umeng.fb.ui.ThreadView {
 }
+
+# For gexin
+-dontwarn com.igexin.**
+-dontwarn sdk.**
+-keep class com.igexin.** { *; }
+-keep class sdk.** { *; }

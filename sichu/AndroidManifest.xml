@@ -143,6 +143,12 @@
             android:name="sdk.download.DownloadProvider"
             android:authorities="sdk.download.com.ax003d.sichu"
             android:process="com.ax003d.sichu.pushservice" />
+
+        <receiver android:name="com.ax003d.sichu.receivers.GexinSdkMsgReceiver" >
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.vF6mDpZ6T38RsZzSGtbIl8" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
