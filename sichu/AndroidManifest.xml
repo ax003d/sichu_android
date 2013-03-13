@@ -57,7 +57,7 @@
         <activity
             android:name="com.ax003d.sichu.InviteWeiboFriendActivity"
             android:label="@string/title_activity_invite_weibo_friend" >
-        </activity>        
+        </activity>
 
         <provider
             android:name="com.ax003d.sichu.providers.SichuContentProvider"
@@ -153,6 +153,11 @@
                 <action android:name="com.igexin.sdk.action.vF6mDpZ6T38RsZzSGtbIl8" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name="com.ax003d.sichu.FriendDetailActivity"
+            android:label="@string/title_activity_friend_detail" >
+        </activity>
     </application>
 
 </manifest>

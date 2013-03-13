@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -26,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.view.MenuItem;
+import com.ax003d.sichu.FriendDetailActivity;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.FollowListAdapter;
 import com.ax003d.sichu.api.ISichuAPI;
@@ -196,6 +198,9 @@ public class FollowerFragment extends Fragment implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Follow follow = (Follow) adapter.getItem(position);
+		Intent intent = new Intent(activity, FriendDetailActivity.class);
+		intent.putExtra("friend", follow.getUser());
+		activity.startActivity(intent);		
 		Log.d("friend", follow.getUser().getUsername());
 	}
 }

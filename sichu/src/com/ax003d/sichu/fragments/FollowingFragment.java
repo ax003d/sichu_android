@@ -12,10 +12,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.renderscript.Int2;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -26,14 +28,17 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.view.MenuItem;
+import com.ax003d.sichu.FriendDetailActivity;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.FollowListAdapter;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.models.Follow;
 import com.ax003d.sichu.models.Follow.Follows;
+import com.ax003d.sichu.models.User;
 import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.utils.Preferences;
+import com.weibo.sdk.android.api.FriendshipsAPI;
 
 public class FollowingFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
@@ -197,6 +202,10 @@ public class FollowingFragment extends Fragment implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Follow follow = (Follow) adapter.getItem(position);
+		Intent intent = new Intent(activity, FriendDetailActivity.class);
+		intent.putExtra("friend", follow.getFollowing());
+		intent.putExtra("remark", follow.getRemark());
+		activity.startActivity(intent);
 		Log.d("friend", follow.getFollowing().getUsername());
 	}
 }

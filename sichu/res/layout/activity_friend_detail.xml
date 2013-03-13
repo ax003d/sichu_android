@@ -1,0 +1,101 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_contact" />
+
+        <TextView
+            android:id="@+id/txt_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/img_avatar"
+            android:text="Username"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/txt_remark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/txt_username"
+            android:text="(Remark)"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/lbl_owns"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_remark"
+            android:layout_toRightOf="@id/img_avatar"
+            android:text="Owns: "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FF999999" />
+
+        <TextView
+            android:id="@+id/txt_owns"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_remark"
+            android:layout_toRightOf="@id/lbl_owns"
+            android:text="10"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFD57B51" />
+        
+        <TextView
+            android:id="@+id/lbl_loaned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_owns"
+            android:layout_toRightOf="@id/img_avatar"
+            android:text="Loaned: "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FF999999" />
+
+        <TextView
+            android:id="@+id/txt_loaned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_owns"
+            android:layout_toRightOf="@id/lbl_loaned"
+            android:text="10"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFD57B51" />
+        
+        <TextView
+            android:id="@+id/lbl_borrowed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_loaned"
+            android:layout_toRightOf="@id/img_avatar"
+            android:text="Borrowed: "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FF999999" />
+
+        <TextView
+            android:id="@+id/txt_borrowed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_loaned"
+            android:layout_toRightOf="@id/lbl_borrowed"
+            android:text="10"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFD57B51" />        
+    </RelativeLayout>
+    
+    <ListView android:id="@+id/lst_books" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+    </ListView>
+
+</LinearLayout>
