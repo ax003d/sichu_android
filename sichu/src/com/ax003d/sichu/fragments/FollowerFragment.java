@@ -19,8 +19,11 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.view.MenuItem;
 import com.ax003d.sichu.R;
@@ -33,7 +36,7 @@ import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.utils.Preferences;
 
 public class FollowerFragment extends Fragment implements
-		LoaderManager.LoaderCallbacks<Cursor> {
+		LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
 	private static final int FOLLOWER_LOADER = 4;
 	private static FollowerFragment instance;
 	private static String[] followerProjection = new String[] {
@@ -78,6 +81,7 @@ public class FollowerFragment extends Fragment implements
 		super.onActivityCreated(savedInstanceState);
 		lst_follower = (ListView) activity.findViewById(R.id.lst_follower);
 		lst_follower.setAdapter(adapter);
+		lst_follower.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(FOLLOWER_LOADER, null,
 				this);
 	}
@@ -187,4 +191,11 @@ public class FollowerFragment extends Fragment implements
 			super.onPostExecute(result);
 		} // onPostExecute
 	} // GetFollowerTask
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Follow follow = (Follow) adapter.getItem(position);
+		Log.d("friend", follow.getUser().getUsername());
+	}
 }
