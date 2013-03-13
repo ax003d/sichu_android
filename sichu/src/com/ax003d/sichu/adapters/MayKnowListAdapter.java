@@ -12,7 +12,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.sax.StartElementListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ax003d.sichu.InviteWeiboFriendActivity;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
@@ -92,10 +95,14 @@ public class MayKnowListAdapter extends BaseAdapter {
 			});
 		} else {
 			btn_action.setText("Invite");
+			btn_action.setTag(mk.getUsername());
 			btn_action.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Log.d("follow", "invite");
+					Intent intent = new Intent(mContext, InviteWeiboFriendActivity.class);
+					intent.putExtra("screen_name", "@" + (String) v.getTag());
+					mContext.startActivity(intent);
 				}
 			});
 		}
@@ -165,12 +172,14 @@ public class MayKnowListAdapter extends BaseAdapter {
 					String wb_id = result.getString("uid");
 					remove(wb_id);
 					notifyDataSetChanged();
-					Toast.makeText(mContext, "Follow success!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext, "Follow success!",
+							Toast.LENGTH_SHORT).show();
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			} else {
-				Toast.makeText(mContext, "Follow failed!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, "Follow failed!", Toast.LENGTH_SHORT)
+						.show();
 			}
 		}
 	}

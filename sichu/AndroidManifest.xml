@@ -54,6 +54,10 @@
             android:name="com.ax003d.sichu.BooksEditActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.ax003d.sichu.InviteWeiboFriendActivity"
+            android:label="@string/title_activity_invite_weibo_friend" >
+        </activity>        
 
         <provider
             android:name="com.ax003d.sichu.providers.SichuContentProvider"

@@ -74,18 +74,21 @@
     <string name="msg_login">Login, Please wait...</string>
     <string name="title_following">Follow us</string>
     <string name="txt_auth_ok">Your weibo account is authorized!</string>
-	<string name="msg_following">Follow us in weibo.</string>
-	<string name="hint_borrow_to">Borrow to %1$s?</string>
-	<string name="menu_agree">Agree</string>
-	<string name="menu_reject">Reject</string>
-	<string name="menu_edit">Edit</string>
-	<string name="menu_share">Share</string>
-	<string name="title_booksedit">Edit</string>
-	<string name="msg_edit_bookown">Save bookownership info success!</string>
-	<string name="err_edit_bookown">Save bookownership info failed!</string>
-	<string name="title_delete_bookown">Remove Book</string>
-	<string name="msg_delete_bookown">Do you really want to remove this book?</string>
-	<string name="err_delete_bookown">Remove book failed!</string>
-	<string name="friends_may_know">May Know</string>
-    
+    <string name="msg_following">Follow us in weibo.</string>
+    <string name="hint_borrow_to">Borrow to %1$s?</string>
+    <string name="menu_agree">Agree</string>
+    <string name="menu_reject">Reject</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_share">Share</string>
+    <string name="title_booksedit">Edit</string>
+    <string name="msg_edit_bookown">Save bookownership info success!</string>
+    <string name="err_edit_bookown">Save bookownership info failed!</string>
+    <string name="title_delete_bookown">Remove Book</string>
+    <string name="msg_delete_bookown">Do you really want to remove this book?</string>
+    <string name="err_delete_bookown">Remove book failed!</string>
+    <string name="friends_may_know">May Know</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_invite_weibo_friend">InviteWeiboFriendActivity</string>
+
 </resources>
