@@ -16,7 +16,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -67,10 +66,6 @@ public class MayKnowFragment extends Fragment {
 		if (mWBuid != -1) {
 			loadMayKnows();
 		}
-		// 1. get 200 weibo friends
-		// 2. request sichu backend for these 200 ids
-		// 3. iterate through all weibo friends, follow if the id in sichu, else
-		// invite
 	}
 
 	private void loadMayKnows() {

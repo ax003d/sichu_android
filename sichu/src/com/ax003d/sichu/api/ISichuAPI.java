@@ -64,4 +64,7 @@ public interface ISichuAPI {
 
 	JSONObject bookborrowrequest(String next, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
+
+	JSONObject friends__follow(String wb_id, ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException;
 }
