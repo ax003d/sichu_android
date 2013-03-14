@@ -34,8 +34,9 @@ public interface ISichuAPI {
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
 
-	JSONObject bookown(String next, ProgressListener progressListener)
-			throws ClientProtocolException, IOException, JSONException;
+	JSONObject bookown(String uid, boolean trim_owner, String next,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException;
 
 	JSONObject bookownByID(String id, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;

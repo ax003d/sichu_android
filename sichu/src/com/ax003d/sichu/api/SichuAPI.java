@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.net.ApiBase;
@@ -117,14 +118,24 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	}
 
 	@Override
-	public JSONObject bookown(String next, ProgressListener progressListener)
-			throws ClientProtocolException, IOException, JSONException {
+	public JSONObject bookown(String uid, boolean trim_owner, String next,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException { 
 		ApiRequest request = new ApiRequest(ApiRequest.GET,
 				next == null ? "/v1/bookown/" : next);
+		if (uid != null) {
+			request.addParameter("uid", uid);
+			Log.d("bookown", "uid: " + uid);
+		}
+		if (trim_owner) {
+			request.addParameter("trim_owner", "1");
+		}
 
 		ApiResponse response = execute(request, progressListener);
 
-		return new JSONObject(response.getContentAsString());
+		String resp = response.getContentAsString();
+		Log.d("bookown", resp);
+		return new JSONObject(resp);
 	}
 
 	@Override

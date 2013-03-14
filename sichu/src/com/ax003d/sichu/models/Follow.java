@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.providers.SichuContentProvider;
 
 public class Follow {
@@ -71,11 +70,13 @@ public class Follow {
 		
 		if ( idx_following_username != -1 ) {
 			this.following = new User();
+			this.following.setGuid(this.followingID);
 			this.following.setUsername(data.getString(idx_following_username));
 			this.following.setAvatar(data.getString(idx_following_avatar));
 		}
 		if ( idx_follower_username != -1 ) {
 			this.setUser(new User());
+			this.getUser().setGuid(this.userID);
 			this.getUser().setUsername(data.getString(idx_follower_username));
 			this.getUser().setAvatar(data.getString(idx_follower_avatar));
 		}

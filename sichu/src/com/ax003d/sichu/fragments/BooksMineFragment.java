@@ -210,9 +210,9 @@ public class BooksMineFragment extends Fragment implements
 			JSONObject ret = null;
 			try {
 				if (params.length == 0) {
-					ret = api_client.bookown(null, null);
+					ret = api_client.bookown(null, false, null, null);
 				} else {
-					ret = api_client.bookown(params[0], null);
+					ret = api_client.bookown(null, false, params[0], null);
 				}
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
