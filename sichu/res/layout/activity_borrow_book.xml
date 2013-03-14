@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Title"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageView
+            android:id="@+id/img_cover"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@id/txt_title"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_book" />
+
+        <TextView
+            android:id="@+id/lbl_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_title"
+            android:layout_toRightOf="@id/img_cover"
+            android:text="Author:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FF999999" />
+
+        <TextView
+            android:id="@+id/txt_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_title"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/lbl_author"
+            android:text="Author"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFD57B51" />
+
+        <TextView
+            android:id="@+id/lbl_isbn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_author"
+            android:layout_toRightOf="@id/img_cover"
+            android:text="ISBN:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FF999999" />
+
+        <TextView
+            android:id="@+id/txt_isbn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_author"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/lbl_isbn"
+            android:text="ISBN"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFD57B51" />
+
+        <Button
+            android:id="@+id/btn_douban"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_isbn"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/img_cover"
+            android:background="@drawable/btn_green"
+            android:drawableLeft="@drawable/ic_douban_24"
+            android:minHeight="28dp"
+            android:padding="8dp"
+            android:text=" DouBan"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/txt_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_douban"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/img_cover"
+            android:text="Available"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <View
+            android:id="@+id/v_split"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/img_cover"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#FF999999" />
+
+        <TextView
+            android:id="@+id/lbl_borrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/v_split"
+            android:layout_centerInParent="true"
+            android:text="Book Borrow Request"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <DatePicker
+            android:id="@+id/dp_return_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lbl_borrow"
+            android:foregroundGravity="center" />
+
+        <EditText
+            android:id="@+id/edit_remark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dp_return_date"
+            android:layout_marginTop="10dp"
+            android:gravity="top"
+            android:hint="Remark"
+            android:lines="3"
+            android:singleLine="false" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/edit_remark"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_brown"
+            android:text="Save" />
+    </RelativeLayout>
+
+</ScrollView>

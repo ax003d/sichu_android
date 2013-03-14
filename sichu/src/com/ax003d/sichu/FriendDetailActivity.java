@@ -10,8 +10,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 
 import com.ax003d.sichu.adapters.BookOwnListAdapter;
@@ -23,7 +28,7 @@ import com.ax003d.sichu.utils.Utils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class FriendDetailActivity extends Activity {
+public class FriendDetailActivity extends Activity implements OnItemClickListener {
 
 	private User mFriend;
 	private String mRemark;
@@ -44,6 +49,7 @@ public class FriendDetailActivity extends Activity {
 		adapter = new BookOwnListAdapter(this);
 		lst_books = (ListView) findViewById(R.id.lst_books);
 		lst_books.setAdapter(adapter);
+		lst_books.setOnItemClickListener(this);
 
 		ImageView img_avatar = (ImageView) findViewById(R.id.img_avatar);
 		TextView txt_username = (TextView) findViewById(R.id.txt_username);
@@ -125,4 +131,14 @@ public class FriendDetailActivity extends Activity {
 			super.onPostExecute(result);
 		} // onPostExecute
 	} // GetBookOwnTask
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		BookOwn own = (BookOwn) adapter.getItem(position);
+		Intent intent = new Intent(this, BorrowBookActivity.class);
+		intent.putExtra("bookown", own);
+		startActivity(intent);
+		Log.d("borrow", own.getGuid() + "");
+	}
 }
