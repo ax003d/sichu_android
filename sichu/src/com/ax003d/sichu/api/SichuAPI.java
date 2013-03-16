@@ -291,4 +291,19 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		String resp = response.getContentAsString();
 		return new JSONObject(resp);
 	}
+
+	@Override
+	public JSONObject bookborrow__add(String bo_ship,
+			String planed_return_date, String remark,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.POST,
+				"/v1/bookborrow/");
+		request.addParameter("bo_ship", bo_ship);
+		request.addParameter("planed_return_date", planed_return_date);
+		request.addParameter("remark", remark);
+		ApiResponse response = execute(request, progressListener);
+		String resp = response.getContentAsString();
+		return new JSONObject(resp);
+	}
 }

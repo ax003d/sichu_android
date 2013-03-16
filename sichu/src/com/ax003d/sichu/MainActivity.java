@@ -115,6 +115,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 			R.string.books_loaned, R.string.books_borrowed };
 	private static int[] friends_tabs = { R.string.friends_following,
 			R.string.friends_follower, R.string.friends_may_know }; 
+	private static int[] messages_tabs = { R.string.messages_borrow_request };	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -188,7 +189,14 @@ public class MainActivity extends SlidingActivity implements TabListener {
 				ab.addTab(tab);
 			}
 		} else if (page == R.string.page_messages) {
-			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+			for (int i = 0; i < messages_tabs.length; i++) {
+				ActionBar.Tab tab = ab.newTab();
+				tab.setText(messages_tabs[i]);
+				tab.setTag(messages_tabs[i]);
+				tab.setTabListener(this);
+				ab.addTab(tab);
+			}			
 	        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 	        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 	        ft.replace(android.R.id.content, MessagesFragment.getInstance());

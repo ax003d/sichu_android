@@ -56,6 +56,7 @@ public class MessageListAdapter extends BaseAdapter {
 		BookBorrowReq msg = (BookBorrowReq) getItem(position);
 		ImageView img_avatar = (ImageView) view.findViewById(R.id.img_avatar);
 		TextView lbl_type = (TextView) view.findViewById(R.id.lbl_type);
+		TextView txt_status = (TextView) view.findViewById(R.id.txt_status);
 		TextView txt_datetime = (TextView) view.findViewById(R.id.txt_datetime);
 		TextView txt_requester = (TextView) view.findViewById(R.id.txt_requester);
 		TextView txt_book = (TextView) view.findViewById(R.id.txt_book);
@@ -74,9 +75,15 @@ public class MessageListAdapter extends BaseAdapter {
 		switch (msg.getStatus()) {
 		case 0:
 			text_col = col_unread;
+			txt_status.setText("-(Unread)");
 			break;
 		case 1:
 			text_col = col_read;
+			txt_status.setText("-(Agree)");
+			break;
+		case 2:
+			text_col = col_read;
+			txt_status.setText("-(Reject)");
 			break;
 
 		default:
@@ -84,6 +91,7 @@ public class MessageListAdapter extends BaseAdapter {
 		}
 
 		lbl_type.setTextColor(text_col);
+		txt_status.setTextColor(text_col);
 		txt_datetime.setTextColor(text_col);
 		txt_book.setTextColor(text_col);
 		txt_planed_return_date.setTextColor(text_col);

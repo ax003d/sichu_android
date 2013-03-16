@@ -47,12 +47,21 @@
             android:text="@string/lbl_type"
             android:layout_below="@id/txt_datetime"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <TextView
+            android:id="@+id/txt_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(Not processed)"
+            android:layout_below="@id/txt_datetime"
+            android:layout_toRightOf="@id/lbl_type"
+            android:textAppearance="?android:attr/textAppearanceMedium" />        
 
         <TextView
             android:id="@+id/txt_book"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/lbl_type"
+            android:layout_below="@id/txt_status"
             android:text="@string/txt_book"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 

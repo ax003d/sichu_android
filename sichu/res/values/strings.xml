@@ -91,5 +91,6 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_invite_weibo_friend">InviteWeiboFriendActivity</string>
     <string name="title_activity_friend_detail">FriendDetailActivity</string>
+    <string name="messages_borrow_request">Borrow Requests</string>
 
 </resources>

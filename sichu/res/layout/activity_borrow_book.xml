@@ -127,14 +127,15 @@
             android:singleLine="false" />
 
         <Button
-            android:id="@+id/btn_save"
-            android:layout_width="100dp"
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/edit_remark"
+            android:padding="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/btn_brown"
-            android:text="Save" />
+            android:text="Send Request" />
     </RelativeLayout>
 
 </ScrollView>
