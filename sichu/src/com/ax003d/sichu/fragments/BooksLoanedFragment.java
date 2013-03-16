@@ -4,7 +4,10 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.app.AlertDialog;
 import org.holoeverywhere.app.Fragment;
+import org.holoeverywhere.app.AlertDialog.Builder;
+import org.holoeverywhere.widget.CheckBox;
 import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
@@ -12,6 +15,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,6 +27,8 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.view.MenuItem;
 import com.ax003d.sichu.MainActivity;
@@ -30,12 +38,21 @@ import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.models.Book.Books;
 import com.ax003d.sichu.models.BookBorrow;
+import com.ax003d.sichu.models.BookBorrowReq;
 import com.ax003d.sichu.models.BookBorrow.BookBorrows;
+import com.ax003d.sichu.models.BookBorrowReq.BookBorrowReqs;
 import com.ax003d.sichu.models.BookOwn;
+import com.ax003d.sichu.utils.AccessTokenKeeper;
 import com.ax003d.sichu.utils.Preferences;
+import com.ax003d.sichu.utils.Utils;
+import com.ax003d.sichu.utils.WeiboUtils;
+import com.weibo.sdk.android.Oauth2AccessToken;
+import com.weibo.sdk.android.WeiboException;
+import com.weibo.sdk.android.api.FriendshipsAPI;
+import com.weibo.sdk.android.net.RequestListener;
 
 public class BooksLoanedFragment extends Fragment implements
-		LoaderManager.LoaderCallbacks<Cursor> {
+		LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
 	// Fragments in on activity should have different loader ids!
 	private static final int BOOKBORROW_LOADER = 1;
 	private static BooksLoanedFragment instance;
@@ -59,6 +76,7 @@ public class BooksLoanedFragment extends Fragment implements
 	private ListView lst_books_loaned;
 	private long userID;
 	private boolean requery;
+	private int mClickItemPosition;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -84,6 +102,7 @@ public class BooksLoanedFragment extends Fragment implements
 		lst_books_loaned = (ListView) getActivity().findViewById(
 				R.id.lst_books_loaned);
 		lst_books_loaned.setAdapter(adapter);
+		lst_books_loaned.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROW_LOADER, null,
 				this);
 	}
@@ -208,4 +227,63 @@ public class BooksLoanedFragment extends Fragment implements
 			super.onPostExecute(result);
 		} // onPostExecute
 	} // GetBooksLoanedTask
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		mClickItemPosition = position;
+		BookBorrow borrow = (BookBorrow) adapter.getItem(position);
+		if (borrow.getReturnedDate() != null) {
+			return;
+		}
+		Builder builder = new AlertDialog.Builder(activity);
+		builder.setTitle("Book Return Checked");
+		builder.setMessage("This book is returned?");
+		builder.setCancelable(false);
+		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				BookBorrow borrow = (BookBorrow) adapter.getItem(mClickItemPosition);
+				new ReturnBookTask().execute(borrow.getGuid() + "");
+			}
+		});
+		builder.setNegativeButton(android.R.string.no, null);
+		builder.create().show();		
+	}
+	
+	private class ReturnBookTask extends AsyncTask<String, Void, JSONObject> {
+
+		@Override
+		protected JSONObject doInBackground(String... params) {
+			try {
+				return api_client.bookborrow__detail(params[0], null);
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			super.onPostExecute(result);
+			if ((result == null) || result.has("error_code")) {
+				Toast.makeText(activity, "Check return book failed!",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				BookBorrow borrow = new BookBorrow(result);
+				adapter.replaceItem(borrow);
+				ContentValues values = new ContentValues();
+				values.put(BookBorrows.RETURNED_DATE, Utils.formatDateTime(borrow.getReturnedDate()));
+				activity.getContentResolver().update(
+						Uri.withAppendedPath(BookBorrows.CONTENT_URI,
+								"guid/" + borrow.getGuid()), values, null, null);
+				Toast.makeText(activity, "Book returned success!",
+						Toast.LENGTH_SHORT).show();
+			}			
+		}
+	}
 }

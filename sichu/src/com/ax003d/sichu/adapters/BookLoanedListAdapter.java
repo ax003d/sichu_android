@@ -118,4 +118,14 @@ public class BookLoanedListAdapter extends BaseAdapter {
 		this.bookborrows.clear();
 	}
 
+	public void replaceItem(BookBorrow borrow) {
+		for (BookBorrow b : bookborrows) {
+			if (b.getGuid() == borrow.getGuid()) {
+				b.setReturnedDate(borrow.getReturnedDate());
+				break;
+			}
+		}
+		notifyDataSetChanged();
+	}
+
 }

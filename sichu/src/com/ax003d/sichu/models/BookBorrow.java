@@ -159,4 +159,8 @@ public class BookBorrow {
 		setContentValues(values);
 		return contentResolver.insert(BookBorrows.CONTENT_URI, values);
 	}
+
+	public long getGuid() {
+		return guid;
+	}
 }
