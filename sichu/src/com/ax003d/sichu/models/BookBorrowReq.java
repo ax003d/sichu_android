@@ -162,4 +162,8 @@ public class BookBorrowReq {
 		setContentValues(values);
 		return contentResolver.insert(BookBorrowReqs.CONTENT_URI, values);
 	}
+	
+	public long getGuid() {
+		return guid;
+	}
 }

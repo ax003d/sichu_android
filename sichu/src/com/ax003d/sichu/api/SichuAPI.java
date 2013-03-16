@@ -120,7 +120,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	@Override
 	public JSONObject bookown(String uid, boolean trim_owner, String next,
 			ProgressListener progressListener) throws ClientProtocolException,
-			IOException, JSONException { 
+			IOException, JSONException {
 		ApiRequest request = new ApiRequest(ApiRequest.GET,
 				next == null ? "/v1/bookown/" : next);
 		if (uid != null) {
@@ -297,11 +297,22 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 			String planed_return_date, String remark,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException {
-		ApiRequest request = new ApiRequest(ApiRequest.POST,
-				"/v1/bookborrow/");
+		ApiRequest request = new ApiRequest(ApiRequest.POST, "/v1/bookborrow/");
 		request.addParameter("bo_ship", bo_ship);
 		request.addParameter("planed_return_date", planed_return_date);
 		request.addParameter("remark", remark);
+		ApiResponse response = execute(request, progressListener);
+		String resp = response.getContentAsString();
+		return new JSONObject(resp);
+	}
+
+	@Override
+	public JSONObject bookborrowrequest__detail(String request_id,
+			String status, ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.POST,
+				"/v1/bookborrowreq/" + request_id + "/");
+		request.addParameter("status", status);
 		ApiResponse response = execute(request, progressListener);
 		String resp = response.getContentAsString();
 		return new JSONObject(resp);

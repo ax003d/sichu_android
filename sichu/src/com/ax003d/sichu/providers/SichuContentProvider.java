@@ -39,6 +39,7 @@ public class SichuContentProvider extends ContentProvider {
 	private static final int FOLLOWERS = 12;
 	private static final int BOOKBORROWREQS = 13;
 	private static final int BOOKBORROWREQS_BY_USER = 14;
+	private static final int BOOKBORROWREQ_BY_GUID = 15;
 
 	private static HashMap<String, String> booksProjectionMap;
 	private static HashMap<String, String> bookownsProjectionMap;
@@ -365,6 +366,11 @@ public class SichuContentProvider extends ContentProvider {
 			count = db.update(BookOwns.TABLE_NAME, values, selection,
 					selectionArgs);
 			break;
+		case BOOKBORROWREQ_BY_GUID:
+			selection = BookBorrowReqs.GUID + " = " + uri.getLastPathSegment();
+			count = db.update(BookBorrowReqs.TABLE_NAME, values, selection,
+					selectionArgs);
+			break;			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -398,6 +404,8 @@ public class SichuContentProvider extends ContentProvider {
 				.addURI(AUTHORITY, BookBorrowReqs.TABLE_NAME, BOOKBORROWREQS);
 		URI_MATCHER.addURI(AUTHORITY, BookBorrowReqs.TABLE_NAME + "/user/#",
 				BOOKBORROWREQS_BY_USER);
+		URI_MATCHER.addURI(AUTHORITY, BookBorrowReqs.TABLE_NAME + "/guid/#",
+				BOOKBORROWREQ_BY_GUID);
 
 		bookownsWithBookProjectionMap = new HashMap<String, String>();
 		bookownsWithBookProjectionMap.put(BookOwns.TABLE_NAME + "."

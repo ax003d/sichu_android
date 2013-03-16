@@ -13,10 +13,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -211,6 +213,10 @@ public class MessagesFragment extends Fragment implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		mActionPosition = position;
+		BookBorrowReq req = (BookBorrowReq) adapter.getItem(mActionPosition);
+		if (req.getStatus() != 0) {
+			return;
+		}
 		activity.startActionMode(new ActionMode.Callback() {
 
 			@Override
@@ -238,24 +244,63 @@ public class MessagesFragment extends Fragment implements
 
 			@Override
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-				boolean handled = false;
+				int status = 0;
 				switch (item.getItemId()) {
 				case R.id.menu_agree:
-					Toast.makeText(activity, "agree", Toast.LENGTH_SHORT)
-							.show();
-					handled = true;
+					status = 1;
 					break;
 				case R.id.menu_reject:
-					Toast.makeText(activity, "reject", Toast.LENGTH_SHORT)
-							.show();
-					handled = true;
+					status = 2;
 					break;
 				}
-				if (handled) {
+				if (status != 0) {
+					BookBorrowReq req = (BookBorrowReq) adapter
+							.getItem(mActionPosition);
+					new ProcessBookBorrowRequestTask().execute(req.getGuid()
+							+ "", status + "");
 					mode.finish();
+					return true;
 				}
-				return handled;
+				return false;
 			}
 		});
+	}
+
+	private class ProcessBookBorrowRequestTask extends
+			AsyncTask<String, Void, JSONObject> {
+
+		@Override
+		protected JSONObject doInBackground(String... params) {
+			try {
+				return api_client.bookborrowrequest__detail(params[0],
+						params[1], null);
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			super.onPostExecute(result);
+			if ((result == null) || result.has("error_code")) {
+				Toast.makeText(activity, "Process request failed!",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				BookBorrowReq req = new BookBorrowReq(result);
+				adapter.replaceItem(req);
+				ContentValues values = new ContentValues();
+				values.put("status", req.getStatus());
+				activity.getContentResolver().update(
+						Uri.withAppendedPath(BookBorrowReqs.CONTENT_URI,
+								"guid/" + req.getGuid()), values, null, null);
+				Toast.makeText(activity, "Borrow request proccessed!",
+						Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 }

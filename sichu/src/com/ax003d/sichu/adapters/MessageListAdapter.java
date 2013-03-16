@@ -107,4 +107,14 @@ public class MessageListAdapter extends BaseAdapter {
 	public void clearBookBorrowReq() {
 		messages.clear();
 	}
+
+	public void replaceItem(BookBorrowReq req) {
+		for (BookBorrowReq r : messages) {
+			if (r.getGuid() == req.getGuid()) {
+				r.setStatus(req.getStatus());
+				break;
+			}
+		}
+		notifyDataSetChanged();
+	}
 }

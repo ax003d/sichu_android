@@ -66,6 +66,10 @@ public interface ISichuAPI {
 	JSONObject bookborrowrequest(String next, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
 
+	JSONObject bookborrowrequest__detail(String request_id, String status,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException;
+
 	JSONObject bookborrow__add(String bo_ship, String planed_return_date,
 			String remark, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
