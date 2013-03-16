@@ -186,7 +186,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		ApiResponse response = execute(request, progressListener);
 
 		String resp = response.getContentAsString();
-		// Log.d("Sync", resp);
+		Log.d("Sync", resp);
 		return new JSONObject(resp);
 	}
 
@@ -297,7 +297,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 			String planed_return_date, String remark,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException {
-		ApiRequest request = new ApiRequest(ApiRequest.POST, "/v1/bookborrow/");
+		ApiRequest request = new ApiRequest(ApiRequest.POST, "/v1/request/bookborrow/");
 		request.addParameter("bo_ship", bo_ship);
 		request.addParameter("planed_return_date", planed_return_date);
 		request.addParameter("remark", remark);
