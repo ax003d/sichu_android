@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_title"
             android:layout_toRightOf="@id/img_cover"
-            android:text="Author:"
+            android:text="@string/lbl_author"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FF999999" />
 
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_author"
             android:layout_toRightOf="@id/img_cover"
-            android:text="ISBN:"
+            android:text="@string/lbl_isbn"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FF999999" />
 
@@ -66,45 +66,68 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFD57B51" />
 
-        <Button
-            android:id="@+id/btn_douban"
+        <TextView
+            android:id="@+id/lbl_owner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_isbn"
-            android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/img_cover"
-            android:background="@drawable/btn_green"
-            android:drawableLeft="@drawable/ic_douban_24"
-            android:minHeight="28dp"
-            android:padding="8dp"
-            android:text=" DouBan"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:text="@string/lbl_owner"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FF999999" />
+
+        <TextView
+            android:id="@+id/txt_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_isbn"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/lbl_owner"
+            android:text="Owner"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFD57B51" />
+
+        <TextView
+            android:id="@+id/lbl_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_owner"
+            android:layout_toRightOf="@id/img_cover"
+            android:text="@string/lbl_status"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FF999999" />
 
         <TextView
             android:id="@+id/txt_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btn_douban"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@id/img_cover"
+            android:layout_below="@id/txt_owner"
+            android:layout_toRightOf="@id/lbl_status"
             android:text="Available"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFD57B51" />
 
-        <View
-            android:id="@+id/v_split"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/img_cover"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="#FF999999" />
+        <Button
+            android:id="@+id/btn_douban"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_status"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/img_cover"
+            android:background="@drawable/btn_green"
+            android:drawableLeft="@drawable/ic_douban_24"
+            android:minHeight="28dp"
+            android:padding="8dp"
+            android:text="@string/btn_douban"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/lbl_borrow"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/v_split"
-            android:layout_centerInParent="true"
+            android:layout_below="@id/btn_douban"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:text="Book Borrow Request"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -132,9 +155,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/edit_remark"
-            android:padding="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/btn_brown"
+            android:padding="10dp"
             android:text="Send Request" />
     </RelativeLayout>
 

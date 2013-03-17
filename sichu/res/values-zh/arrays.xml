@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="bookown_status">
+        <item>可借</item>
+        <item>不可借</item>
+        <item>借出</item>
+        <item>丢失</item>
+        <item>已删除</item>
+    </array>
+
+</resources>

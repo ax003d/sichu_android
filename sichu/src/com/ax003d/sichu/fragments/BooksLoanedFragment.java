@@ -5,9 +5,8 @@ import java.io.IOException;
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.app.AlertDialog.Builder;
-import org.holoeverywhere.widget.CheckBox;
+import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
@@ -38,18 +37,10 @@ import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.models.Book.Books;
 import com.ax003d.sichu.models.BookBorrow;
-import com.ax003d.sichu.models.BookBorrowReq;
 import com.ax003d.sichu.models.BookBorrow.BookBorrows;
-import com.ax003d.sichu.models.BookBorrowReq.BookBorrowReqs;
 import com.ax003d.sichu.models.BookOwn;
-import com.ax003d.sichu.utils.AccessTokenKeeper;
 import com.ax003d.sichu.utils.Preferences;
 import com.ax003d.sichu.utils.Utils;
-import com.ax003d.sichu.utils.WeiboUtils;
-import com.weibo.sdk.android.Oauth2AccessToken;
-import com.weibo.sdk.android.WeiboException;
-import com.weibo.sdk.android.api.FriendshipsAPI;
-import com.weibo.sdk.android.net.RequestListener;
 
 public class BooksLoanedFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
@@ -106,15 +97,15 @@ public class BooksLoanedFragment extends Fragment implements
 		activity.getSupportLoaderManager().initLoader(BOOKBORROW_LOADER, null,
 				this);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()){
+		switch (item.getItemId()) {
 		case R.id.menu_sync:
 			requery = false;
 			new GetBooksLoanedTask().execute();
 			break;
-		}		
+		}
 
 		return super.onOptionsItemSelected(item);
 	}
@@ -155,8 +146,8 @@ public class BooksLoanedFragment extends Fragment implements
 		protected void onPreExecute() {
 			super.onPreExecute();
 			activity.setSupportProgressBarIndeterminateVisibility(true);
-		}		
-		
+		}
+
 		@Override
 		protected JSONObject doInBackground(String... params) {
 			JSONObject ret = null;
@@ -200,19 +191,18 @@ public class BooksLoanedFragment extends Fragment implements
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
-					Toast.makeText(activity, "Get borrow record error!",
+					Toast.makeText(activity, R.string.err_get_loaned,
 							Toast.LENGTH_SHORT).show();
 				}
 			}
 
 			if (requery) {
 				activity.getSupportLoaderManager().restartLoader(
-						BOOKBORROW_LOADER, null,
-						BooksLoanedFragment.this);
+						BOOKBORROW_LOADER, null, BooksLoanedFragment.this);
 				requery = false;
 			}
 			activity.setSupportProgressBarIndeterminateVisibility(false);
-			
+
 			if (result != null && result.has("meta")) {
 				String next;
 				try {
@@ -237,20 +227,21 @@ public class BooksLoanedFragment extends Fragment implements
 			return;
 		}
 		Builder builder = new AlertDialog.Builder(activity);
-		builder.setTitle("Book Return Checked");
-		builder.setMessage("This book is returned?");
+		builder.setTitle(R.string.title_chk_book_return);
+		builder.setMessage(R.string.msg_chk_book_return);
 		builder.setCancelable(false);
-		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {			
+		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				BookBorrow borrow = (BookBorrow) adapter.getItem(mClickItemPosition);
+				BookBorrow borrow = (BookBorrow) adapter
+						.getItem(mClickItemPosition);
 				new ReturnBookTask().execute(borrow.getGuid() + "");
 			}
 		});
 		builder.setNegativeButton(android.R.string.no, null);
-		builder.create().show();		
+		builder.create().show();
 	}
-	
+
 	private class ReturnBookTask extends AsyncTask<String, Void, JSONObject> {
 
 		@Override
@@ -266,24 +257,25 @@ public class BooksLoanedFragment extends Fragment implements
 			}
 			return null;
 		}
-		
+
 		@Override
 		protected void onPostExecute(JSONObject result) {
 			super.onPostExecute(result);
 			if ((result == null) || result.has("error_code")) {
-				Toast.makeText(activity, "Check return book failed!",
+				Toast.makeText(activity, R.string.err_chk_book_return,
 						Toast.LENGTH_SHORT).show();
 			} else {
 				BookBorrow borrow = new BookBorrow(result);
 				adapter.replaceItem(borrow);
 				ContentValues values = new ContentValues();
-				values.put(BookBorrows.RETURNED_DATE, Utils.formatDateTime(borrow.getReturnedDate()));
+				values.put(BookBorrows.RETURNED_DATE,
+						Utils.formatDateTime(borrow.getReturnedDate()));
 				activity.getContentResolver().update(
-						Uri.withAppendedPath(BookBorrows.CONTENT_URI,
-								"guid/" + borrow.getGuid()), values, null, null);
-				Toast.makeText(activity, "Book returned success!",
+						Uri.withAppendedPath(BookBorrows.CONTENT_URI, "guid/"
+								+ borrow.getGuid()), values, null, null);
+				Toast.makeText(activity, R.string.ok_chk_book_return,
 						Toast.LENGTH_SHORT).show();
-			}			
+			}
 		}
 	}
 }

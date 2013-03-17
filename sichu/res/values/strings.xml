@@ -87,10 +87,21 @@
     <string name="msg_delete_bookown">Do you really want to remove this book?</string>
     <string name="err_delete_bookown">Remove book failed!</string>
     <string name="friends_may_know">May Know</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
     <string name="title_activity_invite_weibo_friend">InviteWeiboFriendActivity</string>
     <string name="title_activity_friend_detail">FriendDetailActivity</string>
     <string name="messages_borrow_request">Borrow Requests</string>
-
+    <string name="lbl_author">Author:</string>
+    <string name="lbl_isbn">ISBN:</string>
+    <string name="btn_douban">" DouBan"</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_delete">Delete</string>
+    <string name="err_get_loaned">Get borrow record error!</string>
+    <string name="title_chk_book_return">Check Book Return</string>
+	<string name="msg_chk_book_return">Is this book returned to you?</string>
+	<string name="err_chk_book_return">Check book return failed!</string>
+	<string name="ok_chk_book_return">Check book return success!</string>
+	<string name="lbl_owner">Owner:</string>
+	<string name="lbl_status">Status:</string>
+	<string name="title_borrow_book_activity">Borrow Book</string>
+    
 </resources>

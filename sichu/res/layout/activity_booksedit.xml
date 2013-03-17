@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_title"
         android:layout_toRightOf="@id/img_cover"
-        android:text="Author:"
+        android:text="@string/lbl_author"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FF999999" />
 
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_author"
         android:layout_toRightOf="@id/img_cover"
-        android:text="ISBN:"
+        android:text="@string/lbl_isbn"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FF999999" />
 
@@ -73,7 +73,7 @@
         android:drawableLeft="@drawable/ic_douban_24"
         android:minHeight="28dp"
         android:padding="8dp"
-        android:text=" DouBan"
+        android:text="@string/btn_douban"
         android:textAppearance="?android:attr/textAppearanceSmall" />
     
     <Spinner
@@ -104,7 +104,7 @@
         android:layout_below="@id/edit_remark"
         android:layout_marginTop="10dp"
         android:background="@drawable/btn_brown"
-        android:text="Save" />
+        android:text="@string/btn_save" />
 
     <Button
         android:id="@+id/btn_delete"
@@ -115,6 +115,6 @@
         android:layout_marginRight="20dp"
         android:layout_toLeftOf="@id/btn_save"
         android:background="@drawable/btn_brown"
-        android:text="Delete" />
+        android:text="@string/btn_delete" />
 
 </RelativeLayout>

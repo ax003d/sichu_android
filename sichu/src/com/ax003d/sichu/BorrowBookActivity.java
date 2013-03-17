@@ -52,6 +52,8 @@ public class BorrowBookActivity extends Activity implements OnClickListener {
 		TextView txt_title = (TextView) findViewById(R.id.txt_title);
 		TextView txt_author = (TextView) findViewById(R.id.txt_author);
 		TextView txt_isbn = (TextView) findViewById(R.id.txt_isbn);
+		TextView txt_owner = (TextView) findViewById(R.id.txt_owner);
+		TextView txt_status = (TextView) findViewById(R.id.txt_status);
 		edit_remark = (EditText) findViewById(R.id.edit_remark);
 		dp_return_date = (DatePicker) findViewById(R.id.dp_return_date);
 
@@ -67,6 +69,10 @@ public class BorrowBookActivity extends Activity implements OnClickListener {
 		txt_title.setText(book.getTitle());
 		txt_author.setText(book.getAuthor());
 		txt_isbn.setText(book.getISBN());
+		txt_owner.setText(mBookOwn.getOwner().getUsername());
+		txt_status
+				.setText(getResources().getStringArray(R.array.bookown_status)[mBookOwn
+						.getStatus() - 1]);
 	}
 
 	@Override

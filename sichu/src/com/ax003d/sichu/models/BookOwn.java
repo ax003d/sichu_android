@@ -110,10 +110,6 @@ public class BookOwn implements Parcelable {
 		this.book = book;
 	}
 
-	public int getStatusRaw() {
-		return status;
-	}
-
 	public int getStatus() {
 		return this.status;
 	}

@@ -60,7 +60,7 @@
         </activity>
         <activity
             android:name="com.ax003d.sichu.BorrowBookActivity"
-            android:label="Borrow Book" >
+            android:label="@string/title_borrow_book_activity" >
         </activity>        
 
         <provider

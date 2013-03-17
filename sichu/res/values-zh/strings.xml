@@ -80,5 +80,28 @@
 	<string name="menu_reject">拒绝</string>	
 	<string name="menu_edit">编辑</string>
 	<string name="menu_share">分享</string>	
+    <string name="title_booksedit">编辑</string>
+    <string name="msg_edit_bookown">成功保存书籍信息!</string>
+    <string name="err_edit_bookown">保存书籍信息失败!</string>
+    <string name="title_delete_bookown">删除</string>
+    <string name="msg_delete_bookown">您确定要删除这本书吗？</string>
+    <string name="err_delete_bookown">删除书籍失败！</string>
+    <string name="friends_may_know">寻找好友</string>
+    <string name="title_activity_invite_weibo_friend">邀请微博好友</string>
+    <string name="title_activity_friend_detail">好友</string>
+    <string name="messages_borrow_request">借阅请求</string>
+    <string name="lbl_author">作者:</string>
+    <string name="lbl_isbn">ISBN:</string>
+    <string name="btn_douban">" 去豆瓣看看"</string>
+    <string name="btn_save">保存</string>
+    <string name="btn_delete">删除</string>
+    <string name="err_get_loaned">获取借出列表失败!</string>
+    <string name="title_chk_book_return">归还确认</string>
+	<string name="msg_chk_book_return">确认该书已经归还？</string>
+	<string name="err_chk_book_return">归还确认失败!</string>
+	<string name="ok_chk_book_return">书籍成功归还!</string>
+	<string name="lbl_owner">拥有者:</string>
+	<string name="lbl_status">状态:</string>
+	<string name="title_borrow_book_activity">书籍借阅</string>
     
 </resources>
