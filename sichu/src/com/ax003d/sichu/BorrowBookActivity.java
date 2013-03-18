@@ -1,9 +1,13 @@
 package com.ax003d.sichu;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.app.Activity;
+import org.holoeverywhere.app.DatePickerDialog;
+import org.holoeverywhere.app.DatePickerDialog.OnDateSetListener;
+import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.DatePicker;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
@@ -20,6 +24,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
+import com.actionbarsherlock.view.Window;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.models.Book;
@@ -33,19 +38,32 @@ public class BorrowBookActivity extends Activity implements OnClickListener {
 	private ISichuAPI api_client;
 	private DisplayImageOptions options;
 	private ImageLoader img_loader;
-	private DatePicker dp_return_date;
 	private EditText edit_remark;
+	private int mYear;
+	private int mMonth;
+	private int mDay;
+	private Calendar mCalendar;
+	private Button btn_return_date;
+	private boolean mReturnDateSelected;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_borrow_book);
+		setSupportProgressBarIndeterminateVisibility(false);
 
 		api_client = SichuAPI.getInstance(getApplicationContext());
 		options = Utils.getCloudOptions();
 		img_loader = Utils.getImageLoader(this);
+		mCalendar = Calendar.getInstance();
+		mYear = mCalendar.get(Calendar.YEAR);
+		mMonth = mCalendar.get(Calendar.MONTH) + 1;
+		mDay = mCalendar.get(Calendar.DAY_OF_MONTH);
+		mReturnDateSelected = false;
 
+		btn_return_date = (Button) findViewById(R.id.btn_return_date);
+		btn_return_date.setOnClickListener(this);
 		findViewById(R.id.btn_douban).setOnClickListener(this);
 		findViewById(R.id.btn_send).setOnClickListener(this);
 		ImageView img_cover = (ImageView) findViewById(R.id.img_cover);
@@ -55,7 +73,6 @@ public class BorrowBookActivity extends Activity implements OnClickListener {
 		TextView txt_owner = (TextView) findViewById(R.id.txt_owner);
 		TextView txt_status = (TextView) findViewById(R.id.txt_status);
 		edit_remark = (EditText) findViewById(R.id.edit_remark);
-		dp_return_date = (DatePicker) findViewById(R.id.dp_return_date);
 
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) {
@@ -78,6 +95,28 @@ public class BorrowBookActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.btn_return_date:
+			new DatePickerDialog(this, new OnDateSetListener() {
+				@Override
+				public void onDateSet(DatePicker view, int year,
+						int monthOfYear, int dayOfMonth) {
+					Calendar calendar = Calendar.getInstance();
+					calendar.set(year, monthOfYear, dayOfMonth);
+					if (!calendar.after(mCalendar)) {
+						Toast.makeText(BorrowBookActivity.this,
+								R.string.err_return_date, Toast.LENGTH_SHORT)
+								.show();
+						return;
+					}
+					mYear = year;
+					mMonth = monthOfYear + 1;
+					mDay = dayOfMonth;
+					btn_return_date.setText(String.format("%04d-%02d-%02d",
+							mYear, mMonth, mDay));
+					mReturnDateSelected = true;
+				}
+			}, mYear, mMonth - 1, mDay).show();
+			break;
 		case R.id.btn_douban:
 			Intent intent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse("http://book.douban.com/subject/"
@@ -85,11 +124,14 @@ public class BorrowBookActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 			break;
 		case R.id.btn_send:
-			int year = dp_return_date.getYear();
-			int month = dp_return_date.getMonth() + 1;
-			int day = dp_return_date.getDayOfMonth();
-			String planed_return_date = String.format("%04d-%02d-%02d", year,
-					month, day);
+			if (!mReturnDateSelected) {
+				Toast.makeText(BorrowBookActivity.this,
+						R.string.hint_set_return_date, Toast.LENGTH_SHORT)
+						.show();
+				return;
+			}
+			String planed_return_date = String.format("%04d-%02d-%02d", mYear,
+					mMonth, mDay);
 			String remark = edit_remark.getText().toString();
 			Log.d("borrow", planed_return_date + " remark");
 			new SendBookBorrowRequestTask().execute(planed_return_date, remark);
@@ -102,6 +144,12 @@ public class BorrowBookActivity extends Activity implements OnClickListener {
 
 	private class SendBookBorrowRequestTask extends
 			AsyncTask<String, Void, Boolean> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			setSupportProgressBarIndeterminateVisibility(true);
+		}
 
 		@Override
 		protected Boolean doInBackground(String... params) {
@@ -122,10 +170,11 @@ public class BorrowBookActivity extends Activity implements OnClickListener {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
+			setSupportProgressBarIndeterminateVisibility(false);
 			Toast.makeText(
 					BorrowBookActivity.this,
-					result ? "Borrow Request sent!"
-							: "Send borrow request failed!", Toast.LENGTH_SHORT)
+					result ? R.string.ok_send_borrow_req
+							: R.string.err_send_borrow_req, Toast.LENGTH_SHORT)
 					.show();
 		}
 	}

@@ -74,12 +74,12 @@
     <string name="msg_login">正在登录，请稍候...</string>
     <string name="title_following">关注我们</string>
     <string name="txt_auth_ok">微博授权成功!</string>
-	<string name="msg_following">在微博上关注私橱.</string>
-	<string name="hint_borrow_to">同意借给 %1$s?</string>
-	<string name="menu_agree">同意</string>
-	<string name="menu_reject">拒绝</string>	
-	<string name="menu_edit">编辑</string>
-	<string name="menu_share">分享</string>	
+    <string name="msg_following">在微博上关注私橱.</string>
+    <string name="hint_borrow_to">同意借给 %1$s?</string>
+    <string name="menu_agree">同意</string>
+    <string name="menu_reject">拒绝</string>
+    <string name="menu_edit">编辑</string>
+    <string name="menu_share">分享</string>
     <string name="title_booksedit">编辑</string>
     <string name="msg_edit_bookown">成功保存书籍信息!</string>
     <string name="err_edit_bookown">保存书籍信息失败!</string>
@@ -97,11 +97,19 @@
     <string name="btn_delete">删除</string>
     <string name="err_get_loaned">获取借出列表失败!</string>
     <string name="title_chk_book_return">归还确认</string>
-	<string name="msg_chk_book_return">确认该书已经归还？</string>
-	<string name="err_chk_book_return">归还确认失败!</string>
-	<string name="ok_chk_book_return">书籍成功归还!</string>
-	<string name="lbl_owner">拥有者:</string>
-	<string name="lbl_status">状态:</string>
-	<string name="title_borrow_book_activity">书籍借阅</string>
-    
+    <string name="msg_chk_book_return">确认该书已经归还？</string>
+    <string name="err_chk_book_return">归还确认失败!</string>
+    <string name="ok_chk_book_return">书籍成功归还!</string>
+    <string name="lbl_owner">拥有者:</string>
+    <string name="lbl_status">状态:</string>
+    <string name="title_borrow_book_activity">书籍借阅</string>
+    <string name="btn_return_date">选择归还日期...</string>
+    <string name="err_return_date">归还日期要晚于今天!</string>
+    <string name="ok_send_borrow_req">成功发送借阅请求!</string>
+    <string name="err_send_borrow_req">发送借阅请求失败!</string>
+    <string name="lbl_borrow">借书单</string>
+    <string name="hint_remark">附言</string>
+    <string name="btn_send_request">发送借阅请求</string>
+    <string name="hint_set_return_date">您还没选择归还日期!</string>
+
 </resources>

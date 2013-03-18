@@ -126,39 +126,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/btn_douban"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="Book Borrow Request"
+            android:text="@string/lbl_borrow"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <DatePicker
-            android:id="@+id/dp_return_date"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_return_date"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/lbl_borrow"
-            android:foregroundGravity="center" />
+            android:layout_marginTop="10dp"
+            android:text="@string/btn_return_date" >
+        </Button>
 
         <EditText
             android:id="@+id/edit_remark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/dp_return_date"
+            android:layout_below="@id/btn_return_date"
             android:layout_marginTop="10dp"
             android:gravity="top"
-            android:hint="Remark"
+            android:hint="@string/hint_remark"
             android:lines="3"
             android:singleLine="false" />
 
         <Button
             android:id="@+id/btn_send"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/edit_remark"
             android:layout_marginTop="10dp"
             android:background="@drawable/btn_brown"
             android:padding="10dp"
-            android:text="Send Request" />
+            android:text="@string/btn_send_request" />
     </RelativeLayout>
 
 </ScrollView>

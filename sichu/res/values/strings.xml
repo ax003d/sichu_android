@@ -97,11 +97,19 @@
     <string name="btn_delete">Delete</string>
     <string name="err_get_loaned">Get borrow record error!</string>
     <string name="title_chk_book_return">Check Book Return</string>
-	<string name="msg_chk_book_return">Is this book returned to you?</string>
-	<string name="err_chk_book_return">Check book return failed!</string>
-	<string name="ok_chk_book_return">Check book return success!</string>
-	<string name="lbl_owner">Owner:</string>
-	<string name="lbl_status">Status:</string>
-	<string name="title_borrow_book_activity">Borrow Book</string>
-    
+    <string name="msg_chk_book_return">Is this book returned to you?</string>
+    <string name="err_chk_book_return">Check book return failed!</string>
+    <string name="ok_chk_book_return">Check book return success!</string>
+    <string name="lbl_owner">Owner:</string>
+    <string name="lbl_status">Status:</string>
+    <string name="title_borrow_book_activity">Borrow Book</string>
+    <string name="btn_return_date">Select Return Date ...</string>
+    <string name="err_return_date">Return date should be some day after today!</string>
+    <string name="ok_send_borrow_req">Borrow Request sent!</string>
+    <string name="err_send_borrow_req">Send borrow request failed!</string>
+    <string name="lbl_borrow">Book Borrow Request</string>
+    <string name="hint_remark">Remark</string>
+    <string name="btn_send_request">Send Request</string>
+    <string name="hint_set_return_date">Please select return date first!</string>
+
 </resources>
