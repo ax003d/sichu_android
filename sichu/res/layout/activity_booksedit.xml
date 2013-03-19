@@ -14,10 +14,13 @@
 
     <ImageView
         android:id="@+id/img_cover"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginRight="10dp"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
         android:layout_below="@id/txt_title"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bg_book"
+        android:padding="5dp"
         android:src="@drawable/ic_book" />
 
     <TextView
@@ -35,8 +38,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_title"
-        android:layout_toRightOf="@id/lbl_author"
         android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/lbl_author"
         android:text="Author"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFD57B51" />
@@ -56,9 +59,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_author"
+        android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/lbl_isbn"
         android:text="ISBN"
-        android:layout_marginLeft="5dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFD57B51" />
 
@@ -75,7 +78,7 @@
         android:padding="8dp"
         android:text="@string/btn_douban"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-    
+
     <Spinner
         android:id="@+id/spin_status"
         android:layout_width="match_parent"
@@ -83,7 +86,8 @@
         android:layout_below="@id/img_cover"
         android:layout_marginTop="10dp"
         android:drawSelectorOnTop="true"
-        android:entries="@array/bookown_status" />
+        android:entries="@array/bookown_status"
+        android:gravity="center" />
 
     <EditText
         android:id="@+id/edit_remark"
@@ -91,14 +95,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/spin_status"
         android:layout_marginTop="10dp"
-        android:hint="Remark"
         android:gravity="top"
+        android:hint="Remark"
         android:lines="3"
         android:singleLine="false" />
 
     <Button
         android:id="@+id/btn_save"
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/edit_remark"
@@ -108,13 +112,11 @@
 
     <Button
         android:id="@+id/btn_delete"
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edit_remark"
+        android:layout_below="@id/btn_save"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_toLeftOf="@id/btn_save"
-        android:background="@drawable/btn_brown"
+        android:background="@drawable/btn_gray"
         android:text="@string/btn_delete" />
 
 </RelativeLayout>

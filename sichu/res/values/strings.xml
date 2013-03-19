@@ -111,5 +111,8 @@
     <string name="hint_remark">Remark</string>
     <string name="btn_send_request">Send Request</string>
     <string name="hint_set_return_date">Please select return date first!</string>
+    <string name="lbl_owns">"Owns: "</string>
+    <string name="lbl_loaned">"Loaned: "</string>
+    <string name="lbl_borrowed">"Borrowed: "</string>
 
 </resources>
