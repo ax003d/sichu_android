@@ -2,6 +2,8 @@ package com.ax003d.sichu.adapters;
 
 import java.util.ArrayList;
 
+import org.holoeverywhere.R.color;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +34,7 @@ public class BookLoanedListAdapter extends BaseAdapter {
 		options = Utils.getCloudOptions();
 		img_loader = Utils.getImageLoader(context);
 		col_not_returned = context.getResources().getColor(R.color.col_value);
-		col_returned = 0xFF000000;
+		col_returned = org.holoeverywhere.slidingmenu.R.color.hint_foreground_holo_light;
 	}	
 	
 	public void setAsBorrower(boolean asBorrower) {
@@ -96,7 +98,7 @@ public class BookLoanedListAdapter extends BaseAdapter {
 		if ( borrow.getReturnedDate() != null ) {
 			txt_returned_date.setText(Utils.formatDate(borrow.getReturnedDate()));
 			
-			txt_title.setTextColor(col_returned);
+			txt_title.setTextColor(0xFF000000);
 			txt_borrower.setTextColor(col_returned);
 			txt_borrow_date.setTextColor(col_returned);
 			txt_planed_return_date.setTextColor(col_returned);
