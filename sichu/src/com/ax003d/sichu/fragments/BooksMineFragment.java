@@ -157,7 +157,8 @@ public class BooksMineFragment extends Fragment implements
 			activity.setSupportProgressBarIndeterminateVisibility(false);
 			if (result != null && result.has("id")) {
 				BookOwn own = new BookOwn(result);
-				adapter.addBookOwn(own);
+				adapter.prependBookOwn(own);
+				own.save(activity.getContentResolver());
 				adapter.notifyDataSetChanged();
 				Toast.makeText(activity, R.string.success_add_book,
 						Toast.LENGTH_SHORT).show();

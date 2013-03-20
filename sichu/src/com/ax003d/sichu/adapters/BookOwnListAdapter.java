@@ -95,4 +95,8 @@ public class BookOwnListAdapter extends BaseAdapter {
 		return view;
 	}
 
+	public void prependBookOwn(BookOwn own) {
+		bookowns.add(0, own);
+	}
+
 }
