@@ -1,122 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp" >
+    android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/txt_title"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:text="Title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_height="wrap_content" >
 
-    <ImageView
-        android:id="@+id/img_cover"
-        android:layout_width="115dp"
-        android:layout_height="115dp"
-        android:layout_below="@id/txt_title"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/bg_book"
-        android:padding="5dp"
-        android:src="@drawable/ic_book" />
+        <RelativeLayout
+            android:id="@+id/rl_bookinfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFF5E3BB"
+            android:padding="10dp" >
 
-    <TextView
-        android:id="@+id/lbl_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txt_title"
-        android:layout_toRightOf="@id/img_cover"
-        android:text="@string/lbl_author"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#FF999999" />
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="Title"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/txt_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txt_title"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/lbl_author"
-        android:text="Author"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#FFD57B51" />
+            <ImageView
+                android:id="@+id/img_cover"
+                android:layout_width="115dp"
+                android:layout_height="115dp"
+                android:layout_below="@id/txt_title"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/bg_book"
+                android:padding="5dp"
+                android:src="@drawable/ic_book" />
 
-    <TextView
-        android:id="@+id/lbl_isbn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txt_author"
-        android:layout_toRightOf="@id/img_cover"
-        android:text="@string/lbl_isbn"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#FF999999" />
+            <TextView
+                android:id="@+id/lbl_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_title"
+                android:layout_toRightOf="@id/img_cover"
+                android:text="@string/lbl_author"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FF999999" />
 
-    <TextView
-        android:id="@+id/txt_isbn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txt_author"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/lbl_isbn"
-        android:text="ISBN"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#FFD57B51" />
+            <TextView
+                android:id="@+id/txt_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_title"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/lbl_author"
+                android:text="Author"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFD57B51" />
 
-    <Button
-        android:id="@+id/btn_douban"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txt_isbn"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/img_cover"
-        android:background="@drawable/btn_green"
-        android:drawableLeft="@drawable/ic_douban_24"
-        android:minHeight="28dp"
-        android:padding="8dp"
-        android:text="@string/btn_douban"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+            <TextView
+                android:id="@+id/lbl_isbn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_author"
+                android:layout_toRightOf="@id/img_cover"
+                android:text="@string/lbl_isbn"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FF999999" />
 
-    <Spinner
-        android:id="@+id/spin_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/img_cover"
-        android:layout_marginTop="10dp"
-        android:drawSelectorOnTop="true"
-        android:entries="@array/bookown_status"
-        android:gravity="center" />
+            <TextView
+                android:id="@+id/txt_isbn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_author"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/lbl_isbn"
+                android:text="ISBN"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFD57B51" />
 
-    <EditText
-        android:id="@+id/edit_remark"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/spin_status"
-        android:layout_marginTop="10dp"
-        android:gravity="top"
-        android:hint="Remark"
-        android:lines="3"
-        android:singleLine="false" />
+            <Button
+                android:id="@+id/btn_douban"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_isbn"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/img_cover"
+                android:background="@drawable/btn_green"
+                android:drawableLeft="@drawable/ic_douban_24"
+                android:minHeight="28dp"
+                android:padding="8dp"
+                android:text="@string/btn_douban"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </RelativeLayout>
 
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/edit_remark"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/btn_brown"
-        android:text="@string/btn_save" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_bookinfo"
+            android:layout_marginTop="10dp"
+            android:padding="10dp" >
 
-    <Button
-        android:id="@+id/btn_delete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_save"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/btn_gray"
-        android:text="@string/btn_delete" />
+            <Spinner
+                android:id="@+id/spin_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawSelectorOnTop="true"
+                android:entries="@array/bookown_status"
+                android:gravity="center" />
 
-</RelativeLayout>
+            <EditText
+                android:id="@+id/edit_remark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spin_status"
+                android:layout_marginTop="10dp"
+                android:gravity="top"
+                android:hint="@string/hint_edit_remark"
+                android:singleLine="false" />
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/edit_remark"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_brown"
+                android:focusableInTouchMode="true"
+                android:text="@string/btn_save" >
+
+                <requestFocus />
+            </Button>
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_save"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_gray"
+                android:text="@string/btn_delete" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

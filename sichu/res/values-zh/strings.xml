@@ -118,5 +118,6 @@
     <string name="btn_action_invite">邀请</string>
     <string name="btn_action_follow">关注</string>
     <string name="err_get_numbers">获取用户藏书量失败!</string>
+    <string name="hint_edit_remark">备注</string>
 
 </resources>

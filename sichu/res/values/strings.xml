@@ -118,5 +118,6 @@
     <string name="btn_action_invite">Invite</string>
 	<string name="btn_action_follow">Follow</string>
 	<string name="err_get_numbers">Get user book info failed!</string>
+	<string name="hint_edit_remark">Remark</string>
     
 </resources>
