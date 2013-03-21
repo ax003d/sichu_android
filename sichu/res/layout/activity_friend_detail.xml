@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_remark"
             android:layout_toRightOf="@id/lbl_owns"
-            android:text="10"
+            android:text="0"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFD57B51" />
         
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_owns"
             android:layout_toRightOf="@id/lbl_loaned"
-            android:text="10"
+            android:text="0"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFD57B51" />
         
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_loaned"
             android:layout_toRightOf="@id/lbl_borrowed"
-            android:text="10"
+            android:text="0"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFD57B51" />        
     </RelativeLayout>

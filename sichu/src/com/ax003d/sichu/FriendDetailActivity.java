@@ -40,6 +40,9 @@ public class FriendDetailActivity extends Activity implements
 	private ListView lst_books;
 	private ISichuAPI api_client;
 	private BookOwnListAdapter adapter;
+	private TextView txt_owns;
+	private TextView txt_borrowed;
+	private TextView txt_loaned;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,9 @@ public class FriendDetailActivity extends Activity implements
 		ImageView img_avatar = (ImageView) findViewById(R.id.img_avatar);
 		TextView txt_username = (TextView) findViewById(R.id.txt_username);
 		TextView txt_remark = (TextView) findViewById(R.id.txt_remark);
+		txt_owns = (TextView) findViewById(R.id.txt_owns);
+		txt_borrowed = (TextView) findViewById(R.id.txt_borrowed);
+		txt_loaned = (TextView) findViewById(R.id.txt_loaned);
 
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) {
@@ -74,7 +80,42 @@ public class FriendDetailActivity extends Activity implements
 			txt_remark.setText("");
 		}
 
+		new GetNumbersTask().execute(mFriend.getGuid() + "");
 		new GetBookOwnTask().execute();
+	}
+
+	private class GetNumbersTask extends AsyncTask<String, Void, JSONObject> {
+
+		@Override
+		protected JSONObject doInBackground(String... params) {
+			try {
+				return api_client.account__numbers(params[0], null);
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			super.onPostExecute(result);
+			if (result != null && result.has("total")) {
+				try {
+					txt_owns.setText(result.getString("total"));
+					txt_loaned.setText(result.getString("loaned"));
+					txt_borrowed.setText(result.getString("borrowed"));
+					return;
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			Toast.makeText(FriendDetailActivity.this, R.string.err_get_numbers,
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	private class GetBookOwnTask extends AsyncTask<String, Void, JSONObject> {

@@ -328,4 +328,16 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		String resp = response.getContentAsString();
 		return new JSONObject(resp);
 	}
+
+	@Override
+	public JSONObject account__numbers(String uid,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.POST,
+				"/v1/account/numbers/");
+		request.addParameter("uid", uid);
+		ApiResponse response = execute(request, progressListener);
+		String resp = response.getContentAsString();
+		return new JSONObject(resp);
+	}
 }

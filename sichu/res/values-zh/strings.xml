@@ -114,8 +114,9 @@
     <string name="lbl_owns">藏书量: </string>
     <string name="lbl_loaned">总借出: </string>
     <string name="lbl_borrowed">总借入: </string>
-    <string name="err_load_book_list">加载书籍列表失败!</string>    
+    <string name="err_load_book_list">加载书籍列表失败!</string>
     <string name="btn_action_invite">邀请</string>
-	<string name="btn_action_follow">关注</string>
-	
+    <string name="btn_action_follow">关注</string>
+    <string name="err_get_numbers">获取用户藏书量失败!</string>
+
 </resources>
