@@ -114,5 +114,8 @@
     <string name="lbl_owns">"Owns: "</string>
     <string name="lbl_loaned">"Loaned: "</string>
     <string name="lbl_borrowed">"Borrowed: "</string>
-
+    <string name="err_load_book_list">Load book list error!</string>
+    <string name="btn_action_invite">Invite</string>
+	<string name="btn_action_follow">Follow</string>
+    
 </resources>

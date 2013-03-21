@@ -14,18 +14,18 @@
         android:contentDescription="@string/img_avatar" />
     
     <Button android:id="@+id/btn_action"
-        android:layout_width="90dp"
-        android:layout_height="40dp"        
+        android:layout_width="70dp"
+        android:layout_height="40dp"  
+        android:layout_marginRight="10dp"      
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
-        android:text="Action"/>
+        android:text="@string/btn_action_invite"/>
     
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="100dp"
-        android:layout_centerInParent="true"
+        android:paddingLeft="60dp"
+        android:paddingRight="90dp"
         android:orientation="vertical"
         android:paddingTop="10dp" >
 

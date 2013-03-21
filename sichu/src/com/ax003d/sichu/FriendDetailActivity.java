@@ -6,6 +6,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.app.Activity;
 import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.TextView;
+import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 
+import com.actionbarsherlock.view.Window;
 import com.ax003d.sichu.adapters.BookOwnListAdapter;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
@@ -28,7 +30,8 @@ import com.ax003d.sichu.utils.Utils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class FriendDetailActivity extends Activity implements OnItemClickListener {
+public class FriendDetailActivity extends Activity implements
+		OnItemClickListener {
 
 	private User mFriend;
 	private String mRemark;
@@ -41,6 +44,7 @@ public class FriendDetailActivity extends Activity implements OnItemClickListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_friend_detail);
 
 		options = Utils.getCloudOptions();
@@ -115,7 +119,7 @@ public class FriendDetailActivity extends Activity implements OnItemClickListene
 					e.printStackTrace();
 				}
 			}
-			
+
 			setSupportProgressBarIndeterminateVisibility(false);
 			if (result != null && result.has("meta")) {
 				String next;
@@ -127,6 +131,11 @@ public class FriendDetailActivity extends Activity implements OnItemClickListene
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+			}
+
+			if (result == null) {
+				Toast.makeText(FriendDetailActivity.this,
+						R.string.err_load_book_list, Toast.LENGTH_SHORT).show();
 			}
 			super.onPostExecute(result);
 		} // onPostExecute

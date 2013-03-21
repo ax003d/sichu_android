@@ -84,7 +84,7 @@ public class MayKnowListAdapter extends BaseAdapter {
 		txt_username.setText(mk.getUsername());
 		txt_remark.setText(mk.getRemark());
 		if (mk.getIsSichuUser()) {
-			btn_action.setText("Follow");
+			btn_action.setText(R.string.btn_action_follow);
 			btn_action.setTag(mk.getID());
 			btn_action.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -94,7 +94,7 @@ public class MayKnowListAdapter extends BaseAdapter {
 				}
 			});
 		} else {
-			btn_action.setText("Invite");
+			btn_action.setText(R.string.btn_action_invite);
 			btn_action.setTag(mk.getUsername());
 			btn_action.setOnClickListener(new View.OnClickListener() {
 				@Override

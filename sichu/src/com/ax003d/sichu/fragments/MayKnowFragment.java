@@ -71,6 +71,7 @@ public class MayKnowFragment extends Fragment {
 	private void loadMayKnows() {
 		FriendshipsAPI friendships = new FriendshipsAPI(
 				AccessTokenKeeper.readAccessToken(activity));
+		activity.setSupportProgressBarIndeterminateVisibility(true);
 		friendships.friends(mWBuid, 200, mFriendCursor, true,
 				new RequestListener() {
 
@@ -92,18 +93,20 @@ public class MayKnowFragment extends Fragment {
 								wb_ids.append(",");
 							}
 							new GetMayKnowTask().execute(wb_ids.toString());
-							// mHandler.sendEmptyMessage(0);
 						} catch (JSONException e) {
 							e.printStackTrace();
+							mHandler.sendEmptyMessage(0);
 						}
 					}
 
 					@Override
 					public void onError(WeiboException e) {
+						mHandler.sendEmptyMessage(0);
 					}
 
 					@Override
 					public void onIOException(IOException e) {
+						mHandler.sendEmptyMessage(0);
 					}
 
 				});
@@ -131,7 +134,7 @@ public class MayKnowFragment extends Fragment {
 			super.handleMessage(msg);
 			MayKnowFragment fragment = mFragment.get();
 			if (fragment != null) {
-				fragment.updateMayKnowList();
+				fragment.activity.setSupportProgressBarIndeterminateVisibility(false);
 			}
 		}
 	}
@@ -155,6 +158,7 @@ public class MayKnowFragment extends Fragment {
 		@Override
 		protected void onPostExecute(JSONObject result) {
 			super.onPostExecute(result);
+			mHandler.sendEmptyMessage(0);
 			// Log.d("may_know", result.toString());
 			JSONArray array;
 			try {

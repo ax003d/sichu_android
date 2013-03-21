@@ -113,6 +113,9 @@
     <string name="hint_set_return_date">您还没选择归还日期!</string>
     <string name="lbl_owns">藏书量: </string>
     <string name="lbl_loaned">总借出: </string>
-    <string name="lbl_borrowed">总借入: </string>    
-
+    <string name="lbl_borrowed">总借入: </string>
+    <string name="err_load_book_list">加载书籍列表失败!</string>    
+    <string name="btn_action_invite">邀请</string>
+	<string name="btn_action_follow">关注</string>
+	
 </resources>
