@@ -58,6 +58,7 @@ public class FollowListAdapter extends BaseAdapter {
 		if ( asFollower ) {
 			img_loader.displayImage(follow.getUser().getAvatar(), img_avatar, options);
 			txt_username.setText(follow.getUser().getUsername());
+			txt_remark.setText("");
 		} else {
 			img_loader.displayImage(follow.getFollowing().getAvatar(), img_avatar, options);
 			txt_username.setText(follow.getFollowing().getUsername());
