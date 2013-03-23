@@ -65,6 +65,7 @@ public class MayKnowFragment extends Fragment {
 		mFriendCursor = 0;
 		if (mWBuid != -1) {
 			loadMayKnows();
+			activity.findViewById(R.id.lbl_bind_weibo).setVisibility(View.GONE);
 		}
 	}
 
