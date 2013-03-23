@@ -4,6 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/lbl_no_borrowed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/hint_no_borrowed"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="gone" />
+
     <ListView
         android:id="@+id/lst_books_borrowed"
         android:layout_width="match_parent"

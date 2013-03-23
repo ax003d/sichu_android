@@ -132,5 +132,11 @@
     <string name="err_process_request">处理借阅请求失败!</string>
     <string name="ok_process_request">成功处理借阅请求!</string>
     <string name="lbl_bind_weibo">绑定微博账号之后即可寻找正在使用私橱的微博好友!</string>
-    
+    <string name="hint_no_follower">:( 您还没有粉丝!</string>
+    <string name="hint_no_following">您还没有关注任何人，去寻找好友吧!</string>
+    <string name="hint_no_message">目前没有借阅请求!</string>
+    <string name="hint_no_book">点击右上角的条码按钮扫描书籍背面的ISBN条码即可添加书籍!</string>
+    <string name="hint_no_loaned">目前没有借出记录!</string>
+    <string name="hint_no_borrowed">目前没有借入记录!</string>
+
 </resources>

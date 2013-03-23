@@ -116,9 +116,11 @@ public class BooksBorrowedFragment extends Fragment implements
 		adapter.clearBookBorrow();
 
 		if (!data.moveToFirst()) {
+			activity.findViewById(R.id.lbl_no_borrowed).setVisibility(View.VISIBLE);
 			return;
 		}
 
+		activity.findViewById(R.id.lbl_no_borrowed).setVisibility(View.GONE);
 		do {
 			adapter.addBookBorrow(new BookBorrow(data));
 		} while (data.moveToNext());

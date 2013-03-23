@@ -115,9 +115,11 @@ public class FollowerFragment extends Fragment implements
 		adapter.clearFollows();
 
 		if (!data.moveToFirst()) {
+			activity.findViewById(R.id.lbl_no_follower).setVisibility(View.VISIBLE);
 			return;
 		}
 
+		activity.findViewById(R.id.lbl_no_follower).setVisibility(View.GONE);
 		do {
 			adapter.addFollow(new Follow(data));
 		} while (data.moveToNext());

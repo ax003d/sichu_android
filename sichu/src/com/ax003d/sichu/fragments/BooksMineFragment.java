@@ -184,9 +184,11 @@ public class BooksMineFragment extends Fragment implements
 		adapter.clearBookOwn();
 
 		if (!data.moveToFirst()) {
+			activity.findViewById(R.id.lbl_no_books).setVisibility(View.VISIBLE);
 			return;
 		}
 
+		activity.findViewById(R.id.lbl_no_books).setVisibility(View.GONE);
 		do {
 			adapter.addBookOwn(new BookOwn(data));
 		} while (data.moveToNext());

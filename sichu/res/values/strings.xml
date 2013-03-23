@@ -132,5 +132,11 @@
     <string name="err_process_request">Process request failed!</string>
     <string name="ok_process_request">Borrow request proccessed!</string>
     <string name="lbl_bind_weibo">We can find weibo friends for you after you bind weibo account!</string>
+    <string name="hint_no_follower">You currently do not have followers!</string>
+    <string name="hint_no_following">You have not follow anyone yet!</string>
+    <string name="hint_no_message">Have no borrow request now!</string>
+    <string name="hint_no_book">Click button at right top corner to scan one!</string>
+    <string name="hint_no_loaned">Have no loaned record yet!</string>
+    <string name="hint_no_borrowed">Have no borrow record yet!</string>
 	
 </resources>

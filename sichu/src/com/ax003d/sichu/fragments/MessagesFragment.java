@@ -195,9 +195,11 @@ public class MessagesFragment extends Fragment implements
 		adapter.clearBookBorrowReq();
 
 		if (!data.moveToFirst()) {
+			activity.findViewById(R.id.lbl_no_message).setVisibility(View.VISIBLE);
 			return;
 		}
 
+		activity.findViewById(R.id.lbl_no_message).setVisibility(View.GONE);
 		do {
 			adapter.addBookBorrowReq(new BookBorrowReq(data));
 		} while (data.moveToNext());
