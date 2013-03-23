@@ -3,6 +3,7 @@ package com.ax003d.sichu.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,21 +70,23 @@ public class MessageListAdapter extends BaseAdapter {
 		txt_requester.setText(msg.getRequester().getUsername());
 		txt_book.setText(msg.getBookown().getBook().getTitle());
 		txt_planed_return_date.setText(Utils.formatDate(msg.getPlannedReturnDate()));
-		txt_remark.setText(msg.getRemark());
+		if (!TextUtils.isEmpty(msg.getRemark())) {
+			txt_remark.setText(msg.getRemark());
+		}
 
 		int text_col = col_read;
 		switch (msg.getStatus()) {
 		case 0:
 			text_col = col_unread;
-			txt_status.setText("-(Unread)");
+			txt_status.setText(R.string.status_unread);
 			break;
 		case 1:
 			text_col = col_read;
-			txt_status.setText("-(Agree)");
+			txt_status.setText(R.string.status_agree);
 			break;
 		case 2:
 			text_col = col_read;
-			txt_status.setText("-(Reject)");
+			txt_status.setText(R.string.status_reject);
 			break;
 
 		default:

@@ -25,7 +25,7 @@
     <string name="img_borrower">Borrower</string>
     <string name="img_avatar">Avatar</string>
     <string name="txt_username">Username</string>
-    <string name="txt_remark">Thank you!</string>
+    <string name="txt_remark">No Remark</string>
     <string name="txt_status">Status</string>
     <string name="img_status">Status</string>
     <string name="img_remark">Remark</string>
@@ -124,5 +124,10 @@
     <string name="msg_invite_weibo_friend">Hi, %1$s, I have some books to share with you! You can see them from follow link : http://sichu.sinaapp.com/cabinet/user/%2$d/ </string>
     <string name="err_invite_weibo_friend">Invite friends failed!</string>
     <string name="ok_invite_weibo_friend">Invite friends success!</string>
+    <string name="title_process_borrow_request">Process Borrow Request</string>
+    <string name="msg_process_borrow_request">Do you want to borrow %1$s to %2$s?</string>
+    <string name="status_unread">-(Unread)</string>
+    <string name="status_agree">-(Agree)</string>
+    <string name="status_reject">-(Reject)</string>
 	
 </resources>

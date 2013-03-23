@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.app.AlertDialog;
+import org.holoeverywhere.app.AlertDialog.Builder;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.widget.ListView;
@@ -14,6 +16,8 @@ import org.json.JSONObject;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -26,8 +30,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.MessageListAdapter;
@@ -216,53 +218,35 @@ public class MessagesFragment extends Fragment implements
 		if (req.getStatus() != 0) {
 			return;
 		}
-		activity.startActionMode(new ActionMode.Callback() {
 
+		Builder builder = new AlertDialog.Builder(activity);
+		builder.setTitle(R.string.title_process_borrow_request);
+		builder.setMessage(String.format(
+				getString(R.string.msg_process_borrow_request), req
+						.getBookown().getBook().getTitle(), req.getRequester()
+						.getUsername()));
+		builder.setCancelable(false);
+		builder.setPositiveButton(R.string.btn_agree, new OnClickListener() {
 			@Override
-			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public void onDestroyActionMode(ActionMode mode) {
-			}
-
-			@Override
-			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-				activity.getSupportMenuInflater().inflate(
-						R.menu.actionmode_messages, menu);
+			public void onClick(DialogInterface dialog, int which) {
 				BookBorrowReq req = (BookBorrowReq) adapter
 						.getItem(mActionPosition);
-				mode.setTitle(String.format(activity
-						.getString(R.string.hint_borrow_to), req.getRequester()
-						.getUsername()));
-				mode.setSubtitle(req.getBookown().getBook().getTitle());
-				return true;
-			}
-
-			@Override
-			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-				int status = 0;
-				switch (item.getItemId()) {
-				case R.id.menu_agree:
-					status = 1;
-					break;
-				case R.id.menu_reject:
-					status = 2;
-					break;
-				}
-				if (status != 0) {
-					BookBorrowReq req = (BookBorrowReq) adapter
-							.getItem(mActionPosition);
-					new ProcessBookBorrowRequestTask().execute(req.getGuid()
-							+ "", status + "");
-					mode.finish();
-					return true;
-				}
-				return false;
+				new ProcessBookBorrowRequestTask().execute(req.getGuid() + "",
+						1 + "");
 			}
 		});
+		builder.setNegativeButton(R.string.btn_reject, new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				BookBorrowReq req = (BookBorrowReq) adapter
+						.getItem(mActionPosition);
+				new ProcessBookBorrowRequestTask().execute(req.getGuid() + "",
+						2 + "");
+			}
+		});
+		builder.setNeutralButton(android.R.string.cancel, null);
+		builder.create().show();
 	}
 
 	private class ProcessBookBorrowRequestTask extends

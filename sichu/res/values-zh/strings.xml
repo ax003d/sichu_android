@@ -124,5 +124,10 @@
     <string name="msg_invite_weibo_friend">Hi, %1$s, 我有一些闲置书籍想跟你分享，书籍列表可以通过以下链接进行访问: http://sichu.sinaapp.com/cabinet/user/%2$d/ </string>
     <string name="err_invite_weibo_friend">发送好友邀请失败!</string>
     <string name="ok_invite_weibo_friend">成功发送好友邀请!</string>
+    <string name="title_process_borrow_request">借阅请求处理</string>
+    <string name="msg_process_borrow_request">您是否愿意将 &lt;&lt;%1$s&gt;&gt; 借给 %2$s?</string>
+    <string name="status_unread">-(未处理)</string>
+    <string name="status_agree">-(已同意)</string>
+    <string name="status_reject">-(已拒绝)</string>
     
 </resources>

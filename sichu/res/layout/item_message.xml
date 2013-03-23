@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_avatar"
-            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
             android:text="@string/txt_requester"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -71,6 +71,7 @@
             android:layout_height="16dp"
             android:layout_below="@id/txt_book"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
             android:contentDescription="@string/img_planed_return_date"
             android:src="@drawable/ic_timer" />
 
@@ -79,6 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_book"
+            android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/img_planed_return_date"
             android:text="@string/txt_planned_return_date"
             android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -89,6 +91,7 @@
             android:layout_below="@id/txt_planed_return_date"
             android:src="@drawable/ic_remark"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
             android:contentDescription="@string/img_remark"/>        
 
         <TextView
@@ -97,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_planed_return_date"
             android:layout_toRightOf="@id/img_remark"
+            android:layout_marginTop="5dp"
             android:text="@string/txt_remark"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
