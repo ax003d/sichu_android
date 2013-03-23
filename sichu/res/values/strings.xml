@@ -129,5 +129,7 @@
     <string name="status_unread">-(Unread)</string>
     <string name="status_agree">-(Agree)</string>
     <string name="status_reject">-(Reject)</string>
+    <string name="err_process_request">Process request failed!</string>
+    <string name="ok_process_request">Borrow request proccessed!</string>
 	
 </resources>

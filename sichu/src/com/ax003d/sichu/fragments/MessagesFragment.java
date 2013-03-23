@@ -271,7 +271,7 @@ public class MessagesFragment extends Fragment implements
 		protected void onPostExecute(JSONObject result) {
 			super.onPostExecute(result);
 			if ((result == null) || result.has("error_code")) {
-				Toast.makeText(activity, "Process request failed!",
+				Toast.makeText(activity, R.string.err_process_request,
 						Toast.LENGTH_SHORT).show();
 			} else {
 				BookBorrowReq req = new BookBorrowReq(result);
@@ -281,7 +281,7 @@ public class MessagesFragment extends Fragment implements
 				activity.getContentResolver().update(
 						Uri.withAppendedPath(BookBorrowReqs.CONTENT_URI,
 								"guid/" + req.getGuid()), values, null, null);
-				Toast.makeText(activity, "Borrow request proccessed!",
+				Toast.makeText(activity, R.string.ok_process_request,
 						Toast.LENGTH_SHORT).show();
 			}
 		}

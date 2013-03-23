@@ -129,5 +129,7 @@
     <string name="status_unread">-(未处理)</string>
     <string name="status_agree">-(已同意)</string>
     <string name="status_reject">-(已拒绝)</string>
-    
+    <string name="err_process_request">处理借阅请求失败!</string>
+    <string name="ok_process_request">成功处理借阅请求!</string>
+
 </resources>
