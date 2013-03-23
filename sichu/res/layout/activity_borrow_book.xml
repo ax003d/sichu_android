@@ -132,6 +132,24 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_unavailable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_bookowninfo"
+            android:padding="10dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/txt_unavailable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/txt_unavailable"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_available"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/rl_bookowninfo"

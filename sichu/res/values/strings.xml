@@ -119,5 +119,6 @@
 	<string name="btn_action_follow">Follow</string>
 	<string name="err_get_numbers">Get user book info failed!</string>
 	<string name="hint_edit_remark">Remark</string>
+	<string name="txt_unavailable">This book is temporally unavailable!</string>
     
 </resources>

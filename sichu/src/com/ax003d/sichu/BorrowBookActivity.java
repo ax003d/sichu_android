@@ -90,6 +90,11 @@ public class BorrowBookActivity extends Activity implements OnClickListener {
 		txt_status
 				.setText(getResources().getStringArray(R.array.bookown_status)[mBookOwn
 						.getStatus() - 1]);
+		
+		if (mBookOwn.getStatus() != 1) {
+			findViewById(R.id.rl_unavailable).setVisibility(View.VISIBLE);
+			findViewById(R.id.rl_available).setVisibility(View.GONE);
+		}
 	}
 
 	@Override
