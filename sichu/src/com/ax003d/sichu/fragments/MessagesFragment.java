@@ -94,7 +94,7 @@ public class MessagesFragment extends Fragment implements
 		lst_msg.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROWREQ_LOADER,
 				null, this);
-		onMenuSyncTriggered();
+		// onMenuSyncTriggered();
 	}
 
 	@Override

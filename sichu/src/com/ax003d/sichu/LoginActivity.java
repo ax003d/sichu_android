@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
+import com.ax003d.sichu.fragments.BooksMineFragment;
+import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.utils.Preferences;
 import com.ax003d.sichu.utils.Utils;
 import com.ax003d.sichu.utils.WeiboAuthDialogListener;
@@ -109,7 +111,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 				if (ret.has("token")) {
 					long uid = ret.getLong("uid");
 					if (Preferences.getUserID(LoginActivity.this) != uid) {
-						Preferences.setSyncTime(LoginActivity.this, 0);
+						Preferences.setSyncTime(LoginActivity.this, BookOwn.CATEGORY, 0);
 					}
 					Preferences.setLoginInfo(getApplicationContext(),
 							ret.getString("token"),

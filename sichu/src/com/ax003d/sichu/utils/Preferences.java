@@ -11,7 +11,7 @@ import com.ax003d.sichu.R;
 
 public class Preferences {
 
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	public static String SERVER;
 
 	public static void setLoginInfo(Context context, String token,
@@ -93,22 +93,22 @@ public class Preferences {
 		return Preferences.SERVER;
 	}
 
-	public static void setSyncTime(Context context) {
+	public static void setSyncTime(Context context, String category) {
 		TimeZone tz = TimeZone.getDefault();
 		Date now = new Date();
 		int offset = tz.getOffset(now.getTime());
 		PreferenceManager.getDefaultSharedPreferences(context).edit()
-				.putLong("sync_time", (now.getTime() - offset) / 1000).commit();
+				.putLong("sync_time_" + category, (now.getTime() - offset) / 1000).commit();
 	}
 
-	public static void setSyncTime(Context context, long timestamp) {
+	public static void setSyncTime(Context context, String category, long timestamp) {
 		PreferenceManager.getDefaultSharedPreferences(context).edit()
-				.putLong("sync_time", timestamp).commit();
+				.putLong("sync_time_" + category, timestamp).commit();
 	}
 
-	public static long getSyncTime(Context context) {
+	public static long getSyncTime(Context context, String category) {
 		return PreferenceManager.getDefaultSharedPreferences(context).getLong(
-				"sync_time", 0);
+				"sync_time_" + category, 0);
 	}
 
 	public static void storeWeiboUser(Context context, long uid,

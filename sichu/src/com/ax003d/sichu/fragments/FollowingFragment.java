@@ -85,7 +85,7 @@ public class FollowingFragment extends Fragment implements
 		lst_following.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(FOLLOWING_LOADER, null,
 				this);
-		onMenuSyncTriggered();
+		// onMenuSyncTriggered();
 	}
 	
 	@Override

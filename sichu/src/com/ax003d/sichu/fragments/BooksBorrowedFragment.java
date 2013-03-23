@@ -86,7 +86,7 @@ public class BooksBorrowedFragment extends Fragment implements
 		lst_books_borrowed.setAdapter(adapter);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROW_BORROW_LOADER,
 				null, this);
-		onMenuSyncTriggered();
+		// onMenuSyncTriggered();
 	}
 	
 	@Override

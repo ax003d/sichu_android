@@ -156,17 +156,19 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	}
 
 	@Override
-	public JSONObject oplog(String next, ProgressListener progressListener)
+	public JSONObject oplog(String next, String category, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException {
 		ApiRequest request = new ApiRequest(ApiRequest.GET,
 				next == null ? "/v1/oplog/" : next);
-		request.addParameter("timestamp__gt", Preferences.getSyncTime(context)
-				+ "");
+		if (next == null) {
+			request.addParameter("timestamp__gt", Preferences.getSyncTime(context, category) + "");
+			request.addParameter("model__exact", category);
+		}
 
 		ApiResponse response = execute(request, progressListener);
 
 		String resp = response.getContentAsString();
-		// Log.d("Sync", resp);
+		Log.d("Sync", resp);
 		return new JSONObject(resp);
 	}
 

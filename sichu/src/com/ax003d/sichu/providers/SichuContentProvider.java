@@ -347,6 +347,10 @@ public class SichuContentProvider extends ContentProvider {
 			table_name = BookOwns.TABLE_NAME;
 			selection = BookOwns.GUID + " = " + uri.getLastPathSegment();
 			break;
+		case BOOKOWNS_BY_OWNER:
+			table_name = BookOwns.TABLE_NAME;
+			selection = BookOwns.OWNERID + " = " + uri.getLastPathSegment();
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}

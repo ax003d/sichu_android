@@ -96,7 +96,7 @@ public class BooksLoanedFragment extends Fragment implements
 		lst_books_loaned.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROW_LOADER, null,
 				this);
-		onMenuSyncTriggered();
+		// onMenuSyncTriggered();
 	}
 
 	@Override
