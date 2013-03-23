@@ -85,18 +85,23 @@ public class FollowingFragment extends Fragment implements
 		lst_following.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(FOLLOWING_LOADER, null,
 				this);
+		onMenuSyncTriggered();
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()){
 		case R.id.menu_sync:
-			requery = false;
-			new GetFollowingTask().execute();
+			onMenuSyncTriggered();
 			break;
 		}		
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void onMenuSyncTriggered() {
+		requery = false;
+		new GetFollowingTask().execute();
 	}	
 
 	@Override

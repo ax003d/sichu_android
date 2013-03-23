@@ -94,18 +94,23 @@ public class MessagesFragment extends Fragment implements
 		lst_msg.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROWREQ_LOADER,
 				null, this);
+		onMenuSyncTriggered();
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_sync:
-			requery = false;
-			new GetBookBorrowReqTask().execute();
+			onMenuSyncTriggered();
 			break;
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void onMenuSyncTriggered() {
+		requery = false;
+		new GetBookBorrowReqTask().execute();
 	}
 
 	private class GetBookBorrowReqTask extends

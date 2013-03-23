@@ -86,18 +86,23 @@ public class FollowerFragment extends Fragment implements
 		lst_follower.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(FOLLOWER_LOADER, null,
 				this);
+		onMenuSyncTriggered();
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()){
 		case R.id.menu_sync:
-			requery = false;
-			new GetFollowerTask().execute();
+			onMenuSyncTriggered();
 			break;
 		}		
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void onMenuSyncTriggered() {
+		requery = false;
+		new GetFollowerTask().execute();
 	}	
 
 	@Override

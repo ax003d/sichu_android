@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -74,7 +75,7 @@ public class FriendDetailActivity extends Activity implements
 
 		img_loader.displayImage(mFriend.getAvatar(), img_avatar, options);
 		txt_username.setText(mFriend.getUsername());
-		if (mRemark != null) {
+		if (!TextUtils.isEmpty(mRemark)) {
 			txt_remark.setText(" (" + mRemark + ")");
 		} else {
 			txt_remark.setText("");

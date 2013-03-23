@@ -85,6 +85,7 @@ public class BooksMineFragment extends Fragment implements
 		lst_bookown.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(BOOKOWN_LOADER, null,
 				this);
+		onMenuSyncTriggered();
 	}
 
 	@Override
@@ -102,12 +103,16 @@ public class BooksMineFragment extends Fragment implements
 			integrator.initiateScan();
 			break;
 		case R.id.menu_sync:
-			requery = false;
-			new GetBookOwnTask().execute();
+			onMenuSyncTriggered();
 			break;
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void onMenuSyncTriggered() {
+		requery = false;
+		new GetBookOwnTask().execute();
 	}
 
 	@Override

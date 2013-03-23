@@ -96,18 +96,23 @@ public class BooksLoanedFragment extends Fragment implements
 		lst_books_loaned.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROW_LOADER, null,
 				this);
+		onMenuSyncTriggered();
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_sync:
-			requery = false;
-			new GetBooksLoanedTask().execute();
+			onMenuSyncTriggered();
 			break;
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void onMenuSyncTriggered() {
+		requery = false;
+		new GetBooksLoanedTask().execute();
 	}
 
 	@Override
