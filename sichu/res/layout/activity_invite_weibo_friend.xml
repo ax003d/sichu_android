@@ -14,12 +14,12 @@
 
     <Button
         android:id="@+id/btn_send"
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/edit_invite"
         android:layout_marginTop="10dp"
         android:background="@drawable/btn_brown"
-        android:text="Send" />
+        android:text="@string/btn_send" />
 
 </RelativeLayout>

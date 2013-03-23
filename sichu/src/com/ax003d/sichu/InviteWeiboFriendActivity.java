@@ -31,9 +31,9 @@ public class InviteWeiboFriendActivity extends Activity implements
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			edit_invite
-					.setText("I have some books to share with you! You can see them in @MiCabinet! Link is: http://sichu.sinaapp.com "
-							+ extras.getString("screen_name"));
+			edit_invite.setText(String.format(
+					getString(R.string.msg_invite_weibo_friend),
+					extras.getString("screen_name"), extras.getLong("uid")));
 		}
 	}
 
@@ -53,7 +53,7 @@ public class InviteWeiboFriendActivity extends Activity implements
 					@Override
 					public void run() {
 						Toast.makeText(InviteWeiboFriendActivity.this,
-								"Invite friends failed!", Toast.LENGTH_SHORT)
+								R.string.err_invite_weibo_friend, Toast.LENGTH_SHORT)
 								.show();
 					}
 				});
@@ -66,7 +66,7 @@ public class InviteWeiboFriendActivity extends Activity implements
 					@Override
 					public void run() {
 						Toast.makeText(InviteWeiboFriendActivity.this,
-								"Invite friends failed!", Toast.LENGTH_SHORT)
+								R.string.err_invite_weibo_friend, Toast.LENGTH_SHORT)
 								.show();
 					}
 				});
@@ -78,7 +78,7 @@ public class InviteWeiboFriendActivity extends Activity implements
 					@Override
 					public void run() {
 						Toast.makeText(InviteWeiboFriendActivity.this,
-								"Invite friends success!", Toast.LENGTH_SHORT)
+								R.string.ok_invite_weibo_friend, Toast.LENGTH_SHORT)
 								.show();
 						InviteWeiboFriendActivity.this.finish();
 					}

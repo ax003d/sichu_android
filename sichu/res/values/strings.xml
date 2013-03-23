@@ -120,5 +120,9 @@
 	<string name="err_get_numbers">Get user book info failed!</string>
 	<string name="hint_edit_remark">Remark</string>
 	<string name="txt_unavailable">This book is temporally unavailable!</string>
-    
+	<string name="btn_send">Send</string>
+    <string name="msg_invite_weibo_friend">Hi, %1$s, I have some books to share with you! You can see them from follow link : http://sichu.sinaapp.com/cabinet/user/%2$d/ </string>
+    <string name="err_invite_weibo_friend">Invite friends failed!</string>
+    <string name="ok_invite_weibo_friend">Invite friends success!</string>
+	
 </resources>

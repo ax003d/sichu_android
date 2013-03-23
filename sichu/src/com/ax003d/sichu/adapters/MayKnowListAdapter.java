@@ -14,7 +14,6 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.sax.StartElementListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +27,7 @@ import com.ax003d.sichu.R;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.models.MayKnow;
+import com.ax003d.sichu.utils.Preferences;
 import com.ax003d.sichu.utils.Utils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -101,6 +101,7 @@ public class MayKnowListAdapter extends BaseAdapter {
 				public void onClick(View v) {
 					Log.d("follow", "invite");
 					Intent intent = new Intent(mContext, InviteWeiboFriendActivity.class);
+					intent.putExtra("uid", Preferences.getUserID(mContext));
 					intent.putExtra("screen_name", "@" + (String) v.getTag());
 					mContext.startActivity(intent);
 				}
