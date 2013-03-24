@@ -16,6 +16,8 @@ import com.ax003d.sichu.providers.SichuContentProvider;
 import com.ax003d.sichu.utils.Utils;
 
 public class BookBorrow {
+	public static final String CATEGORY = "sichu.cabinet.models.BookBorrowRecord";
+	
 	private long guid;
 	private long bookOwnID;
 	private long borrowerID;

@@ -12,12 +12,13 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.ax003d.sichu.models.Book.Books;
-import com.ax003d.sichu.models.BookBorrow.BookBorrows;
 import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.providers.SichuContentProvider;
 import com.ax003d.sichu.utils.Utils;
 
 public class BookBorrowReq {
+	public static final String CATEGORY = "sichu.cabinet.models.BookBorrowRequest";
+	
 	private long guid;
 	private Date datetime;
 	private long requesterID;

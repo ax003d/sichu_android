@@ -119,7 +119,7 @@ public class BooksMineFragment extends Fragment implements
 							+ userID), null, null);
 			new GetBookOwnTask().execute();
 		} else {
-			new SyncTask().execute();
+			new SyncTask().execute(BookOwn.CATEGORY);
 		}
 	}
 
@@ -284,14 +284,18 @@ public class BooksMineFragment extends Fragment implements
 	} // GetBookOwnTask
 
 	private class SyncTask extends AsyncTask<String, LinearLayout, JSONObject> {
-		
+
+		private String mCategory = null;
+
 		@Override
 		protected JSONObject doInBackground(String... params) {
 			try {
-				if (params.length == 0) {
-					return api_client.oplog(null, BookOwn.CATEGORY, null);
+				if (params.length == 1) {
+					mCategory = params[0];
+					return api_client.oplog(null, mCategory, null);
 				} else {
-					return api_client.oplog(params[0], BookOwn.CATEGORY, null);
+					mCategory = params[1];
+					return api_client.oplog(params[0], null, null);
 				}
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -321,21 +325,22 @@ public class BooksMineFragment extends Fragment implements
 						JSONObject log = jOplogs.getJSONObject(i);
 						switch (log.getInt("opcode")) {
 						case 1:
-							add_bookown(contentResolver, log);
+							add_object(contentResolver, log);
 							break;
 						case 2:
-							update_bookown(contentResolver, log);
+							update_object(contentResolver, log);
 							break;
 						case 3:
-							delete_bookown(contentResolver, log);
+							delete_object(contentResolver, log);
 							break;
 						default:
 							break;
 						} // endswitch
 					} // endfor
-					contentResolver.notifyChange(
-							Uri.withAppendedPath(BookOwns.CONTENT_URI, "owner/"
-									+ userID), null);
+					if (mCategory.equals(BookOwn.CATEGORY)) {
+						contentResolver.notifyChange(Uri.withAppendedPath(
+								BookOwns.CONTENT_URI, "owner/" + userID), null);
+					}
 				} catch (JSONException e1) {
 					e1.printStackTrace();
 				}
@@ -346,7 +351,7 @@ public class BooksMineFragment extends Fragment implements
 				try {
 					next = result.getJSONObject("meta").getString("next");
 					if (!next.equals("null")) {
-						new SyncTask().execute(next);
+						new SyncTask().execute(next, mCategory);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -355,33 +360,39 @@ public class BooksMineFragment extends Fragment implements
 			activity.setSupportProgressBarIndeterminateVisibility(false);
 		} // onPostExecute
 
-		private void delete_bookown(ContentResolver contentResolver,
+		private void delete_object(ContentResolver contentResolver,
 				JSONObject log) throws JSONException {
-			JSONObject ret = new JSONObject(log.getString("data"));
-			contentResolver.delete(
-					Uri.withAppendedPath(BookOwns.CONTENT_URI,
-							"/guid/" + ret.getInt("id")), null, null);
-			Preferences.setSyncTime(activity, BookOwn.CATEGORY,
-					log.getLong("timestamp"));
-		}
-
-		private void update_bookown(ContentResolver contentResolver,
-				JSONObject log) throws JSONException {
-			BookOwn own = new BookOwn(new JSONObject(log.getString("data")));
-			if (own != null) {
-				own.update(contentResolver);
+			if (mCategory.equals(BookOwn.CATEGORY)) {
+				JSONObject ret = new JSONObject(log.getString("data"));
+				contentResolver.delete(
+						Uri.withAppendedPath(BookOwns.CONTENT_URI, "/guid/"
+								+ ret.getInt("id")), null, null);
 			}
-			Preferences.setSyncTime(activity, BookOwn.CATEGORY,
+			Preferences.setSyncTime(activity, mCategory,
 					log.getLong("timestamp"));
 		}
 
-		private void add_bookown(ContentResolver contentResolver, JSONObject log)
+		private void update_object(ContentResolver contentResolver,
+				JSONObject log) throws JSONException {
+			if (mCategory.equals(BookOwn.CATEGORY)) {
+				BookOwn own = new BookOwn(new JSONObject(log.getString("data")));
+				if (own != null) {
+					own.update(contentResolver);
+				}
+			}
+			Preferences.setSyncTime(activity, mCategory,
+					log.getLong("timestamp"));
+		}
+
+		private void add_object(ContentResolver contentResolver, JSONObject log)
 				throws JSONException {
-			BookOwn own = new BookOwn(new JSONObject(log.getString("data")));
-			if (own != null) {
-				own.save(contentResolver);
+			if (mCategory.equals(BookOwn.CATEGORY)) {
+				BookOwn own = new BookOwn(new JSONObject(log.getString("data")));
+				if (own != null) {
+					own.save(contentResolver);
+				}
 			}
-			Preferences.setSyncTime(activity, BookOwn.CATEGORY,
+			Preferences.setSyncTime(activity, mCategory,
 					log.getLong("timestamp"));
 		}
 	} // SyncTask
