@@ -62,6 +62,7 @@ public class FollowingFragment extends Fragment implements
 	private SlidingActivity activity;
 	private long userID;
 	private boolean requery;
+	private View lbl_no_following;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,7 @@ public class FollowingFragment extends Fragment implements
 		lst_following = (ListView) activity.findViewById(R.id.lst_following);
 		lst_following.setAdapter(adapter);
 		lst_following.setOnItemClickListener(this);
+		lbl_no_following = activity.findViewById(R.id.lbl_no_following);
 		activity.getSupportLoaderManager().initLoader(FOLLOWING_LOADER, null,
 				this);
 		onMenuSyncTriggered();
@@ -126,13 +128,17 @@ public class FollowingFragment extends Fragment implements
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		adapter.clearFollows();
-
+		
 		if (!data.moveToFirst()) {
-			activity.findViewById(R.id.lbl_no_following).setVisibility(View.VISIBLE);
+			if (lbl_no_following != null) {
+				lbl_no_following.setVisibility(View.VISIBLE);
+			}
 			return;
 		}
 
-		activity.findViewById(R.id.lbl_no_following).setVisibility(View.GONE);
+		if (lbl_no_following != null) {
+			lbl_no_following.setVisibility(View.GONE);
+		}
 		do {
 			adapter.addFollow(new Follow(data));
 		} while (data.moveToNext());

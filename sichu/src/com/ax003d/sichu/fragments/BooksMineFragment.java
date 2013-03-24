@@ -61,6 +61,7 @@ public class BooksMineFragment extends Fragment implements
 	private long userID;
 	private boolean requery;
 	private int mActionPosition;
+	private View lbl_no_books;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,7 @@ public class BooksMineFragment extends Fragment implements
 		lst_bookown = (ListView) activity.findViewById(R.id.lst_bookowns);
 		lst_bookown.setAdapter(adapter);
 		lst_bookown.setOnItemClickListener(this);
+		lbl_no_books = activity.findViewById(R.id.lbl_no_books);
 		activity.getSupportLoaderManager().initLoader(BOOKOWN_LOADER, null,
 				this);
 		onMenuSyncTriggered();
@@ -199,12 +201,15 @@ public class BooksMineFragment extends Fragment implements
 		adapter.clearBookOwn();
 
 		if (!data.moveToFirst()) {
-			activity.findViewById(R.id.lbl_no_books)
-					.setVisibility(View.VISIBLE);
+			if (lbl_no_books != null) {
+				lbl_no_books.setVisibility(View.VISIBLE);
+			}
 			return;
 		}
 
-		activity.findViewById(R.id.lbl_no_books).setVisibility(View.GONE);
+		if (lbl_no_books != null) {
+			lbl_no_books.setVisibility(View.GONE);
+		}
 		do {
 			adapter.addBookOwn(new BookOwn(data));
 		} while (data.moveToNext());

@@ -90,6 +90,8 @@ public class Sync {
 					} else if (mCategory.equals(Follow.CATEGORY)) {
 						contentResolver.notifyChange(Uri.withAppendedPath(
 								Follows.CONTENT_URI, "user/" + userID), null);
+						contentResolver.notifyChange(Uri.withAppendedPath(
+								Follows.CONTENT_URI, "following/" + userID), null);
 					}
 				} catch (JSONException e1) {
 					e1.printStackTrace();

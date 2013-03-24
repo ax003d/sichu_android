@@ -68,6 +68,7 @@ public class BooksLoanedFragment extends Fragment implements
 	private long userID;
 	private boolean requery;
 	private int mClickItemPosition;
+	private View lbl_no_loaned;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class BooksLoanedFragment extends Fragment implements
 				R.id.lst_books_loaned);
 		lst_books_loaned.setAdapter(adapter);
 		lst_books_loaned.setOnItemClickListener(this);
+		lbl_no_loaned = activity.findViewById(R.id.lbl_no_loaned);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROW_LOADER, null,
 				this);
 		// onMenuSyncTriggered();
@@ -131,11 +133,15 @@ public class BooksLoanedFragment extends Fragment implements
 		adapter.clearBookBorrow();
 
 		if (!data.moveToFirst()) {
-			activity.findViewById(R.id.lbl_no_loaned).setVisibility(View.VISIBLE);
+			if (lbl_no_loaned != null) {
+				lbl_no_loaned.setVisibility(View.VISIBLE);
+			}
 			return;
 		}
 
-		activity.findViewById(R.id.lbl_no_loaned).setVisibility(View.GONE);
+		if (lbl_no_loaned != null) {
+			lbl_no_loaned.setVisibility(View.GONE);
+		}
 		do {
 			adapter.addBookBorrow(new BookBorrow(data));
 		} while (data.moveToNext());

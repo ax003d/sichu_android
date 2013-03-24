@@ -59,6 +59,7 @@ public class BooksBorrowedFragment extends Fragment implements
 	private ListView lst_books_borrowed;
 	private long userID;
 	private boolean requery;
+	private View lbl_no_borrowed;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -84,18 +85,19 @@ public class BooksBorrowedFragment extends Fragment implements
 		lst_books_borrowed = (ListView) getActivity().findViewById(
 				R.id.lst_books_borrowed);
 		lst_books_borrowed.setAdapter(adapter);
+		lbl_no_borrowed = activity.findViewById(R.id.lbl_no_borrowed);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROW_BORROW_LOADER,
 				null, this);
 		// onMenuSyncTriggered();
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()){
+		switch (item.getItemId()) {
 		case R.id.menu_sync:
 			onMenuSyncTriggered();
 			break;
-		}		
+		}
 
 		return super.onOptionsItemSelected(item);
 	}
@@ -121,11 +123,15 @@ public class BooksBorrowedFragment extends Fragment implements
 		adapter.clearBookBorrow();
 
 		if (!data.moveToFirst()) {
-			activity.findViewById(R.id.lbl_no_borrowed).setVisibility(View.VISIBLE);
+			if (lbl_no_borrowed != null) {
+				lbl_no_borrowed.setVisibility(View.VISIBLE);
+			}
 			return;
 		}
 
-		activity.findViewById(R.id.lbl_no_borrowed).setVisibility(View.GONE);
+		if (lbl_no_borrowed != null) {
+			lbl_no_borrowed.setVisibility(View.GONE);
+		}
 		do {
 			adapter.addBookBorrow(new BookBorrow(data));
 		} while (data.moveToNext());

@@ -36,6 +36,7 @@ import com.ax003d.sichu.models.Follow;
 import com.ax003d.sichu.models.Follow.Follows;
 import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.utils.Preferences;
+import com.ax003d.sichu.utils.Sync;
 
 public class FollowerFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
@@ -60,6 +61,7 @@ public class FollowerFragment extends Fragment implements
 	private SlidingActivity activity;
 	private long userID;
 	private boolean requery;
+	private View lbl_no_follower;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -84,26 +86,34 @@ public class FollowerFragment extends Fragment implements
 		lst_follower = (ListView) activity.findViewById(R.id.lst_follower);
 		lst_follower.setAdapter(adapter);
 		lst_follower.setOnItemClickListener(this);
+		lbl_no_follower = activity.findViewById(R.id.lbl_no_follower);
 		activity.getSupportLoaderManager().initLoader(FOLLOWER_LOADER, null,
 				this);
-		// onMenuSyncTriggered();
+		onMenuSyncTriggered();
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()){
+		switch (item.getItemId()) {
 		case R.id.menu_sync:
 			onMenuSyncTriggered();
 			break;
-		}		
+		}
 
 		return super.onOptionsItemSelected(item);
 	}
 
 	private void onMenuSyncTriggered() {
 		requery = false;
-		new GetFollowerTask().execute();
-	}	
+		if (Preferences.getSyncTime(activity, Follow.CATEGORY) == 0) {
+			activity.getContentResolver().delete(
+					Uri.withAppendedPath(Follows.CONTENT_URI, "following/"
+							+ userID), null, null);
+			new GetFollowerTask().execute();
+		} else {
+			new Sync(activity).start_sync_task(Follow.CATEGORY);
+		}
+	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -120,11 +130,15 @@ public class FollowerFragment extends Fragment implements
 		adapter.clearFollows();
 
 		if (!data.moveToFirst()) {
-			activity.findViewById(R.id.lbl_no_follower).setVisibility(View.VISIBLE);
+			if (lbl_no_follower != null) {
+				lbl_no_follower.setVisibility(View.VISIBLE);
+			}
 			return;
 		}
 
-		activity.findViewById(R.id.lbl_no_follower).setVisibility(View.GONE);
+		if (lbl_no_follower != null) {
+			lbl_no_follower.setVisibility(View.GONE);
+		}
 		do {
 			adapter.addFollow(new Follow(data));
 		} while (data.moveToNext());
@@ -207,7 +221,7 @@ public class FollowerFragment extends Fragment implements
 		Follow follow = (Follow) adapter.getItem(position);
 		Intent intent = new Intent(activity, FriendDetailActivity.class);
 		intent.putExtra("friend", follow.getUser());
-		activity.startActivity(intent);		
+		activity.startActivity(intent);
 		Log.d("friend", follow.getUser().getUsername());
 	}
 }

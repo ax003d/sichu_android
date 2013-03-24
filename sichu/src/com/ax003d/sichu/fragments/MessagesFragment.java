@@ -69,6 +69,7 @@ public class MessagesFragment extends Fragment implements
 	private ListView lst_msg;
 	public boolean requery;
 	private int mActionPosition;
+	private View lbl_no_message;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,7 @@ public class MessagesFragment extends Fragment implements
 		lst_msg = (ListView) activity.findViewById(R.id.lst_msg);
 		lst_msg.setAdapter(adapter);
 		lst_msg.setOnItemClickListener(this);
+		lbl_no_message = activity.findViewById(R.id.lbl_no_message);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROWREQ_LOADER,
 				null, this);
 		// onMenuSyncTriggered();
@@ -200,11 +202,15 @@ public class MessagesFragment extends Fragment implements
 		adapter.clearBookBorrowReq();
 
 		if (!data.moveToFirst()) {
-			activity.findViewById(R.id.lbl_no_message).setVisibility(View.VISIBLE);
+			if (lbl_no_message != null) {
+				lbl_no_message.setVisibility(View.VISIBLE);
+			}
 			return;
 		}
 
-		activity.findViewById(R.id.lbl_no_message).setVisibility(View.GONE);
+		if (lbl_no_message != null) {
+			lbl_no_message.setVisibility(View.GONE);
+		}
 		do {
 			adapter.addBookBorrowReq(new BookBorrowReq(data));
 		} while (data.moveToNext());
