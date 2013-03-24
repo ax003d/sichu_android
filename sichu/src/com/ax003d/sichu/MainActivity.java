@@ -9,15 +9,18 @@ import org.holoeverywhere.app.ProgressDialog;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.slidingmenu.SlidingMenu;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -92,6 +95,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	SsoHandler mSsoHandler;
 	private UpdatePreferHandler preferHandler;
 	private ProgressDialog mDialog;
+	private boolean reallyExit;
 	private static int[] pages = { R.string.page_books, R.string.page_friends,
 			R.string.page_messages, R.string.page_account };
 	
@@ -144,7 +148,33 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
+	
+	@Override
+	@SuppressLint("NewApi")
+	public void onBackPressed() {
+		if (reallyExit) {
+			super.onBackPressed();
+			return;
+		}
+		
+		reallyExit = true;
+		Toast.makeText(this, R.string.hint_exit, Toast.LENGTH_SHORT).show();
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				reallyExit = false;
+			}
+		}, 2000);
+	}
 
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			toggle();
+		}
+		return super.onKeyUp(keyCode, event);
+	}
+	
 	private void replaceTabs() {
 		if (page == pre_page) {
 			return;
