@@ -32,10 +32,12 @@ import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.FollowListAdapter;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
+import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.models.Follow;
 import com.ax003d.sichu.models.Follow.Follows;
 import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.utils.Preferences;
+import com.ax003d.sichu.utils.Sync;
 
 public class FollowingFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
@@ -85,7 +87,7 @@ public class FollowingFragment extends Fragment implements
 		lst_following.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(FOLLOWING_LOADER, null,
 				this);
-		// onMenuSyncTriggered();
+		onMenuSyncTriggered();
 	}
 	
 	@Override
@@ -101,7 +103,15 @@ public class FollowingFragment extends Fragment implements
 
 	private void onMenuSyncTriggered() {
 		requery = false;
-		new GetFollowingTask().execute();
+		requery = false;
+		if (Preferences.getSyncTime(activity, BookOwn.CATEGORY) == 0) {
+			activity.getContentResolver().delete(
+					Uri.withAppendedPath(Follows.CONTENT_URI, "user/"
+							+ userID), null, null);
+			new GetFollowingTask().execute();
+		} else {
+			new Sync(activity).start_sync_task(Follow.CATEGORY);
+		}		
 	}	
 
 	@Override
