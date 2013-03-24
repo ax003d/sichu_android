@@ -23,7 +23,7 @@ import com.ax003d.sichu.models.User.Users;
 public class SichuContentProvider extends ContentProvider {
 
 	private static final String DATABASE_NAME = "sichu.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	private static final UriMatcher URI_MATCHER;
 	private static final int BOOKOWNS_BY_OWNER = 1;
 	private static final int BOOKS = 2;
