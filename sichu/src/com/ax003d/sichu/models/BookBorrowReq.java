@@ -12,13 +12,14 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.ax003d.sichu.models.Book.Books;
+import com.ax003d.sichu.models.Follow.Follows;
 import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.providers.SichuContentProvider;
 import com.ax003d.sichu.utils.Utils;
 
 public class BookBorrowReq {
 	public static final String CATEGORY = "sichu.cabinet.models.BookBorrowRequest";
-	
+
 	private long guid;
 	private Date datetime;
 	private long requesterID;
@@ -28,7 +29,7 @@ public class BookBorrowReq {
 	private int status;
 	private User requester;
 	private BookOwn bookown;
-	
+
 	public static final class BookBorrowReqs implements BaseColumns {
 		private BookBorrowReqs() {
 		}
@@ -45,17 +46,18 @@ public class BookBorrowReq {
 		public static final String REMARK = "remark";
 		public static final String STATUS = "status";
 	}
-	
+
 	private void setContentValues(ContentValues values) {
 		values.put(BookBorrowReqs.GUID, this.guid);
 		values.put(BookBorrowReqs.DATETIME, Utils.formatDateTime(datetime));
 		values.put(BookBorrowReqs.REQUESTERID, requesterID);
 		values.put(BookBorrowReqs.BOOKOWNID, bookownID);
-		values.put(BookBorrowReqs.PLANED_RETURN_DATE, Utils.formatDateTime(planned_return_date));
+		values.put(BookBorrowReqs.PLANED_RETURN_DATE,
+				Utils.formatDateTime(planned_return_date));
 		values.put(BookBorrowReqs.REMARK, remark);
 		values.put(BookBorrowReqs.STATUS, status);
-	}	
-	
+	}
+
 	public BookBorrowReq(JSONObject jsonObject) {
 		try {
 			this.guid = jsonObject.getLong("id");
@@ -79,7 +81,8 @@ public class BookBorrowReq {
 		int idx_datetime = data.getColumnIndex(BookBorrowReqs.DATETIME);
 		int idx_requesterID = data.getColumnIndex(BookBorrowReqs.REQUESTERID);
 		int idx_bookownID = data.getColumnIndex(BookBorrowReqs.BOOKOWNID);
-		int idx_planedReturnDate = data.getColumnIndex(BookBorrowReqs.PLANED_RETURN_DATE);
+		int idx_planedReturnDate = data
+				.getColumnIndex(BookBorrowReqs.PLANED_RETURN_DATE);
 		int idx_remark = data.getColumnIndex(BookBorrowReqs.REMARK);
 		int idx_status = data.getColumnIndex(BookBorrowReqs.STATUS);
 		int idx_username = data.getColumnIndex(Users.USERNAME);
@@ -91,7 +94,8 @@ public class BookBorrowReq {
 		this.datetime = Utils.parseDateTimeString(data.getString(idx_datetime));
 		this.requesterID = data.getLong(idx_requesterID);
 		this.bookownID = data.getLong(idx_bookownID);
-		this.planned_return_date = Utils.parseDateTimeString(data.getString(idx_planedReturnDate));
+		this.planned_return_date = Utils.parseDateTimeString(data
+				.getString(idx_planedReturnDate));
 		this.remark = data.getString(idx_remark);
 		this.status = data.getInt(idx_status);
 		this.requester = new User();
@@ -107,7 +111,7 @@ public class BookBorrowReq {
 	public User getRequester() {
 		return requester;
 	}
-	
+
 	public void setRequester(User requester) {
 		this.requester = requester;
 	}
@@ -151,7 +155,7 @@ public class BookBorrowReq {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
+
 	public Uri save(ContentResolver contentResolver) {
 		if (this.bookown != null) {
 			this.bookown.save(contentResolver);
@@ -163,8 +167,16 @@ public class BookBorrowReq {
 		setContentValues(values);
 		return contentResolver.insert(BookBorrowReqs.CONTENT_URI, values);
 	}
-	
+
 	public long getGuid() {
 		return guid;
+	}
+
+	public int update(ContentResolver contentResolver) {
+		ContentValues values = new ContentValues();
+		setContentValues(values);
+		return contentResolver.update(
+				Uri.withAppendedPath(BookBorrowReqs.CONTENT_URI, "guid/"
+						+ this.guid), values, null, null);
 	}
 }

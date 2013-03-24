@@ -279,8 +279,9 @@ public class BooksMineFragment extends Fragment implements
 					next = result.getJSONObject("meta").getString("next");
 					if (!next.equals("null")) {
 						new GetBookOwnTask().execute(next);
+					} else {
+						Preferences.setSyncTime(activity, BookOwn.CATEGORY);
 					}
-					Preferences.setSyncTime(activity, BookOwn.CATEGORY);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

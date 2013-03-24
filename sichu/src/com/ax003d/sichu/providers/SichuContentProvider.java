@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
+import com.ax003d.sichu.models.BookBorrow;
 import com.ax003d.sichu.models.Book.Books;
 import com.ax003d.sichu.models.BookBorrow.BookBorrows;
 import com.ax003d.sichu.models.BookBorrowReq.BookBorrowReqs;
@@ -359,6 +360,24 @@ public class SichuContentProvider extends ContentProvider {
 		case FOLLOW_BY_GUID:
 			table_name = Follows.TABLE_NAME;
 			selection = Follows.GUID + " = " + uri.getLastPathSegment();
+			break;
+		case BOOKBORROWREQS:
+			table_name = BookBorrowReqs.TABLE_NAME;
+			break;
+		case BOOKBORROWREQ_BY_GUID:
+			table_name = BookBorrowReqs.TABLE_NAME;
+			selection = BookBorrowReqs.GUID + " = " + uri.getLastPathSegment();
+			break;
+		case BOOKBORROWS:
+			table_name = BookBorrows.TABLE_NAME;
+			break;
+		case BOOKBORROWS_AS_BORROWER:
+			table_name = BookBorrows.TABLE_NAME;
+			selection = BookBorrows.BORROWERID + " = " + uri.getLastPathSegment();
+			break;
+		case BOOKBORROW_BY_GUID:
+			table_name = BookBorrows.TABLE_NAME;
+			selection = BookBorrows.GUID + " = " + uri.getLastPathSegment();
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);

@@ -15,6 +15,10 @@ import android.widget.LinearLayout;
 
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
+import com.ax003d.sichu.models.BookBorrow;
+import com.ax003d.sichu.models.BookBorrow.BookBorrows;
+import com.ax003d.sichu.models.BookBorrowReq;
+import com.ax003d.sichu.models.BookBorrowReq.BookBorrowReqs;
 import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.models.Follow;
 import com.ax003d.sichu.models.BookOwn.BookOwns;
@@ -91,7 +95,16 @@ public class Sync {
 						contentResolver.notifyChange(Uri.withAppendedPath(
 								Follows.CONTENT_URI, "user/" + userID), null);
 						contentResolver.notifyChange(Uri.withAppendedPath(
-								Follows.CONTENT_URI, "following/" + userID), null);
+								Follows.CONTENT_URI, "following/" + userID),
+								null);
+					} else if (mCategory.equals(BookBorrowReq.CATEGORY)) {
+						contentResolver.notifyChange(Uri.withAppendedPath(
+								BookBorrowReqs.CONTENT_URI, "user/" + userID),
+								null);
+					} else if (mCategory.equals(BookBorrow.CATEGORY)) {
+						contentResolver.notifyChange(Uri.withAppendedPath(
+								BookBorrows.CONTENT_URI, "owner/" + userID),
+								null);
 					}
 				} catch (JSONException e1) {
 					e1.printStackTrace();
@@ -123,6 +136,16 @@ public class Sync {
 				contentResolver.delete(
 						Uri.withAppendedPath(Follows.CONTENT_URI, "/guid/"
 								+ ret.getInt("id")), null, null);
+			} else if (mCategory.equals(BookBorrowReq.CATEGORY)) {
+				JSONObject ret = new JSONObject(log.getString("data"));
+				contentResolver.delete(
+						Uri.withAppendedPath(BookBorrowReqs.CONTENT_URI,
+								"/guid/" + ret.getInt("id")), null, null);
+			} else if (mCategory.equals(BookBorrow.CATEGORY)) {
+				JSONObject ret = new JSONObject(log.getString("data"));
+				contentResolver.delete(
+						Uri.withAppendedPath(BookBorrows.CONTENT_URI, "/guid/"
+								+ ret.getInt("id")), null, null);
 			}
 			Preferences.setSyncTime(mContext, mCategory,
 					log.getLong("timestamp"));
@@ -141,6 +164,18 @@ public class Sync {
 				if (follow != null) {
 					follow.update(contentResolver);
 				}
+			} else if (mCategory.equals(BookBorrowReq.CATEGORY)) {
+				BookBorrowReq req = new BookBorrowReq(new JSONObject(
+						log.getString("data")));
+				if (req != null) {
+					req.update(contentResolver);
+				}
+			} else if (mCategory.equals(BookBorrow.CATEGORY)) {
+				BookBorrow borrow = new BookBorrow(new JSONObject(
+						log.getString("data")));
+				if (borrow != null) {
+					borrow.update(contentResolver);
+				}
 			}
 			Preferences.setSyncTime(mContext, mCategory,
 					log.getLong("timestamp"));
@@ -158,6 +193,18 @@ public class Sync {
 						new JSONObject(log.getString("data")));
 				if (follow != null) {
 					follow.save(contentResolver);
+				}
+			} else if (mCategory.equals(BookBorrowReq.CATEGORY)) {
+				BookBorrowReq req = new BookBorrowReq(new JSONObject(
+						log.getString("data")));
+				if (req != null) {
+					req.save(contentResolver);
+				}
+			} else if (mCategory.equals(BookBorrow.CATEGORY)) {
+				BookBorrow borrow = new BookBorrow(new JSONObject(
+						log.getString("data")));
+				if (borrow != null) {
+					borrow.save(contentResolver);
 				}
 			}
 			Preferences.setSyncTime(mContext, mCategory,

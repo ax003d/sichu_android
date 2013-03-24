@@ -12,12 +12,13 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.ax003d.sichu.models.Book.Books;
+import com.ax003d.sichu.models.Follow.Follows;
 import com.ax003d.sichu.providers.SichuContentProvider;
 import com.ax003d.sichu.utils.Utils;
 
 public class BookBorrow {
 	public static final String CATEGORY = "sichu.cabinet.models.BookBorrowRecord";
-	
+
 	private long guid;
 	private long bookOwnID;
 	private long borrowerID;
@@ -75,7 +76,8 @@ public class BookBorrow {
 		int idx_bookOwnID = data.getColumnIndex(BookBorrows.BOOKOWNID);
 		int idx_borrowerID = data.getColumnIndex(BookBorrows.BORROWERID);
 		int idx_borrowDate = data.getColumnIndex(BookBorrows.BORROW_DATE);
-		int idx_planedReturnDate = data.getColumnIndex(BookBorrows.PLANED_RETURN_DATE);
+		int idx_planedReturnDate = data
+				.getColumnIndex(BookBorrows.PLANED_RETURN_DATE);
 		int idx_returnedDate = data.getColumnIndex(BookBorrows.RETURNED_DATE);
 		int idx_owner = data.getColumnIndex("owner");
 		int idx_title = data.getColumnIndex(Books.TITLE);
@@ -85,10 +87,13 @@ public class BookBorrow {
 		this.guid = data.getLong(idx_guid);
 		this.bookOwnID = data.getLong(idx_bookOwnID);
 		this.borrowerID = data.getLong(idx_borrowerID);
-		this.borrowDate = Utils.parseDateTimeString(data.getString(idx_borrowDate));
-		this.planedReturnDate = Utils.parseDateString(data.getString(idx_planedReturnDate));
-		this.returnedDate = Utils.parseDateTimeString(data.getString(idx_returnedDate));
-		
+		this.borrowDate = Utils.parseDateTimeString(data
+				.getString(idx_borrowDate));
+		this.planedReturnDate = Utils.parseDateString(data
+				.getString(idx_planedReturnDate));
+		this.returnedDate = Utils.parseDateTimeString(data
+				.getString(idx_returnedDate));
+
 		Book book = new Book();
 		book.setTitle(data.getString(idx_title));
 		book.setCover(data.getString(idx_cover));
@@ -164,5 +169,13 @@ public class BookBorrow {
 
 	public long getGuid() {
 		return guid;
+	}
+
+	public int update(ContentResolver contentResolver) {
+		ContentValues values = new ContentValues();
+		setContentValues(values);
+		return contentResolver.update(
+				Uri.withAppendedPath(BookBorrows.CONTENT_URI, "guid/"
+						+ this.guid), values, null, null);
 	}
 }

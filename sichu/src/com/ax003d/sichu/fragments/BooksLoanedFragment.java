@@ -40,6 +40,7 @@ import com.ax003d.sichu.models.BookBorrow;
 import com.ax003d.sichu.models.BookBorrow.BookBorrows;
 import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.utils.Preferences;
+import com.ax003d.sichu.utils.Sync;
 import com.ax003d.sichu.utils.Utils;
 
 public class BooksLoanedFragment extends Fragment implements
@@ -98,7 +99,7 @@ public class BooksLoanedFragment extends Fragment implements
 		lbl_no_loaned = activity.findViewById(R.id.lbl_no_loaned);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROW_LOADER, null,
 				this);
-		// onMenuSyncTriggered();
+		onMenuSyncTriggered();
 	}
 
 	@Override
@@ -114,7 +115,13 @@ public class BooksLoanedFragment extends Fragment implements
 
 	private void onMenuSyncTriggered() {
 		requery = false;
-		new GetBooksLoanedTask().execute();
+		if (Preferences.getSyncTime(activity, BookBorrow.CATEGORY) == 0) {
+			activity.getContentResolver().delete(BookBorrows.CONTENT_URI, null,
+					null);
+			new GetBooksLoanedTask().execute();
+		} else {
+			new Sync(activity).start_sync_task(BookBorrow.CATEGORY);
+		}
 	}
 
 	@Override
@@ -222,6 +229,8 @@ public class BooksLoanedFragment extends Fragment implements
 					next = result.getJSONObject("meta").getString("next");
 					if (!next.equals("null")) {
 						new GetBooksLoanedTask().execute(next);
+					} else {
+						Preferences.setSyncTime(activity, BookBorrow.CATEGORY);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

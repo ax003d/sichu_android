@@ -208,6 +208,8 @@ public class FollowingFragment extends Fragment implements
 					next = result.getJSONObject("meta").getString("next");
 					if (!next.equals("null")) {
 						new GetFollowingTask().execute(next);
+					} else {
+						Preferences.setSyncTime(activity, Follow.CATEGORY);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

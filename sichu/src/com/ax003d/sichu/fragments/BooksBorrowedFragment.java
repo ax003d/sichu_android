@@ -33,6 +33,7 @@ import com.ax003d.sichu.models.BookBorrow;
 import com.ax003d.sichu.models.BookBorrow.BookBorrows;
 import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.utils.Preferences;
+import com.ax003d.sichu.utils.Sync;
 
 public class BooksBorrowedFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
@@ -88,7 +89,7 @@ public class BooksBorrowedFragment extends Fragment implements
 		lbl_no_borrowed = activity.findViewById(R.id.lbl_no_borrowed);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROW_BORROW_LOADER,
 				null, this);
-		// onMenuSyncTriggered();
+		onMenuSyncTriggered();
 	}
 
 	@Override
@@ -104,7 +105,14 @@ public class BooksBorrowedFragment extends Fragment implements
 
 	private void onMenuSyncTriggered() {
 		requery = false;
-		new GetBooksBorrowedTask().execute();
+		if (Preferences.getSyncTime(activity, BookBorrow.CATEGORY) == 0) {
+			activity.getContentResolver().delete(
+					Uri.withAppendedPath(BookBorrows.CONTENT_URI, "borrower/"
+							+ userID), null, null);
+			new GetBooksBorrowedTask().execute();
+		} else {
+			new Sync(activity).start_sync_task(BookBorrow.CATEGORY);
+		}
 	}
 
 	@Override
@@ -213,6 +221,8 @@ public class BooksBorrowedFragment extends Fragment implements
 					next = result.getJSONObject("meta").getString("next");
 					if (!next.equals("null")) {
 						new GetBooksBorrowedTask().execute(next);
+					} else {
+						Preferences.setSyncTime(activity, BookBorrow.CATEGORY);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

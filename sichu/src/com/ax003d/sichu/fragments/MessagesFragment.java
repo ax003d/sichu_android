@@ -37,10 +37,12 @@ import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.models.Book.Books;
 import com.ax003d.sichu.models.BookBorrowReq;
+import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.models.BookBorrowReq.BookBorrowReqs;
 import com.ax003d.sichu.models.BookOwn.BookOwns;
 import com.ax003d.sichu.models.User.Users;
 import com.ax003d.sichu.utils.Preferences;
+import com.ax003d.sichu.utils.Sync;
 
 public class MessagesFragment extends Fragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
@@ -96,7 +98,7 @@ public class MessagesFragment extends Fragment implements
 		lbl_no_message = activity.findViewById(R.id.lbl_no_message);
 		activity.getSupportLoaderManager().initLoader(BOOKBORROWREQ_LOADER,
 				null, this);
-		// onMenuSyncTriggered();
+		onMenuSyncTriggered();
 	}
 
 	@Override
@@ -112,7 +114,13 @@ public class MessagesFragment extends Fragment implements
 
 	private void onMenuSyncTriggered() {
 		requery = false;
-		new GetBookBorrowReqTask().execute();
+		if (Preferences.getSyncTime(activity, BookBorrowReq.CATEGORY) == 0) {
+			activity.getContentResolver().delete(BookBorrowReqs.CONTENT_URI,
+					null, null);
+			new GetBookBorrowReqTask().execute();
+		} else {
+			new Sync(activity).start_sync_task(BookBorrowReq.CATEGORY);
+		}
 	}
 
 	private class GetBookBorrowReqTask extends
@@ -175,6 +183,8 @@ public class MessagesFragment extends Fragment implements
 					next = result.getJSONObject("meta").getString("next");
 					if (!next.equals("null")) {
 						new GetBookBorrowReqTask().execute(next);
+					} else {
+						Preferences.setSyncTime(activity, BookBorrowReq.CATEGORY);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

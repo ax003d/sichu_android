@@ -32,6 +32,7 @@ import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.FollowListAdapter;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
+import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.models.Follow;
 import com.ax003d.sichu.models.Follow.Follows;
 import com.ax003d.sichu.models.User.Users;
@@ -206,6 +207,8 @@ public class FollowerFragment extends Fragment implements
 					next = result.getJSONObject("meta").getString("next");
 					if (!next.equals("null")) {
 						new GetFollowerTask().execute(next);
+					} else {
+						Preferences.setSyncTime(activity, Follow.CATEGORY);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
