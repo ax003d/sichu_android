@@ -86,7 +86,7 @@ public class BooksMineFragment extends Fragment implements
 		lst_bookown.setOnItemClickListener(this);
 		activity.getSupportLoaderManager().initLoader(BOOKOWN_LOADER, null,
 				this);
-		// onMenuSyncTriggered();
+		onMenuSyncTriggered();
 	}
 
 	@Override
