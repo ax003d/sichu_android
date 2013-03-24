@@ -138,5 +138,6 @@
     <string name="hint_no_book">Click button at right top corner to scan one!</string>
     <string name="hint_no_loaned">Have no loaned record yet!</string>
     <string name="hint_no_borrowed">Have no borrow record yet!</string>
+    <string name="msg_sync_ok">Sync OK! %1$d added, %2$d updated, %3$d deleted!</string>
 	
 </resources>

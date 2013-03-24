@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
+import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.LinearLayout;
 
+import com.ax003d.sichu.R;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.models.BookBorrow;
@@ -29,6 +31,9 @@ public class Sync {
 	private SlidingActivity mActivity;
 	private ISichuAPI api_client;
 	private long userID;
+	private int mAddNum = 0;
+	private int mUpdateNum = 0;
+	private int mDeleteNum = 0;
 
 	public Sync(SlidingActivity activity) {
 		mActivity = activity;
@@ -37,6 +42,9 @@ public class Sync {
 	}
 
 	public void start_sync_task(String category) {
+		mAddNum = 0;
+		mUpdateNum = 0;
+		mDeleteNum = 0;
 		new SyncTask().execute(category);
 	}
 
@@ -47,7 +55,7 @@ public class Sync {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			mActivity.setSupportProgressBarIndeterminate(true);
+			mActivity.setSupportProgressBarIndeterminateVisibility(true);
 		}
 
 		@Override
@@ -83,12 +91,15 @@ public class Sync {
 						JSONObject log = jOplogs.getJSONObject(i);
 						switch (log.getInt("opcode")) {
 						case 1:
+							mAddNum++;
 							add_object(contentResolver, log);
 							break;
 						case 2:
+							mUpdateNum++;
 							update_object(contentResolver, log);
 							break;
 						case 3:
+							mDeleteNum++;
 							delete_object(contentResolver, log);
 							break;
 						default:
@@ -120,7 +131,7 @@ public class Sync {
 					e1.printStackTrace();
 				}
 			} // endif
-			mActivity.setSupportProgressBarIndeterminate(false);
+			mActivity.setSupportProgressBarIndeterminateVisibility(false);
 
 			if (result != null && result.has("meta")) {
 				String next;
@@ -128,6 +139,15 @@ public class Sync {
 					next = result.getJSONObject("meta").getString("next");
 					if (!next.equals("null")) {
 						new SyncTask().execute(next, mCategory);
+					} else {
+						if (mAddNum + mUpdateNum + mDeleteNum > 0) {
+							Toast.makeText(
+									mActivity,
+									String.format(mActivity
+											.getString(R.string.msg_sync_ok),
+											mAddNum, mUpdateNum, mDeleteNum),
+									Toast.LENGTH_SHORT).show();
+						}
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
