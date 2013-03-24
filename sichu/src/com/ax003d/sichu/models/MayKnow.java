@@ -1,7 +1,5 @@
 package com.ax003d.sichu.models;
 
-import java.util.Comparator;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

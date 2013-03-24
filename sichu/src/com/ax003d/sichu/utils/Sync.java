@@ -3,12 +3,12 @@ package com.ax003d.sichu.utils;
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
+import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentResolver;
-import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.LinearLayout;
@@ -20,20 +20,20 @@ import com.ax003d.sichu.models.BookBorrow.BookBorrows;
 import com.ax003d.sichu.models.BookBorrowReq;
 import com.ax003d.sichu.models.BookBorrowReq.BookBorrowReqs;
 import com.ax003d.sichu.models.BookOwn;
-import com.ax003d.sichu.models.Follow;
 import com.ax003d.sichu.models.BookOwn.BookOwns;
+import com.ax003d.sichu.models.Follow;
 import com.ax003d.sichu.models.Follow.Follows;
 
 public class Sync {
 
-	private Context mContext;
+	private SlidingActivity mActivity;
 	private ISichuAPI api_client;
 	private long userID;
 
-	public Sync(Context context) {
-		mContext = context;
-		api_client = SichuAPI.getInstance(mContext);
-		userID = Preferences.getUserID(mContext);
+	public Sync(SlidingActivity activity) {
+		mActivity = activity;
+		api_client = SichuAPI.getInstance(mActivity);
+		userID = Preferences.getUserID(mActivity);
 	}
 
 	public void start_sync_task(String category) {
@@ -44,6 +44,12 @@ public class Sync {
 
 		private String mCategory = null;
 
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			mActivity.setSupportProgressBarIndeterminate(true);
+		}
+		
 		@Override
 		protected JSONObject doInBackground(String... params) {
 			try {
@@ -69,7 +75,7 @@ public class Sync {
 			super.onPostExecute(result);
 
 			if (result != null && result.has("objects")) {
-				ContentResolver contentResolver = mContext.getContentResolver();
+				ContentResolver contentResolver = mActivity.getContentResolver();
 				try {
 					JSONArray jOplogs = result.getJSONArray("objects");
 					for (int i = 0; i < jOplogs.length(); i++) {
@@ -110,6 +116,7 @@ public class Sync {
 					e1.printStackTrace();
 				}
 			} // endif
+			mActivity.setSupportProgressBarIndeterminate(false);
 
 			if (result != null && result.has("meta")) {
 				String next;
@@ -147,7 +154,7 @@ public class Sync {
 						Uri.withAppendedPath(BookBorrows.CONTENT_URI, "/guid/"
 								+ ret.getInt("id")), null, null);
 			}
-			Preferences.setSyncTime(mContext, mCategory,
+			Preferences.setSyncTime(mActivity, mCategory,
 					log.getLong("timestamp"));
 		}
 
@@ -177,7 +184,7 @@ public class Sync {
 					borrow.update(contentResolver);
 				}
 			}
-			Preferences.setSyncTime(mContext, mCategory,
+			Preferences.setSyncTime(mActivity, mCategory,
 					log.getLong("timestamp"));
 		}
 
@@ -207,7 +214,7 @@ public class Sync {
 					borrow.save(contentResolver);
 				}
 			}
-			Preferences.setSyncTime(mContext, mCategory,
+			Preferences.setSyncTime(mActivity, mCategory,
 					log.getLong("timestamp"));
 		}
 	} // SyncTask

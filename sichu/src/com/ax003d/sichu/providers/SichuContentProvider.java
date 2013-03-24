@@ -13,7 +13,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
-import com.ax003d.sichu.models.BookBorrow;
 import com.ax003d.sichu.models.Book.Books;
 import com.ax003d.sichu.models.BookBorrow.BookBorrows;
 import com.ax003d.sichu.models.BookBorrowReq.BookBorrowReqs;

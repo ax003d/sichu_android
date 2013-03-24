@@ -32,7 +32,6 @@ import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.FollowListAdapter;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
-import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.models.Follow;
 import com.ax003d.sichu.models.Follow.Follows;
 import com.ax003d.sichu.models.User.Users;

@@ -1,23 +1,15 @@
 package com.ax003d.sichu;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.ArrayAdapter;
 import org.holoeverywhere.app.ProgressDialog;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.slidingmenu.SlidingMenu;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -34,8 +25,6 @@ import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
-import com.ax003d.sichu.api.ISichuAPI;
-import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.fragments.AccountFragment;
 import com.ax003d.sichu.fragments.BooksBorrowedFragment;
 import com.ax003d.sichu.fragments.BooksLoanedFragment;
@@ -44,9 +33,6 @@ import com.ax003d.sichu.fragments.FollowerFragment;
 import com.ax003d.sichu.fragments.FollowingFragment;
 import com.ax003d.sichu.fragments.MayKnowFragment;
 import com.ax003d.sichu.fragments.MessagesFragment;
-import com.ax003d.sichu.models.BookOwn;
-import com.ax003d.sichu.models.BookOwn.BookOwns;
-import com.ax003d.sichu.utils.Preferences;
 import com.ax003d.sichu.utils.Utils;
 import com.ax003d.sichu.utils.WeiboAuthDialogListener;
 import com.ax003d.sichu.utils.WeiboUtils;
@@ -103,9 +89,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	}
 
 	private ListNavigationAdapter adapter;
-	private ISichuAPI api_client;
 	SsoHandler mSsoHandler;
-	private long userID;
 	private UpdatePreferHandler preferHandler;
 	private ProgressDialog mDialog;
 	private static int[] pages = { R.string.page_books, R.string.page_friends,
@@ -125,8 +109,6 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		// gexin sdk
 		MessageManager.getInstance().initialize(getApplicationContext());
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		api_client = SichuAPI.getInstance(this);
-		userID = Preferences.getUserID(this);
 
 		adapter = new ListNavigationAdapter();
 		for (int i = 0; i < pages.length; i++) {

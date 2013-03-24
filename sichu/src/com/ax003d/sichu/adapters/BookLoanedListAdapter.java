@@ -2,8 +2,6 @@ package com.ax003d.sichu.adapters;
 
 import java.util.ArrayList;
 
-import org.holoeverywhere.R.color;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

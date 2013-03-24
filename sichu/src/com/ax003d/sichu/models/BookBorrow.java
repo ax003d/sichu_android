@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.ax003d.sichu.models.Book.Books;
-import com.ax003d.sichu.models.Follow.Follows;
 import com.ax003d.sichu.providers.SichuContentProvider;
 import com.ax003d.sichu.utils.Utils;
 

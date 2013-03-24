@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
-import com.ax003d.sichu.fragments.BooksMineFragment;
 import com.ax003d.sichu.models.BookOwn;
 import com.ax003d.sichu.utils.Preferences;
 import com.ax003d.sichu.utils.Utils;
