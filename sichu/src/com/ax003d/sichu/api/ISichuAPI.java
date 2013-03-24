@@ -66,7 +66,7 @@ public interface ISichuAPI {
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
 
-	JSONObject follow(String next, boolean asFollower,
+	JSONObject follow(String next, String asFollower,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
 

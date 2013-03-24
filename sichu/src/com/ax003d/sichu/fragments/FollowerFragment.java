@@ -161,9 +161,9 @@ public class FollowerFragment extends Fragment implements
 			JSONObject ret = null;
 			try {
 				if (params.length == 0) {
-					ret = api_client.follow(null, true, null);
+					ret = api_client.follow(null, null, null);
 				} else {
-					ret = api_client.follow(params[0], true, null);
+					ret = api_client.follow(params[0], null, null);
 				}
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();

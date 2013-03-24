@@ -204,14 +204,16 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	}
 
 	@Override
-	public JSONObject follow(String next, boolean asFollower,
+	public JSONObject follow(String next, String asFollower,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException {
 		String url = null;
 		if (next != null) {
-			url = asFollower ? next + "&as_follower=1" : next;
+			url = next;
+		} else if (asFollower != null) {
+			url = "/v1/follow/?as_follower=" + asFollower;
 		} else {
-			url = asFollower ? "/v1/follow/?as_follower=1" : "/v1/follow/";
+			url = "/v1/follow/";
 		}
 		ApiRequest request = new ApiRequest(ApiRequest.GET, url);
 
