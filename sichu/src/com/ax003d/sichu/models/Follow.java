@@ -119,4 +119,12 @@ public class Follow {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	public int update(ContentResolver contentResolver) {
+		ContentValues values = new ContentValues();
+		setContentValues(values);
+		return contentResolver
+				.update(Uri.withAppendedPath(Follows.CONTENT_URI, "guid/"
+						+ this.guid), values, null, null);
+	}
 }

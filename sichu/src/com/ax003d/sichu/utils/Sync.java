@@ -16,24 +16,26 @@ import android.widget.LinearLayout;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.models.BookOwn;
+import com.ax003d.sichu.models.Follow;
 import com.ax003d.sichu.models.BookOwn.BookOwns;
+import com.ax003d.sichu.models.Follow.Follows;
 
 public class Sync {
-	
+
 	private Context mContext;
 	private ISichuAPI api_client;
 	private long userID;
-	
+
 	public Sync(Context context) {
 		mContext = context;
 		api_client = SichuAPI.getInstance(mContext);
 		userID = Preferences.getUserID(mContext);
 	}
-	
+
 	public void start_sync_task(String category) {
 		new SyncTask().execute(category);
 	}
-	
+
 	private class SyncTask extends AsyncTask<String, LinearLayout, JSONObject> {
 
 		private String mCategory = null;
@@ -85,6 +87,9 @@ public class Sync {
 					if (mCategory.equals(BookOwn.CATEGORY)) {
 						contentResolver.notifyChange(Uri.withAppendedPath(
 								BookOwns.CONTENT_URI, "owner/" + userID), null);
+					} else if (mCategory.equals(Follow.CATEGORY)) {
+						contentResolver.notifyChange(Uri.withAppendedPath(
+								Follows.CONTENT_URI, "user/" + userID), null);
 					}
 				} catch (JSONException e1) {
 					e1.printStackTrace();
@@ -111,6 +116,11 @@ public class Sync {
 				contentResolver.delete(
 						Uri.withAppendedPath(BookOwns.CONTENT_URI, "/guid/"
 								+ ret.getInt("id")), null, null);
+			} else if (mCategory.equals(Follow.CATEGORY)) {
+				JSONObject ret = new JSONObject(log.getString("data"));
+				contentResolver.delete(
+						Uri.withAppendedPath(Follows.CONTENT_URI, "/guid/"
+								+ ret.getInt("id")), null, null);
 			}
 			Preferences.setSyncTime(mContext, mCategory,
 					log.getLong("timestamp"));
@@ -122,6 +132,12 @@ public class Sync {
 				BookOwn own = new BookOwn(new JSONObject(log.getString("data")));
 				if (own != null) {
 					own.update(contentResolver);
+				}
+			} else if (mCategory.equals(Follow.CATEGORY)) {
+				Follow follow = new Follow(
+						new JSONObject(log.getString("data")));
+				if (follow != null) {
+					follow.update(contentResolver);
 				}
 			}
 			Preferences.setSyncTime(mContext, mCategory,
@@ -135,9 +151,15 @@ public class Sync {
 				if (own != null) {
 					own.save(contentResolver);
 				}
+			} else if (mCategory.equals(Follow.CATEGORY)) {
+				Follow follow = new Follow(
+						new JSONObject(log.getString("data")));
+				if (follow != null) {
+					follow.save(contentResolver);
+				}
 			}
 			Preferences.setSyncTime(mContext, mCategory,
 					log.getLong("timestamp"));
 		}
-	} // SyncTask	
+	} // SyncTask
 }

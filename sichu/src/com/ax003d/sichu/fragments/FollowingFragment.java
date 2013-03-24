@@ -103,8 +103,7 @@ public class FollowingFragment extends Fragment implements
 
 	private void onMenuSyncTriggered() {
 		requery = false;
-		requery = false;
-		if (Preferences.getSyncTime(activity, BookOwn.CATEGORY) == 0) {
+		if (Preferences.getSyncTime(activity, Follow.CATEGORY) == 0) {
 			activity.getContentResolver().delete(
 					Uri.withAppendedPath(Follows.CONTENT_URI, "user/"
 							+ userID), null, null);
