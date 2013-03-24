@@ -156,39 +156,43 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	}
 
 	@Override
-	public JSONObject oplog(String next, String category, ProgressListener progressListener)
-			throws ClientProtocolException, IOException, JSONException {
+	public JSONObject oplog(String next, String category,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException {
 		ApiRequest request = new ApiRequest(ApiRequest.GET,
 				next == null ? "/v1/oplog/" : next);
 		if (next == null) {
-			request.addParameter("timestamp__gt", Preferences.getSyncTime(context, category) + "");
+			request.addParameter("timestamp__gt",
+					Preferences.getSyncTime(context, category) + "");
 			request.addParameter("model__exact", category);
 		}
 
 		ApiResponse response = execute(request, progressListener);
 
 		String resp = response.getContentAsString();
+		Log.d("Sync", "timestamp: " + Preferences.getSyncTime(context, category));
+		Log.d("Sync", "category: " + category);
 		Log.d("Sync", resp);
 		return new JSONObject(resp);
 	}
 
 	@Override
-	public JSONObject bookborrow(String next, boolean asBorrower,
+	public JSONObject bookborrow(String next, String asBorrower,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException {
 		String url = null;
 		if (next != null) {
-			url = asBorrower ? next + "&as_borrower=1" : next;
+			url = next;
+		} else if (asBorrower != null) {
+			url = "/v1/bookborrow/?as_borrower=" + asBorrower;
 		} else {
-			url = asBorrower ? "/v1/bookborrow/?as_borrower=1"
-					: "/v1/bookborrow/";
+			url = "/v1/bookborrow/";
 		}
 		ApiRequest request = new ApiRequest(ApiRequest.GET, url);
 
 		ApiResponse response = execute(request, progressListener);
 
 		String resp = response.getContentAsString();
-		Log.d("Sync", resp);
 		return new JSONObject(resp);
 	}
 
@@ -301,7 +305,8 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 			String planed_return_date, String remark,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException {
-		ApiRequest request = new ApiRequest(ApiRequest.POST, "/v1/request/bookborrow/");
+		ApiRequest request = new ApiRequest(ApiRequest.POST,
+				"/v1/request/bookborrow/");
 		request.addParameter("bo_ship", bo_ship);
 		request.addParameter("planed_return_date", planed_return_date);
 		request.addParameter("remark", remark);
@@ -326,8 +331,8 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	public JSONObject bookborrow__detail(String rec_id,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException {
-		ApiRequest request = new ApiRequest(ApiRequest.POST,
-				"/v1/bookborrow/" + rec_id + "/");
+		ApiRequest request = new ApiRequest(ApiRequest.POST, "/v1/bookborrow/"
+				+ rec_id + "/");
 		ApiResponse response = execute(request, progressListener);
 		String resp = response.getContentAsString();
 		return new JSONObject(resp);

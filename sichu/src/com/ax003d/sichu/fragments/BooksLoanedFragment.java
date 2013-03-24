@@ -173,9 +173,9 @@ public class BooksLoanedFragment extends Fragment implements
 			JSONObject ret = null;
 			try {
 				if (params.length == 0) {
-					ret = api_client.bookborrow(null, false, null);
+					ret = api_client.bookborrow(null, null, null);
 				} else {
-					ret = api_client.bookborrow(params[0], false, null);
+					ret = api_client.bookborrow(params[0], null, null);
 				}
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();

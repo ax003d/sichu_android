@@ -49,7 +49,7 @@ public class Sync {
 			super.onPreExecute();
 			mActivity.setSupportProgressBarIndeterminate(true);
 		}
-		
+
 		@Override
 		protected JSONObject doInBackground(String... params) {
 			try {
@@ -75,7 +75,8 @@ public class Sync {
 			super.onPostExecute(result);
 
 			if (result != null && result.has("objects")) {
-				ContentResolver contentResolver = mActivity.getContentResolver();
+				ContentResolver contentResolver = mActivity
+						.getContentResolver();
 				try {
 					JSONArray jOplogs = result.getJSONArray("objects");
 					for (int i = 0; i < jOplogs.length(); i++) {
@@ -110,6 +111,9 @@ public class Sync {
 					} else if (mCategory.equals(BookBorrow.CATEGORY)) {
 						contentResolver.notifyChange(Uri.withAppendedPath(
 								BookBorrows.CONTENT_URI, "owner/" + userID),
+								null);
+						contentResolver.notifyChange(Uri.withAppendedPath(
+								BookBorrows.CONTENT_URI, "borrower/" + userID),
 								null);
 					}
 				} catch (JSONException e1) {

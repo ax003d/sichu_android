@@ -57,6 +57,8 @@ public class BookBorrow {
 	public BookBorrow(JSONObject jsonObject) {
 		try {
 			this.guid = jsonObject.getLong("id");
+			this.bookown = new BookOwn(jsonObject.getJSONObject("ownership"));
+			this.bookOwnID = this.bookown.getGuid();
 			this.borrower = new User(jsonObject.getJSONObject("borrower"));
 			this.borrowerID = this.borrower.getGuid();
 			this.setBorrowDate(Utils.parseDateTimeString(jsonObject

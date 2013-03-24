@@ -58,7 +58,7 @@ public interface ISichuAPI {
 	JSONObject oplog(String next, String category, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
 
-	JSONObject bookborrow(String next, boolean asBorrower,
+	JSONObject bookborrow(String next, String asBorrower,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
 
