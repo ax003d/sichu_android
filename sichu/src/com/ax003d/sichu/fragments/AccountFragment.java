@@ -23,30 +23,35 @@ import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.utils.AccessTokenKeeper;
 import com.ax003d.sichu.utils.Preferences;
+import com.ax003d.sichu.utils.Utils;
 import com.umeng.fb.UMFeedbackService;
 
 public class AccountFragment extends PreferenceFragment implements
 		OnPreferenceClickListener, OnPreferenceChangeListener {
-	
+
 	private static AccountFragment instance;
 	private MainActivity mActivity;
 	private String screenName;
 	public ISichuAPI api_client;
 	private Preference pref_key_weibo;
-	
+
 	public static AccountFragment getInstance() {
 		if (AccountFragment.instance == null) {
 			AccountFragment.instance = new AccountFragment();
 		}
 		return AccountFragment.instance;
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mActivity = (MainActivity) getActivity();
 		api_client = SichuAPI.getInstance(mActivity);
 		addPreferencesFromResource(R.xml.preferences);
+
+		getPreferenceScreen().getPreference(0).setTitle(
+				getString(R.string.pref_title) + " v"
+						+ Utils.getPackagetInfo(mActivity).versionName);
 
 		pref_key_weibo = findPreference("pref_key_weibo");
 		Preference pref_key_logout = findPreference("pref_key_logout");
@@ -62,11 +67,11 @@ public class AccountFragment extends PreferenceFragment implements
 	public void setScreenName() {
 		screenName = Preferences.getWeiboScreenName(mActivity);
 		if (screenName != null) {
-			pref_key_weibo.setTitle(screenName);			
+			pref_key_weibo.setTitle(screenName);
 		} else {
 			pref_key_weibo.setTitle(R.string.hint_bind_weibo);
 		}
-	}	
+	}
 
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
@@ -83,14 +88,16 @@ public class AccountFragment extends PreferenceFragment implements
 				builder.setCancelable(false);
 				builder.setTitle(R.string.title_unbind_weibo);
 				builder.setMessage(R.string.msg_unbind_weibo);
-				builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						new UnbindWeiboTask().execute();
-					}
-				});
+				builder.setPositiveButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								new UnbindWeiboTask().execute();
+							}
+						});
 				builder.setNegativeButton(android.R.string.cancel, null);
-				builder.create().show();				
+				builder.create().show();
 			}
 		} else if (preference.getKey().equals("pref_key_feedback")) {
 			UMFeedbackService.openUmengFeedbackSDK(mActivity);
@@ -102,7 +109,7 @@ public class AccountFragment extends PreferenceFragment implements
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
 		return false;
 	}
-	
+
 	private class UnbindWeiboTask extends AsyncTask<Void, Void, Boolean> {
 
 		@Override
@@ -121,12 +128,13 @@ public class AccountFragment extends PreferenceFragment implements
 			}
 			return false;
 		}
-		
+
 		@Override
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			if (!result) {
-				Toast.makeText(mActivity, "Unbind weibo failed!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mActivity, "Unbind weibo failed!",
+						Toast.LENGTH_SHORT).show();
 				return;
 			}
 			AccessTokenKeeper.clear(mActivity);
