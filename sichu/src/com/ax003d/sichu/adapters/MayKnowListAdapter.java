@@ -85,12 +85,13 @@ public class MayKnowListAdapter extends BaseAdapter {
 		txt_remark.setText(mk.getRemark());
 		if (mk.getIsSichuUser()) {
 			btn_action.setText(R.string.btn_action_follow);
-			btn_action.setTag(mk.getID());
+			btn_action.setTag(mk);
 			btn_action.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Log.d("follow", "follow");
-					new FollowTask().execute((String) v.getTag());
+					MayKnow mk = (MayKnow) v.getTag();
+					new FollowTask().execute(mk.getID(), mk.getRemark());
 				}
 			});
 		} else {
@@ -153,7 +154,7 @@ public class MayKnowListAdapter extends BaseAdapter {
 		@Override
 		protected JSONObject doInBackground(String... params) {
 			try {
-				return api_client.friends__follow(params[0], null);
+				return api_client.friends__follow(params[0], params[1], null);
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -173,13 +174,13 @@ public class MayKnowListAdapter extends BaseAdapter {
 					String wb_id = result.getString("uid");
 					remove(wb_id);
 					notifyDataSetChanged();
-					Toast.makeText(mContext, "Follow success!",
+					Toast.makeText(mContext, R.string.ok_follow,
 							Toast.LENGTH_SHORT).show();
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			} else {
-				Toast.makeText(mContext, "Follow failed!", Toast.LENGTH_SHORT)
+				Toast.makeText(mContext, R.string.err_follow, Toast.LENGTH_SHORT)
 						.show();
 			}
 		}

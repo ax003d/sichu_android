@@ -170,7 +170,8 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		ApiResponse response = execute(request, progressListener);
 
 		String resp = response.getContentAsString();
-		Log.d("Sync", "timestamp: " + Preferences.getSyncTime(context, category));
+		Log.d("Sync",
+				"timestamp: " + Preferences.getSyncTime(context, category));
 		Log.d("Sync", "category: " + category);
 		Log.d("Sync", resp);
 		return new JSONObject(resp);
@@ -289,12 +290,13 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 	}
 
 	@Override
-	public JSONObject friends__follow(String wb_id,
+	public JSONObject friends__follow(String wb_id, String remark,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException {
 		ApiRequest request = new ApiRequest(ApiRequest.POST,
 				"/v1/friends/follow/");
 		request.addParameter("wb_id", wb_id);
+		request.addParameter("remark", remark);
 		ApiResponse response = execute(request, progressListener);
 		String resp = response.getContentAsString();
 		return new JSONObject(resp);

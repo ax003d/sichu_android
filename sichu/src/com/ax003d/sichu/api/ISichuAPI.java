@@ -55,8 +55,9 @@ public interface ISichuAPI {
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
 
-	JSONObject oplog(String next, String category, ProgressListener progressListener)
-			throws ClientProtocolException, IOException, JSONException;
+	JSONObject oplog(String next, String category,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException;
 
 	JSONObject bookborrow(String next, String asBorrower,
 			ProgressListener progressListener) throws ClientProtocolException,
@@ -81,6 +82,7 @@ public interface ISichuAPI {
 			String remark, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
 
-	JSONObject friends__follow(String wb_id, ProgressListener progressListener)
-			throws ClientProtocolException, IOException, JSONException;
+	JSONObject friends__follow(String wb_id, String remark,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException;
 }

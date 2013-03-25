@@ -140,5 +140,7 @@
     <string name="hint_no_borrowed">目前没有借入记录!</string>
     <string name="msg_sync_ok">同步成功! 已添加 %1$d 条, 更新 %2$d 条, 删除 %3$d 条记录!</string>
     <string name="hint_exit">再次点击返回键退出!</string>
-    
+    <string name="ok_follow">成功关注好友!</string>
+    <string name="err_follow">关注好友失败!</string>
+
 </resources>
