@@ -43,6 +43,7 @@ import com.ax003d.sichu.widget.NavigationItem;
 import com.ax003d.sichu.widget.NavigationWidget;
 import com.igexin.slavesdk.MessageManager;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 import com.weibo.sdk.android.sso.SsoHandler;
 
 
@@ -110,6 +111,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		super.onCreate(savedInstanceState);
 		// umeng sdk
 		MobclickAgent.onError(this);
+		UmengUpdateAgent.update(this);
 		// gexin sdk
 		MessageManager.getInstance().initialize(getApplicationContext());
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);

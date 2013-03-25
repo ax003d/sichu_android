@@ -8,7 +8,7 @@
 		<TextView android:id="@+id/umeng_fb_conversation_title"
 			android:layout_width="fill_parent" android:textColor="#565656"
 			android:layout_height="50dip" android:layout_gravity="center"
-			android:gravity="center" android:text="我的反馈" android:textSize="22dip" />
+			android:gravity="center" android:text="@string/UMFeedbackListTitle" android:textSize="22dip" />
 		
 		<ImageButton android:id="@+id/umeng_fb_imgBtn_submitFb"
 			android:layout_marginRight="8dip" android:layout_centerVertical="true"
