@@ -29,7 +29,7 @@ def get_apk_filename(market, version):
 
 
 class APKBuilder(Cmd):
-    markets = ['sichu']
+    markets = ['sichu', 'mumayi']
     
     def __init__(self):
         Cmd.__init__(self)
