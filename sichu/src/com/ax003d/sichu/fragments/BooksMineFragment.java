@@ -1,6 +1,7 @@
 package com.ax003d.sichu.fragments;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
@@ -11,8 +12,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,6 +24,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -61,6 +66,7 @@ public class BooksMineFragment extends Fragment implements
 	private boolean requery;
 	private int mActionPosition;
 	private View lbl_no_books;
+	private boolean mBuildInScanner;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -101,9 +107,22 @@ public class BooksMineFragment extends Fragment implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_scan:
-			IntentIntegratorSupportV4 integrator = new IntentIntegratorSupportV4(
-					this);
-			integrator.initiateScan();
+			Intent intent = new Intent("com.google.zxing.client.android"
+					+ ".SCAN");
+			intent.addCategory(Intent.CATEGORY_DEFAULT);
+			PackageManager pm = activity.getPackageManager();
+			List<ResolveInfo> availableApps = pm.queryIntentActivities(intent,
+					PackageManager.MATCH_DEFAULT_ONLY);
+			if (availableApps.size() > 0) {
+				IntentIntegratorSupportV4 integrator = new IntentIntegratorSupportV4(
+						this);
+				integrator.initiateScan();
+				mBuildInScanner = true;
+			} else {
+				intent = new Intent("com.ax003d.sichu.SCAN");
+				intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+				startActivityForResult(intent, 0);
+			}
 			break;
 		case R.id.menu_sync:
 			onMenuSyncTriggered();
@@ -128,10 +147,23 @@ public class BooksMineFragment extends Fragment implements
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		IntentResult scanResult = IntentIntegratorSupportV4
-				.parseActivityResult(requestCode, resultCode, data);
-		if (scanResult != null) {
-			new AddBookOwnTask().execute(scanResult.getContents());
+		if (mBuildInScanner) {
+			IntentResult scanResult = IntentIntegratorSupportV4
+					.parseActivityResult(requestCode, resultCode, data);
+			if (scanResult != null) {
+				new AddBookOwnTask().execute(scanResult.getContents());
+			}
+			return;
+		}
+
+		if (requestCode == 0) {
+			if (resultCode == Activity.RESULT_OK) {
+				String contents = data.getStringExtra("SCAN_RESULT");
+				String format = data.getStringExtra("SCAN_RESULT_FORMAT");
+				Log.d("scan", contents + " " + format);
+				new AddBookOwnTask().execute(contents);
+			} else if (resultCode == Activity.RESULT_CANCELED) {
+			}
 		}
 	}
 
