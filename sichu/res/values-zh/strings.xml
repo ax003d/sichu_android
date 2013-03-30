@@ -142,5 +142,6 @@
     <string name="hint_exit">再次点击返回键退出!</string>
     <string name="ok_follow">成功关注好友!</string>
     <string name="err_follow">关注好友失败!</string>
+    <string name="err_login_by_weibo">登录失败，请重试!</string>
 
 </resources>

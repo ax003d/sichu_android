@@ -142,5 +142,6 @@
 	<string name="hint_exit">Press once again to exit!</string>
 	<string name="ok_follow">Follow success!</string>
 	<string name="err_follow">Follow failed!</string>
+	<string name="err_login_by_weibo">Login by weibo error!</string>
     
 </resources>

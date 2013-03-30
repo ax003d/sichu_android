@@ -1,6 +1,7 @@
 package com.ax003d.sichu;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.Date;
 
 import org.apache.http.client.ClientProtocolException;
@@ -12,6 +13,8 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -32,6 +35,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private ISichuAPI api_client;
 	SsoHandler mSsoHandler;
 	private ProgressDialog mDialog;
+	private Handler weiboErrorHandler;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		findViewById(R.id.btn_login).setOnClickListener(this);
 		findViewById(R.id.btn_login_by_weibo).setOnClickListener(this);
+		
+		weiboErrorHandler = new WeiboErrorHandler(this);
 	}
 
 	@Override
@@ -156,6 +162,34 @@ public class LoginActivity extends Activity implements OnClickListener {
 			if (resultCode == RESULT_OK) {
 				mDialog.show();
 			}
+		}
+	}
+
+	private static class WeiboErrorHandler extends Handler {
+		private final WeakReference<LoginActivity> mActivity;
+		
+		public WeiboErrorHandler(LoginActivity activity) {
+			mActivity = new WeakReference<LoginActivity>(activity);
+		}
+		
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			LoginActivity activity = mActivity.get();
+			if (activity != null) {
+				activity.closeDialog();
+			}
+		}
+	}
+	
+	public void sendMessage() {
+		weiboErrorHandler.sendEmptyMessage(0);
+	}
+	
+	public void closeDialog() {
+		if (mDialog != null) {
+			mDialog.cancel();
+			Toast.makeText(this, R.string.err_login_by_weibo, Toast.LENGTH_SHORT).show();
 		}
 	}
 }

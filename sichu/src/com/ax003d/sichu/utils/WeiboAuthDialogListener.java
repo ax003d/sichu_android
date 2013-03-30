@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.ax003d.sichu.LoginActivity;
 import com.ax003d.sichu.MainActivity;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
@@ -96,6 +97,7 @@ public class WeiboAuthDialogListener implements WeiboAuthListener {
 			}
 
 			JSONObject ret;
+			boolean login_ok = false;
 			try {
 				if (Utils.isLogin(mActivity)) {
 					// bind weibo
@@ -125,6 +127,7 @@ public class WeiboAuthDialogListener implements WeiboAuthListener {
 						intent.putExtra("ask_following", true);
 						mActivity.startActivity(intent);
 						mActivity.finish();
+						login_ok  = true;
 					}
 				}
 			} catch (ClientProtocolException e) {
@@ -133,6 +136,11 @@ public class WeiboAuthDialogListener implements WeiboAuthListener {
 				e.printStackTrace();
 			} catch (JSONException e) {
 				e.printStackTrace();
+			}
+			
+			if ((!login_ok) && (mActivity instanceof LoginActivity)) {
+				LoginActivity activity = (LoginActivity) mActivity;
+				activity.sendMessage();
 			}
 		}
 	} // UsersShowListener
