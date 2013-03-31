@@ -29,7 +29,16 @@ def get_apk_filename(market, version):
 
 
 class APKBuilder(Cmd):
-    markets = ['sichu', 'mumayi']
+    """
+    01 sichu
+    02 mumayi
+    03 xiaomi
+    04 anzhi
+    05 hiapk
+    06 myapp
+    """
+    markets = ['sichu', 'mumayi', 'xiaomi', 'anzhi', 'hiapk', 
+               'myapp']
     
     def __init__(self):
         Cmd.__init__(self)
