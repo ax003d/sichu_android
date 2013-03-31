@@ -120,7 +120,6 @@ public class BooksMineFragment extends Fragment implements
 				mBuildInScanner = true;
 			} else {
 				intent = new Intent("com.ax003d.sichu.SCAN");
-				intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
 				startActivityForResult(intent, 0);
 			}
 			break;
