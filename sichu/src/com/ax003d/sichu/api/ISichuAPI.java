@@ -9,6 +9,10 @@ import org.json.JSONObject;
 import com.ax003d.sichu.net.HttpEntityWithProgress.ProgressListener;
 
 public interface ISichuAPI {
+	JSONObject account_register(String username, String email, String password,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException;
+
 	JSONObject account_login(String username, String password,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;

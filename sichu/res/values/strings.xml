@@ -148,5 +148,12 @@
 	<string name="title_activity_register">Register</string>
 	<string name="hint_email">Email</string>
 	<string name="hint_password_2">Input Password Again</string>
+	<string name="empty_username">username cannot be empty!</string>
+	<string name="empty_email">email cannot be empty!</string>
+	<string name="err_password_too_short">password shoould not less than 6 characters!</string>
+	<string name="err_password_not_consistence">password not consistence!</string>
+	<string name="err_username_not_available">username not available!</string>
+	<string name="err_email_not_available">email not available!</string>
+	<string name="err_register">Register error!</string>
     
 </resources>

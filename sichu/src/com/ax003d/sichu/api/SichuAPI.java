@@ -351,4 +351,20 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		String resp = response.getContentAsString();
 		return new JSONObject(resp);
 	}
+
+	@Override
+	public JSONObject account_register(String username, String email,
+			String password, ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.POST,
+				"/v1/account/register/");
+		request.addParameter("username", username);
+		request.addParameter("email", email);
+		request.addParameter("password", password);
+		request.addParameter("apikey", context.getString(R.string.apikey));
+
+		ApiResponse response = execute(request, progressListener);
+		String resp = response.getContentAsString();
+		return new JSONObject(resp);
+	}
 }

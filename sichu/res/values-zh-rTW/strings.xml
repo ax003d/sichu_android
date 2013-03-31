@@ -143,5 +143,17 @@
     <string name="ok_follow">成功关注好友!</string>
     <string name="err_follow">关注好友失败!</string>
     <string name="err_login_by_weibo">登录失败，请重试!</string>
-
+	<string name="btn_register">注册</string>
+	<string name="btn_cancel">取消</string>
+	<string name="title_activity_register">注册</string>
+	<string name="hint_email">电子邮件</string>
+	<string name="hint_password_2">再次输入密码</string>
+	<string name="empty_username">用户名不能为空!</string>
+	<string name="empty_email">电子邮件不能为空!</string>
+	<string name="err_password_too_short">密码不能小于 6 位字符!</string>
+	<string name="err_password_not_consistence">两次输入的密码不一致!</string>
+	<string name="err_username_not_available">用户名已被使用!</string>
+	<string name="err_email_not_available">电子邮件格式错误或已被使用!</string>
+	<string name="err_register">注册失败!</string>
+	
 </resources>
