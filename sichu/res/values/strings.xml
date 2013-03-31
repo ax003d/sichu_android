@@ -4,7 +4,7 @@
     <string name="app_name">MiCabinet</string>
     <string name="menu_scan">Scan</string>
     <string name="hint_username">username</string>
-    <string name="hint_password">password</string>
+    <string name="hint_password">Password</string>
     <string name="chk_remember">remember me</string>
     <string name="btn_login">Login</string>
     <string name="hint_no_network">No available network!</string>
@@ -143,5 +143,10 @@
 	<string name="ok_follow">Follow success!</string>
 	<string name="err_follow">Follow failed!</string>
 	<string name="err_login_by_weibo">Login by weibo error!</string>
+	<string name="btn_register">Register</string>
+	<string name="btn_cancel">Cancel</string>
+	<string name="title_activity_register">Register</string>
+	<string name="hint_email">Email</string>
+	<string name="hint_password_2">Input Password Again</string>
     
 </resources>

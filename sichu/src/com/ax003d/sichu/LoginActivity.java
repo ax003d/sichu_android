@@ -65,6 +65,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		edit_username.setText(username);
 
 		findViewById(R.id.btn_login).setOnClickListener(this);
+		findViewById(R.id.btn_register).setOnClickListener(this);
 		findViewById(R.id.btn_login_by_weibo).setOnClickListener(this);
 		
 		weiboErrorHandler = new WeiboErrorHandler(this);
@@ -94,6 +95,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 				new LoginTask().execute(username, password);
 			}
+			break;
+		case R.id.btn_register:
+			Intent intent = new Intent(this, RegisterActivity.class);
+			startActivity(intent);
+			finish();
 			break;
 		case R.id.btn_login_by_weibo:
 			mSsoHandler = new SsoHandler(LoginActivity.this,
