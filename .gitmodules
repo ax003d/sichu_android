@@ -4,3 +4,6 @@
 [submodule "submodules/pulltorefresh"]
 	path = submodules/pulltorefresh
 	url = git://github.com/ax003d/android-pulltorefresh.git
+[submodule "submodules/weibo_android_sdk"]
+	path = submodules/weibo_android_sdk
+	url = git://github.com/mobileresearch/weibo_android_sdk.git
