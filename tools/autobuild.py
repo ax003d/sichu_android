@@ -36,9 +36,12 @@ class APKBuilder(Cmd):
     04 anzhi
     05 hiapk
     06 myapp
+    07 baidu
+    08 360
+    09 appchina
     """
     markets = ['sichu', 'mumayi', 'xiaomi', 'anzhi', 'hiapk', 
-               'myapp']
+               'myapp', 'baidu', '360', 'appchina']
     
     def __init__(self):
         Cmd.__init__(self)
