@@ -1,6 +1,7 @@
 package com.ax003d.sichu.fragments;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
@@ -14,6 +15,8 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -103,7 +106,13 @@ public class BooksMineFragment extends Fragment implements
 		switch (item.getItemId()) {
 		case R.id.menu_scan:
 			Intent intent = new Intent("com.ax003d.sichu.SCAN");
-			startActivityForResult(intent, REQUEST_BARCODE);
+			intent.addCategory(Intent.CATEGORY_DEFAULT);
+			PackageManager pm = activity.getPackageManager();
+			List<ResolveInfo> availableApps = pm.queryIntentActivities(intent,
+					PackageManager.MATCH_DEFAULT_ONLY);
+			if (availableApps.size() > 0) {
+				startActivityForResult(intent, REQUEST_BARCODE);
+			}
 			break;
 		case R.id.menu_sync:
 			onMenuSyncTriggered();
