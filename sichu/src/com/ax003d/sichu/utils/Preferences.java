@@ -94,6 +94,7 @@ public class Preferences {
 	}
 
 	public static void setSyncTime(Context context, String category) {
+		// TODO: should use server time, get latest category oplog from server, if not found set 1
 		TimeZone tz = TimeZone.getDefault();
 		Date now = new Date();
 		int offset = tz.getOffset(now.getTime());

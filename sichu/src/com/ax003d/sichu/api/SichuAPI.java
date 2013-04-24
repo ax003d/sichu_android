@@ -176,6 +176,20 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		Log.d("Sync", resp);
 		return new JSONObject(resp);
 	}
+	
+	public JSONObject oplog__latest(String category, ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.GET, "/v1/oplog/");
+		request.addParameter("model__exact", category);
+		request.addParameter("latest", "1");
+		
+		ApiResponse response = execute(request, progressListener);
+
+		String resp = response.getContentAsString();
+		Log.d("oplog__latest", "category: " + category);
+		Log.d("oplog__latest", resp);
+		return new JSONObject(resp);
+	}
 
 	@Override
 	public JSONObject bookborrow(String next, String asBorrower,
@@ -237,8 +251,9 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 				next == null ? "/v1/bookborrowreq/" : next);
 
 		ApiResponse response = execute(request, progressListener);
-
-		return new JSONObject(response.getContentAsString());
+		String resp = response.getContentAsString();
+		Log.d("bookborrowreq", resp);
+		return new JSONObject(resp);
 	}
 
 	@Override
