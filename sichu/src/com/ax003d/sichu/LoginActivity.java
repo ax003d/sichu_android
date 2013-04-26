@@ -125,10 +125,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 				if (ret.has("token")) {
 					long uid = ret.getLong("uid");
 					if (Preferences.getUserID(LoginActivity.this) != uid) {
-						Preferences.setSyncTime(LoginActivity.this, BookOwn.CATEGORY, 0);
-						Preferences.setSyncTime(LoginActivity.this, BookBorrow.CATEGORY, 0);
-						Preferences.setSyncTime(LoginActivity.this, BookBorrowReq.CATEGORY, 0);
-						Preferences.setSyncTime(LoginActivity.this, Follow.CATEGORY, 0);
+						Preferences.setSyncID(LoginActivity.this, BookOwn.CATEGORY, 0);
+						Preferences.setSyncID(LoginActivity.this, BookBorrow.CATEGORY, 0);
+						Preferences.setSyncID(LoginActivity.this, BookBorrowReq.CATEGORY, 0);
+						Preferences.setSyncID(LoginActivity.this, Follow.CATEGORY, 0);
 					}
 					Preferences.setLoginInfo(getApplicationContext(),
 							ret.getString("token"),

@@ -117,13 +117,13 @@ public class RegisterActivity extends Activity implements OnClickListener {
 				if (ret.has("token")) {
 					long uid = ret.getLong("uid");
 					if (Preferences.getUserID(RegisterActivity.this) != uid) {
-						Preferences.setSyncTime(RegisterActivity.this,
+						Preferences.setSyncID(RegisterActivity.this,
 								BookOwn.CATEGORY, 0);
-						Preferences.setSyncTime(RegisterActivity.this,
+						Preferences.setSyncID(RegisterActivity.this,
 								BookBorrow.CATEGORY, 0);
-						Preferences.setSyncTime(RegisterActivity.this,
+						Preferences.setSyncID(RegisterActivity.this,
 								BookBorrowReq.CATEGORY, 0);
-						Preferences.setSyncTime(RegisterActivity.this,
+						Preferences.setSyncID(RegisterActivity.this,
 								Follow.CATEGORY, 0);
 
 					}

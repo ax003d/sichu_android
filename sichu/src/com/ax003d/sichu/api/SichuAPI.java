@@ -163,7 +163,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 				next == null ? "/v1/oplog/" : next);
 		if (next == null) {
 			request.addParameter("timestamp__gt",
-					Preferences.getSyncTime(context, category) + "");
+					Preferences.getSyncID(context, category) + "");
 			request.addParameter("model__exact", category);
 		}
 
@@ -171,7 +171,7 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 
 		String resp = response.getContentAsString();
 		Log.d("Sync",
-				"timestamp: " + Preferences.getSyncTime(context, category));
+				"timestamp: " + Preferences.getSyncID(context, category));
 		Log.d("Sync", "category: " + category);
 		Log.d("Sync", resp);
 		return new JSONObject(resp);

@@ -124,7 +124,7 @@ public class BooksMineFragment extends Fragment implements
 
 	private void onMenuSyncTriggered() {
 		requery = false;
-		if (Preferences.getSyncTime(activity, BookOwn.CATEGORY) == 0) {
+		if (Preferences.getSyncID(activity, BookOwn.CATEGORY) == 0) {
 			activity.getContentResolver().delete(
 					Uri.withAppendedPath(BookOwns.CONTENT_URI, "owner/"
 							+ userID), null, null);
@@ -290,7 +290,7 @@ public class BooksMineFragment extends Fragment implements
 					if (!next.equals("null")) {
 						new GetBookOwnTask().execute(next);
 					} else {
-						Preferences.setSyncTime(activity, BookOwn.CATEGORY);
+						new Sync(activity).set_sync_id(BookOwn.CATEGORY);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

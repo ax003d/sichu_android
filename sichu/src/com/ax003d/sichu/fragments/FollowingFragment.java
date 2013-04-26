@@ -104,7 +104,7 @@ public class FollowingFragment extends Fragment implements
 
 	private void onMenuSyncTriggered() {
 		requery = false;
-		if (Preferences.getSyncTime(activity, Follow.CATEGORY) == 0) {
+		if (Preferences.getSyncID(activity, Follow.CATEGORY) == 0) {
 			activity.getContentResolver().delete(
 					Uri.withAppendedPath(Follows.CONTENT_URI, "user/"
 							+ userID), null, null);
@@ -208,7 +208,7 @@ public class FollowingFragment extends Fragment implements
 					if (!next.equals("null")) {
 						new GetFollowingTask().execute(next);
 					} else {
-						Preferences.setSyncTime(activity, Follow.CATEGORY);
+						new Sync(activity).set_sync_id(Follow.CATEGORY);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

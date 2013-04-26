@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.ax003d.sichu.R;
+import com.ax003d.sichu.api.ISichuAPI;
+import com.ax003d.sichu.api.SichuAPI;
 
 public class Preferences {
 
@@ -93,23 +95,14 @@ public class Preferences {
 		return Preferences.SERVER;
 	}
 
-	public static void setSyncTime(Context context, String category) {
-		// TODO: should use server time, get latest category oplog from server, if not found set 1
-		TimeZone tz = TimeZone.getDefault();
-		Date now = new Date();
-		int offset = tz.getOffset(now.getTime());
+	public static void setSyncID(Context context, String category, int id) {
 		PreferenceManager.getDefaultSharedPreferences(context).edit()
-				.putLong("sync_time_" + category, (now.getTime() - offset) / 1000).commit();
+				.putLong("sync_id_" + category, id).commit();
 	}
 
-	public static void setSyncTime(Context context, String category, long timestamp) {
-		PreferenceManager.getDefaultSharedPreferences(context).edit()
-				.putLong("sync_time_" + category, timestamp).commit();
-	}
-
-	public static long getSyncTime(Context context, String category) {
+	public static long getSyncID(Context context, String category) {
 		return PreferenceManager.getDefaultSharedPreferences(context).getLong(
-				"sync_time_" + category, 0);
+				"sync_id_" + category, 0);
 	}
 
 	public static void storeWeiboUser(Context context, long uid,
@@ -133,9 +126,9 @@ public class Preferences {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getString("wb_screen_name", null);
 	}
-	
+
 	public static long getWeiboUID(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context)
-				.getLong("wb_uid", -1);
+		return PreferenceManager.getDefaultSharedPreferences(context).getLong(
+				"wb_uid", -1);
 	}
 }

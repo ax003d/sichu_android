@@ -113,7 +113,7 @@ public class MessagesFragment extends Fragment implements
 
 	private void onMenuSyncTriggered() {
 		requery = false;
-		if (Preferences.getSyncTime(activity, BookBorrowReq.CATEGORY) == 0) {
+		if (Preferences.getSyncID(activity, BookBorrowReq.CATEGORY) == 0) {
 			activity.getContentResolver().delete(BookBorrowReqs.CONTENT_URI,
 					null, null);
 			new GetBookBorrowReqTask().execute();
@@ -183,7 +183,7 @@ public class MessagesFragment extends Fragment implements
 					if (!next.equals("null")) {
 						new GetBookBorrowReqTask().execute(next);
 					} else {
-						Preferences.setSyncTime(activity, BookBorrowReq.CATEGORY);
+						new Sync(activity).set_sync_id(BookBorrowReq.CATEGORY);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

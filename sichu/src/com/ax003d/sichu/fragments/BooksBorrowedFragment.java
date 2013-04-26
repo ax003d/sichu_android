@@ -105,7 +105,7 @@ public class BooksBorrowedFragment extends Fragment implements
 
 	private void onMenuSyncTriggered() {
 		requery = false;
-		if (Preferences.getSyncTime(activity, BookBorrow.CATEGORY) == 0) {
+		if (Preferences.getSyncID(activity, BookBorrow.CATEGORY) == 0) {
 			activity.getContentResolver().delete(
 					Uri.withAppendedPath(BookBorrows.CONTENT_URI, "borrower/"
 							+ userID), null, null);
@@ -222,7 +222,7 @@ public class BooksBorrowedFragment extends Fragment implements
 					if (!next.equals("null")) {
 						new GetBooksBorrowedTask().execute(next);
 					} else {
-						Preferences.setSyncTime(activity, BookBorrow.CATEGORY);
+						new Sync(activity).set_sync_id(BookBorrow.CATEGORY);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -231,5 +231,4 @@ public class BooksBorrowedFragment extends Fragment implements
 			super.onPostExecute(result);
 		} // onPostExecute
 	} // GetBooksBorrowedTask
-
 }

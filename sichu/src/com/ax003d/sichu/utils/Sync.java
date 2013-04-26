@@ -48,6 +48,32 @@ public class Sync {
 		new SyncTask().execute(category);
 	}
 
+	public void set_sync_id(String category) {
+		new GetSyncIDTask().execute(category);
+	}
+
+	private class GetSyncIDTask extends AsyncTask<String, Void, Void> {
+
+		@Override
+		protected Void doInBackground(String... params) {
+			try {
+				JSONObject oplog__latest = api_client.oplog__latest(params[0],
+						null);
+				if (oplog__latest.has("id")) {
+					Preferences.setSyncID(mActivity, BookBorrow.CATEGORY,
+							oplog__latest.getInt("id"));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+	} // GetSyncIDTask
+
 	private class SyncTask extends AsyncTask<String, LinearLayout, JSONObject> {
 
 		private String mCategory = null;
@@ -178,8 +204,7 @@ public class Sync {
 						Uri.withAppendedPath(BookBorrows.CONTENT_URI, "/guid/"
 								+ ret.getInt("id")), null, null);
 			}
-			Preferences.setSyncTime(mActivity, mCategory,
-					log.getLong("timestamp"));
+			Preferences.setSyncID(mActivity, mCategory, log.getInt("id"));
 		}
 
 		private void update_object(ContentResolver contentResolver,
@@ -208,8 +233,7 @@ public class Sync {
 					borrow.update(contentResolver);
 				}
 			}
-			Preferences.setSyncTime(mActivity, mCategory,
-					log.getLong("timestamp"));
+			Preferences.setSyncID(mActivity, mCategory, log.getInt("id"));
 		}
 
 		private void add_object(ContentResolver contentResolver, JSONObject log)
@@ -238,8 +262,7 @@ public class Sync {
 					borrow.save(contentResolver);
 				}
 			}
-			Preferences.setSyncTime(mActivity, mCategory,
-					log.getLong("timestamp"));
+			Preferences.setSyncID(mActivity, mCategory, log.getInt("id"));
 		}
 	} // SyncTask
 }
