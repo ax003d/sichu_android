@@ -9,7 +9,7 @@ import com.ax003d.sichu.R;
 
 public class Preferences {
 
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	public static String SERVER;
 
 	public static void setLoginInfo(Context context, String token,
