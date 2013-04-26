@@ -4,3 +4,5 @@ sichu/.settings/
 sichu/local.properties
 tools/*
 *~
+submodules/android/bin/
+submodules/android/gen/
