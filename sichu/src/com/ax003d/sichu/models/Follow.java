@@ -12,7 +12,7 @@ import android.provider.BaseColumns;
 import com.ax003d.sichu.providers.SichuContentProvider;
 
 public class Follow {
-	public static final String CATEGORY = "sichu.cabinet.models.Follow";
+	public static final String CATEGORY = "cabinet.models.Follow";
 	
 	private long guid;
 	private long followingID;

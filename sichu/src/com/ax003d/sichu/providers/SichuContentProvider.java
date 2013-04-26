@@ -356,6 +356,10 @@ public class SichuContentProvider extends ContentProvider {
 			table_name = Follows.TABLE_NAME;
 			selection = Follows.USERID + " = " + uri.getLastPathSegment();
 			break;
+		case FOLLOWERS:
+			table_name = Follows.TABLE_NAME;
+			selection = Follows.FOLLOWINGID + " = " + uri.getLastPathSegment();
+			break;
 		case FOLLOW_BY_GUID:
 			table_name = Follows.TABLE_NAME;
 			selection = Follows.GUID + " = " + uri.getLastPathSegment();

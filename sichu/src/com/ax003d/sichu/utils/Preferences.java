@@ -1,19 +1,15 @@
 package com.ax003d.sichu.utils;
 
-import java.util.Date;
-import java.util.TimeZone;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.ax003d.sichu.R;
-import com.ax003d.sichu.api.ISichuAPI;
-import com.ax003d.sichu.api.SichuAPI;
 
 public class Preferences {
 
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	public static String SERVER;
 
 	public static void setLoginInfo(Context context, String token,
@@ -96,6 +92,7 @@ public class Preferences {
 	}
 
 	public static void setSyncID(Context context, String category, int id) {
+		Log.d("sync_id", category + " " + id);
 		PreferenceManager.getDefaultSharedPreferences(context).edit()
 				.putLong("sync_id_" + category, id).commit();
 	}

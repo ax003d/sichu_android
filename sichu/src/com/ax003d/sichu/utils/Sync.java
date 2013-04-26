@@ -57,11 +57,14 @@ public class Sync {
 		@Override
 		protected Void doInBackground(String... params) {
 			try {
-				JSONObject oplog__latest = api_client.oplog__latest(params[0],
-						null);
-				if (oplog__latest.has("id")) {
-					Preferences.setSyncID(mActivity, BookBorrow.CATEGORY,
-							oplog__latest.getInt("id"));
+				JSONObject result = api_client.oplog__latest(params[0], null);
+				JSONArray jOplogs = result.getJSONArray("objects");
+				if (jOplogs.length() != 0) {
+					JSONObject oplog__latest = jOplogs.getJSONObject(0);
+					if (oplog__latest.has("id")) {
+						Preferences.setSyncID(mActivity, params[0],
+								oplog__latest.getInt("id"));
+					}
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();

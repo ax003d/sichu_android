@@ -17,7 +17,7 @@ import com.ax003d.sichu.providers.SichuContentProvider;
 import com.ax003d.sichu.utils.Utils;
 
 public class BookBorrowReq {
-	public static final String CATEGORY = "sichu.cabinet.models.BookBorrowRequest";
+	public static final String CATEGORY = "cabinet.models.BookBorrowRequest";
 
 	private long guid;
 	private Date datetime;

@@ -15,7 +15,7 @@ import com.ax003d.sichu.models.Book.Books;
 import com.ax003d.sichu.providers.SichuContentProvider;
 
 public class BookOwn implements Parcelable {
-	public static final String CATEGORY = "sichu.cabinet.models.BookOwnership";
+	public static final String CATEGORY = "cabinet.models.BookOwnership";
 	
 	private long guid;
 	private long bookID;
