@@ -5,7 +5,7 @@
     <Preference
         holo:icon="@drawable/ic_launcher"
         holo:selectable="false"
-        holo:summary="@string/txt_slogan"
+        holo:summary="@string/pref_summary"
         holo:title="@string/pref_title" />
     
     <PreferenceCategory holo:title="@string/pref_accounts">
