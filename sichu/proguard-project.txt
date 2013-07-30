@@ -45,3 +45,5 @@
 -dontwarn sdk.**
 -keep class com.igexin.** { *; }
 -keep class sdk.** { *; }
+
+-keep class com.google.zxing.client.android.** { *; }
