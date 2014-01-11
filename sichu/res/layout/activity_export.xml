@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:padding="8dp"
-        android:text="Input your email below, we will send you exported csv!"
+        android:text="@string/hint_export"
         android:textSize="16sp" />
 
     <EditText
@@ -35,7 +35,7 @@
         android:id="@+id/tv_success"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your export request has been sent, please check your email a few minutes later!"
+        android:text="@string/export_ok"
         android:textColor="#FF33AA33"
         android:textSize="16sp"
         android:visibility="gone" />
@@ -44,7 +44,7 @@
         android:id="@+id/tv_failed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Export failed!"
+        android:text="@string/export_failed"
         android:textColor="#FFAA3333"
         android:textSize="16sp"
         android:visibility="gone" />

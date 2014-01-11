@@ -157,9 +157,9 @@
     <string name="err_register">Register error!</string>
     <string name="menu_export">export</string>
     <string name="title_activity_export">Export</string>
-    <string name="menu_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="lbl_email">Email:</string>
     <string name="btn_export">Export</string>
+    <string name="hint_export">Input your email below, we will send you exported csv!</string>
+    <string name="export_ok">Your export request has been sent, please check your email a few minutes later!</string>
+    <string name="export_failed">Export failed!</string>
 
 </resources>
