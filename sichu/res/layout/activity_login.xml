@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@drawable/btn_brown"
+        android:background="@drawable/selector_btn_brown"
         android:text="@string/btn_login" />
 
     <Button
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@drawable/btn_gray"
+        android:background="@drawable/selector_btn_gray"
         android:text="@string/btn_register" />
 
     <View
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:paddingLeft="20dp"
-        android:background="@drawable/btn_green"
+        android:background="@drawable/selector_btn_green"
         android:drawableLeft="@drawable/ic_weibo"
         android:text="@string/btn_login_by_weibo" />
 

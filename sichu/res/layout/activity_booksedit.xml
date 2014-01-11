@@ -82,7 +82,7 @@
                 android:layout_below="@id/txt_isbn"
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@id/img_cover"
-                android:background="@drawable/btn_green"
+                android:background="@drawable/selector_btn_green"
                 android:drawableLeft="@drawable/ic_douban_24"
                 android:minHeight="28dp"
                 android:padding="8dp"
@@ -122,7 +122,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/edit_remark"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/btn_brown"
+                android:background="@drawable/selector_btn_brown"
                 android:focusableInTouchMode="true"
                 android:text="@string/btn_save" >
 
@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btn_save"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/btn_gray"
+                android:background="@drawable/selector_btn_gray"
                 android:text="@string/btn_delete" />
         </RelativeLayout>
     </RelativeLayout>

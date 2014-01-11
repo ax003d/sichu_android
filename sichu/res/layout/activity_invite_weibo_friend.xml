@@ -19,7 +19,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/edit_invite"
         android:layout_marginTop="10dp"
-        android:background="@drawable/btn_brown"
+        android:background="@drawable/selector_btn_brown"
         android:text="@string/btn_send" />
 
 </RelativeLayout>
