@@ -204,6 +204,10 @@
             android:name="com.ax003d.sichu.FriendDetailActivity"
             android:label="@string/title_activity_friend_detail" >
         </activity>
+        <activity
+            android:name="com.ax003d.sichu.ExportActivity"
+            android:label="@string/title_activity_export" >
+        </activity>
     </application>
 
 </manifest>

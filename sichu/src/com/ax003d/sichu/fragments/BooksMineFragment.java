@@ -34,6 +34,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.ax003d.sichu.BooksEditActivity;
+import com.ax003d.sichu.ExportActivity;
 import com.ax003d.sichu.MainActivity;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.adapters.BookOwnListAdapter;
@@ -118,6 +119,7 @@ public class BooksMineFragment extends Fragment implements
 			onMenuSyncTriggered();
 			break;
 		case R.id.menu_export:
+			startActivity(new Intent(activity, ExportActivity.class));
 			break;
 		}
 
