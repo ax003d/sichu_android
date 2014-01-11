@@ -155,5 +155,6 @@
 	<string name="err_username_not_available">用户名已被使用!</string>
 	<string name="err_email_not_available">电子邮件格式错误或已被使用!</string>
 	<string name="err_register">注册失败!</string>
+	<string name="menu_export">导出书籍</string>
 	
 </resources>

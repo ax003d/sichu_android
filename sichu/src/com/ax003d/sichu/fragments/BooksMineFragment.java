@@ -117,6 +117,8 @@ public class BooksMineFragment extends Fragment implements
 		case R.id.menu_sync:
 			onMenuSyncTriggered();
 			break;
+		case R.id.menu_export:
+			break;
 		}
 
 		return super.onOptionsItemSelected(item);

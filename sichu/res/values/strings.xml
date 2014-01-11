@@ -155,5 +155,6 @@
 	<string name="err_username_not_available">username not available!</string>
 	<string name="err_email_not_available">email not available!</string>
 	<string name="err_register">Register error!</string>
+	<string name="menu_export">export</string>
     
 </resources>
