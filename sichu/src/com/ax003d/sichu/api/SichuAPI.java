@@ -394,4 +394,17 @@ public class SichuAPI extends ApiBase implements ISichuAPI {
 		String resp = response.getContentAsString();
 		return new JSONObject(resp);
 	}
+
+	@Override
+	public JSONObject accountEmailVerify(String email,
+			ProgressListener progressListener) throws ClientProtocolException,
+			IOException, JSONException {
+		ApiRequest request = new ApiRequest(ApiRequest.GET,
+				"/v1/account/email_verify/");
+		request.addParameter("email", email);
+		
+		ApiResponse response = execute(request, progressListener);
+		String resp = response.getContentAsString();
+		return new JSONObject(resp);
+	}
 }

@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.actionbarsherlock.view.Window;
 import com.ax003d.sichu.api.ISichuAPI;
@@ -21,21 +22,28 @@ import com.ax003d.sichu.api.SichuAPI;
 import com.ax003d.sichu.utils.Preferences;
 import com.ax003d.sichu.utils.Utils;
 
-public class ExportActivity extends Activity {
+public class BindEmailActivity extends Activity {
 
-	private View.OnClickListener onClickListener = new View.OnClickListener() {
+	private EditText et_email;
+	private TextView tv_success;
+	private TextView tv_failed;
+
+	private OnClickListener onClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.btn_export:
+			case R.id.btn_verify:
 				String email = et_email.getText().toString();
 				if (TextUtils.isEmpty(email) || !Utils.isEmailValid(email)) {
-					Toast.makeText(ExportActivity.this, "Email not valid!",
+					Toast.makeText(BindEmailActivity.this, "Email not valid!",
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
-				new ExportTask().execute(email);
+				new VerifyTask().execute(email);
+				break;
+
+			default:
 				break;
 			}
 		}
@@ -43,28 +51,22 @@ public class ExportActivity extends Activity {
 
 	private ISichuAPI api_client;
 
-	private EditText et_email;
-
-	private TextView tv_success;
-
-	private TextView tv_failed;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.activity_export);
-
+		setContentView(R.layout.activity_bind_email);
+		
 		et_email = (EditText) findViewById(R.id.et_email);
 		et_email.setText(Preferences.getEmail(this));
 		tv_success = (TextView) findViewById(R.id.tv_success);
 		tv_failed = (TextView) findViewById(R.id.tv_failed);
-		findViewById(R.id.btn_export).setOnClickListener(onClickListener);
+		findViewById(R.id.btn_verify).setOnClickListener(onClickListener);
 
 		api_client = SichuAPI.getInstance(this);
 	}
 
-	private class ExportTask extends AsyncTask<String, Void, Boolean> {
+	private class VerifyTask extends AsyncTask<String, Void, Boolean> {
 
 		@Override
 		protected void onPreExecute() {
@@ -75,7 +77,8 @@ public class ExportActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			try {
-				JSONObject resp = api_client.bookownExport(params[0], null);
+				JSONObject resp = api_client
+						.accountEmailVerify(params[0], null);
 				if (resp.has("OK")) {
 					return true;
 				}
@@ -96,6 +99,7 @@ public class ExportActivity extends Activity {
 			if (result) {
 				tv_success.setVisibility(View.VISIBLE);
 				tv_failed.setVisibility(View.GONE);
+				Preferences.setEmail(et_email.getText().toString(), BindEmailActivity.this);
 			} else {
 				tv_success.setVisibility(View.GONE);
 				tv_failed.setVisibility(View.VISIBLE);

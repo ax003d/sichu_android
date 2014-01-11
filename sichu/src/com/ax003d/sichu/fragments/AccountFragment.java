@@ -17,7 +17,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 
+import com.ax003d.sichu.BindEmailActivity;
 import com.ax003d.sichu.LoginActivity;
 import com.ax003d.sichu.MainActivity;
 import com.ax003d.sichu.R;
@@ -36,6 +38,8 @@ public class AccountFragment extends PreferenceFragment implements
 	private String screenName;
 	public ISichuAPI api_client;
 	private Preference pref_key_weibo;
+	private String email;
+	private Preference pref_key_email;
 
 	public static AccountFragment getInstance() {
 		if (AccountFragment.instance == null) {
@@ -56,14 +60,22 @@ public class AccountFragment extends PreferenceFragment implements
 						+ Utils.getPackagetInfo(mActivity).versionName);
 
 		pref_key_weibo = findPreference("pref_key_weibo");
+		pref_key_email = findPreference("pref_key_email");
 		Preference pref_key_logout = findPreference("pref_key_logout");
 		Preference pref_key_account = findPreference("pref_key_account");
 		Preference pref_key_feedback = findPreference("pref_key_feedback");
 		setScreenName();
 		pref_key_logout.setOnPreferenceClickListener(this);
 		pref_key_weibo.setOnPreferenceClickListener(this);
+		pref_key_email.setOnPreferenceClickListener(this);
 		pref_key_account.setTitle(Preferences.getUserName(mActivity));
 		pref_key_feedback.setOnPreferenceClickListener(this);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		setScreenName();
 	}
 
 	public void setScreenName() {
@@ -72,6 +84,13 @@ public class AccountFragment extends PreferenceFragment implements
 			pref_key_weibo.setTitle(screenName);
 		} else {
 			pref_key_weibo.setTitle(R.string.hint_bind_weibo);
+		}
+		
+		email = Preferences.getEmail(mActivity);
+		if (TextUtils.isEmpty(email)) {
+			pref_key_email.setTitle(R.string.hint_bind_email);
+		} else {
+			pref_key_email.setTitle(email);
 		}
 	}
 
@@ -104,6 +123,8 @@ public class AccountFragment extends PreferenceFragment implements
 			}
 		} else if (preference.getKey().equals("pref_key_feedback")) {
 			UMFeedbackService.openUmengFeedbackSDK(mActivity);
+		} else if (preference.getKey().equals("pref_key_email")) {
+			startActivity(new Intent(mActivity, BindEmailActivity.class));
 		}
 		return false;
 	}

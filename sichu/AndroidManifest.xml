@@ -208,6 +208,10 @@
             android:name="com.ax003d.sichu.ExportActivity"
             android:label="@string/title_activity_export" >
         </activity>
+        <activity
+            android:name="com.ax003d.sichu.BindEmailActivity"
+            android:label="@string/title_activity_bind_email" >
+        </activity>
     </application>
 
 </manifest>

@@ -131,7 +131,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 							ret.getString("token"),
 							ret.getString("refresh_token"),
 							ret.getLong("expire"), ret.getLong("uid"),
-							ret.getString("username"), ret.getString("avatar"));
+							ret.getString("username"), ret.getString("avatar"),
+							ret.getString("email"));
 					return 0;
 				} else if (ret.has("error_code")) {
 					String error_code = ret.getString("error_code");

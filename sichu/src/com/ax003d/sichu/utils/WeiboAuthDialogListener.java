@@ -116,18 +116,21 @@ public class WeiboAuthDialogListener implements WeiboAuthListener {
 							accessToken.getToken(),
 							accessToken.getExpiresTime() + "", null);
 					if (ret.has("token")) {
-						Preferences.setLoginInfo(mActivity,
-								ret.getString("token"),
-								ret.getString("refresh_token"),
-								ret.getLong("expire"), ret.getLong("uid"),
-								ret.getString("username"),
-								ret.getString("avatar"));
+						Preferences
+								.setLoginInfo(mActivity,
+										ret.getString("token"),
+										ret.getString("refresh_token"),
+										ret.getLong("expire"),
+										ret.getLong("uid"),
+										ret.getString("username"),
+										ret.getString("avatar"),
+										ret.getString("email"));
 						Intent intent = new Intent(mActivity,
 								MainActivity.class);
 						intent.putExtra("ask_following", true);
 						mActivity.startActivity(intent);
 						mActivity.finish();
-						login_ok  = true;
+						login_ok = true;
 					}
 				}
 			} catch (ClientProtocolException e) {
@@ -137,7 +140,7 @@ public class WeiboAuthDialogListener implements WeiboAuthListener {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			
+
 			if ((!login_ok) && (mActivity instanceof LoginActivity)) {
 				LoginActivity activity = (LoginActivity) mActivity;
 				activity.sendMessage();

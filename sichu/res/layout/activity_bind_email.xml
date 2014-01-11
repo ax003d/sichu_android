@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".ExportActivity" >
+
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Email"
+        android:inputType="textEmailAddress" />
+
+    <Button
+        android:id="@+id/btn_verify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/selector_btn_brown"
+        android:text="@string/btn_verify" />
+
+    <TextView
+        android:id="@+id/tv_success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/verify_ok"
+        android:textColor="#FF33AA33"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_failed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/verify_failed"
+        android:textColor="#FFAA3333"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+</LinearLayout>

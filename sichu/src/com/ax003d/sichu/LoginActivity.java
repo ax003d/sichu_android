@@ -70,7 +70,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		findViewById(R.id.btn_login).setOnClickListener(this);
 		findViewById(R.id.btn_register).setOnClickListener(this);
 		findViewById(R.id.btn_login_by_weibo).setOnClickListener(this);
-		
+
 		weiboErrorHandler = new WeiboErrorHandler(this);
 	}
 
@@ -125,16 +125,21 @@ public class LoginActivity extends Activity implements OnClickListener {
 				if (ret.has("token")) {
 					long uid = ret.getLong("uid");
 					if (Preferences.getUserID(LoginActivity.this) != uid) {
-						Preferences.setSyncID(LoginActivity.this, BookOwn.CATEGORY, 0);
-						Preferences.setSyncID(LoginActivity.this, BookBorrow.CATEGORY, 0);
-						Preferences.setSyncID(LoginActivity.this, BookBorrowReq.CATEGORY, 0);
-						Preferences.setSyncID(LoginActivity.this, Follow.CATEGORY, 0);
+						Preferences.setSyncID(LoginActivity.this,
+								BookOwn.CATEGORY, 0);
+						Preferences.setSyncID(LoginActivity.this,
+								BookBorrow.CATEGORY, 0);
+						Preferences.setSyncID(LoginActivity.this,
+								BookBorrowReq.CATEGORY, 0);
+						Preferences.setSyncID(LoginActivity.this,
+								Follow.CATEGORY, 0);
 					}
 					Preferences.setLoginInfo(getApplicationContext(),
 							ret.getString("token"),
 							ret.getString("refresh_token"),
 							ret.getLong("expire"), ret.getLong("uid"),
-							ret.getString("username"), ret.getString("avatar"));
+							ret.getString("username"), ret.getString("avatar"),
+							ret.getString("email"));
 					return true;
 				} else {
 					Preferences.expireToken(getApplicationContext());
@@ -169,7 +174,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		if (mSsoHandler != null) {
 			mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
 			if (mDialog == null) {
-				mDialog = Utils.createLoginDialog(this);			
+				mDialog = Utils.createLoginDialog(this);
 			}
 			if (resultCode == RESULT_OK) {
 				mDialog.show();
@@ -179,11 +184,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	private static class WeiboErrorHandler extends Handler {
 		private final WeakReference<LoginActivity> mActivity;
-		
+
 		public WeiboErrorHandler(LoginActivity activity) {
 			mActivity = new WeakReference<LoginActivity>(activity);
 		}
-		
+
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
@@ -193,15 +198,16 @@ public class LoginActivity extends Activity implements OnClickListener {
 			}
 		}
 	}
-	
+
 	public void sendMessage() {
 		weiboErrorHandler.sendEmptyMessage(0);
 	}
-	
+
 	public void closeDialog() {
 		if (mDialog != null) {
 			mDialog.cancel();
-			Toast.makeText(this, R.string.err_login_by_weibo, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.err_login_by_weibo,
+					Toast.LENGTH_SHORT).show();
 		}
 	}
 }

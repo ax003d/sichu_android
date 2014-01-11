@@ -40,6 +40,9 @@ public interface ISichuAPI {
 
 	JSONObject account__numbers(String uid, ProgressListener progressListener)
 			throws ClientProtocolException, IOException, JSONException;
+	
+	JSONObject accountEmailVerify(String email, ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException;
 
 	JSONObject bookown(String uid, boolean trim_owner, String next,
 			ProgressListener progressListener) throws ClientProtocolException,

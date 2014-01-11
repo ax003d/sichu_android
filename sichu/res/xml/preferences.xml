@@ -7,23 +7,29 @@
         holo:selectable="false"
         holo:summary="@string/pref_summary"
         holo:title="@string/pref_title" />
-    
-    <PreferenceCategory holo:title="@string/pref_accounts">
-		<Preference holo:key="pref_key_account"
-		    holo:icon="@drawable/ic_contact"/>
-		<Preference holo:key="pref_key_weibo"
-		    holo:title="@string/hint_bind_weibo"
-		    holo:icon="@drawable/ic_weibo"/>
+
+    <PreferenceCategory holo:title="@string/pref_accounts" >
+        <Preference
+            holo:icon="@drawable/ic_contact"
+            holo:key="pref_key_account" />
+        <Preference
+            holo:icon="@drawable/ic_email"
+            holo:key="pref_key_email" />
+        <Preference
+            holo:icon="@drawable/ic_weibo"
+            holo:key="pref_key_weibo"
+            holo:title="@string/hint_bind_weibo" />
     </PreferenceCategory>
-    
-    <PreferenceCategory holo:title="@string/pref_others">
-        <Preference holo:key="pref_key_feedback"
+    <PreferenceCategory holo:title="@string/pref_others" >
+        <Preference
             holo:icon="@drawable/ic_feedback"
-            holo:title="@string/pref_title_feedbacks"/>
-        <Preference holo:selectable="true"
+            holo:key="pref_key_feedback"
+            holo:title="@string/pref_title_feedbacks" />
+        <Preference
             holo:icon="@drawable/ic_logout"
-            holo:title="@string/pref_logout"
-            holo:key="pref_key_logout"/>        
+            holo:key="pref_key_logout"
+            holo:selectable="true"
+            holo:title="@string/pref_logout" />
     </PreferenceCategory>
 
 </PreferenceScreen>

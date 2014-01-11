@@ -14,14 +14,14 @@ public class Preferences {
 
 	public static void setLoginInfo(Context context, String token,
 			String refresh_token, long expire, long uid, String username,
-			String avatar) {
+			String avatar, String email) {
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		preferences.edit().putString("token", token)
 				.putString("refresh_token", refresh_token)
 				.putLong("expire", expire).putLong("uid", uid)
 				.putString("username", username).putString("avatar", avatar)
-				.commit();
+				.putString("email", email).commit();
 	}
 
 	public static String getUserName(Context context) {
@@ -127,5 +127,15 @@ public class Preferences {
 	public static long getWeiboUID(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context).getLong(
 				"wb_uid", -1);
+	}
+
+	public static String getEmail(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context)
+				.getString("email", "");
+	}
+
+	public static void setEmail(String email, Context context) {
+		PreferenceManager.getDefaultSharedPreferences(context).edit()
+				.putString("email", email).commit();
 	}
 }
