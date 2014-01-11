@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Patterns;
 
 import com.ax003d.sichu.R;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
@@ -143,5 +144,9 @@ public class Utils {
 		} catch (NameNotFoundException e) {
 		}
 		return null;
+	}
+
+	public static boolean isEmailValid(String email) {
+		return Patterns.EMAIL_ADDRESS.matcher(email).matches();
 	}
 }

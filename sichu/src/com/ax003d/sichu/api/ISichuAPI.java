@@ -59,6 +59,9 @@ public interface ISichuAPI {
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;
 
+	JSONObject bookownExport(String email, ProgressListener progressListener)
+			throws ClientProtocolException, IOException, JSONException;
+
 	JSONObject oplog(String next, String category,
 			ProgressListener progressListener) throws ClientProtocolException,
 			IOException, JSONException;

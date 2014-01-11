@@ -27,7 +27,26 @@
         android:id="@+id/btn_export"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/selector_btn_brown"
         android:text="@string/btn_export" />
+
+    <TextView
+        android:id="@+id/tv_success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your export request has been sent, please check your email a few minutes later!"
+        android:textColor="#FF33AA33"
+        android:textSize="16sp"
+        android:visibility="gone" />
+    
+    <TextView
+        android:id="@+id/tv_failed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Export failed!"
+        android:textColor="#FFAA3333"
+        android:textSize="16sp"
+        android:visibility="gone" />
 
 </LinearLayout>
