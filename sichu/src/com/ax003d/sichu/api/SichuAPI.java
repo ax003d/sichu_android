@@ -1,10 +1,7 @@
 package com.ax003d.sichu.api;
 
 import java.io.IOException;
-import java.net.URI;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,20 +16,15 @@ import com.ax003d.sichu.net.ApiResponse;
 import com.ax003d.sichu.net.HttpEntityWithProgress.ProgressListener;
 import com.ax003d.sichu.utils.Preferences;
 import com.ax003d.sichu.utils.Utils;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.ResponseHandlerInterface;
 
 public class SichuAPI extends ApiBase implements ISichuAPI {
 
 	private static ISichuAPI INSTANCE;
 	private Context context;
-	private AsyncHttpClient client;	
 
 	public SichuAPI(Context context) {
 		super(context);
 		this.context = context;
-		client = new AsyncHttpClient();
 	}
 
 	public static ISichuAPI getInstance(Context context) {
