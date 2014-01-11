@@ -161,5 +161,11 @@
     <string name="hint_export">输入您的 Email 地址，我们会将导出的书籍列表信息以 CSV 文件的方式发送到您的邮箱!</string>
     <string name="export_ok">您的导出请求已经收到，请过几分钟之后检查您的电子邮箱！</string>
     <string name="export_failed">导出失败!</string>
-	
+    <string name="hint_bind_email">绑定电子邮箱</string>
+    <string name="title_activity_bind_email">绑定电子邮箱</string>
+    <string name="btn_verify">验证</string>
+    <string name="verify_ok">验证邮箱已经发送，请根据邮箱中的链接完成验证！</string>
+    <string name="verify_failed">验证电子邮箱失败!</string>
+    
+    
 </resources>

@@ -1,8 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="10dp"
     tools:context=".ExportActivity" >
 
@@ -19,6 +18,7 @@
         android:id="@+id/et_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tv_export_hint"
         android:layout_marginBottom="16dp"
         android:hint="Email"
         android:inputType="textEmailAddress" />
@@ -27,6 +27,7 @@
         android:id="@+id/btn_export"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/et_email"
         android:layout_marginBottom="32dp"
         android:background="@drawable/selector_btn_brown"
         android:text="@string/btn_export" />
@@ -35,18 +36,43 @@
         android:id="@+id/tv_success"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/btn_export"
+        android:layout_marginBottom="16dp"
         android:text="@string/export_ok"
         android:textColor="#FF33AA33"
         android:textSize="16sp"
         android:visibility="gone" />
-    
+
     <TextView
         android:id="@+id/tv_failed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/btn_export"
         android:text="@string/export_failed"
         android:textColor="#FFAA3333"
         android:textSize="16sp"
         android:visibility="gone" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/btn_go_verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/selector_btn_green"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="@string/btn_go_verify"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/btn_go_verify"
+        android:text="@string/hint_go_verify"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

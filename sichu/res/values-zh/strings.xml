@@ -143,18 +143,30 @@
     <string name="ok_follow">成功关注好友!</string>
     <string name="err_follow">关注好友失败!</string>
     <string name="err_login_by_weibo">登录失败，请重试!</string>
-	<string name="btn_register">注册</string>
-	<string name="btn_cancel">取消</string>
-	<string name="title_activity_register">注册</string>
-	<string name="hint_email">电子邮件</string>
-	<string name="hint_password_2">再次输入密码</string>
-	<string name="empty_username">用户名不能为空!</string>
-	<string name="empty_email">电子邮件不能为空!</string>
-	<string name="err_password_too_short">密码不能小于 6 位字符!</string>
-	<string name="err_password_not_consistence">两次输入的密码不一致!</string>
-	<string name="err_username_not_available">用户名已被使用!</string>
-	<string name="err_email_not_available">电子邮件格式错误或已被使用!</string>
-	<string name="err_register">注册失败!</string>
-	<string name="menu_export">导出书籍</string>
-	
+    <string name="btn_register">注册</string>
+    <string name="btn_cancel">取消</string>
+    <string name="title_activity_register">注册</string>
+    <string name="hint_email">电子邮件</string>
+    <string name="hint_password_2">再次输入密码</string>
+    <string name="empty_username">用户名不能为空!</string>
+    <string name="empty_email">电子邮件不能为空!</string>
+    <string name="err_password_too_short">密码不能小于 6 位字符!</string>
+    <string name="err_password_not_consistence">两次输入的密码不一致!</string>
+    <string name="err_username_not_available">用户名已被使用!</string>
+    <string name="err_email_not_available">电子邮件格式错误或已被使用!</string>
+    <string name="err_register">注册失败!</string>
+    <string name="menu_export">导出</string>
+    <string name="title_activity_export">导出书籍列表</string>
+    <string name="btn_export">导出</string>
+    <string name="hint_export">输入您的 Email 地址，我们会将导出的书籍列表信息以 CSV 文件的方式发送到您的邮箱!</string>
+    <string name="export_ok">您的导出请求已经收到，请过几分钟之后检查您的电子邮箱！</string>
+    <string name="export_failed">导出失败!</string>
+    <string name="hint_bind_email">绑定电子邮箱</string>
+    <string name="title_activity_bind_email">绑定电子邮箱</string>
+    <string name="btn_verify">验证</string>
+    <string name="verify_ok">验证邮箱已经发送，请根据邮箱中的链接完成验证！</string>
+    <string name="verify_failed">验证电子邮箱失败!</string>
+    <string name="btn_go_verify">去验证!</string>
+    <string name="hint_go_verify">验证电子邮箱，下次导出可不用输入</string>
+
 </resources>

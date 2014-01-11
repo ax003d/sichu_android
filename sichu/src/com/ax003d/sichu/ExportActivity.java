@@ -4,12 +4,14 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.app.Activity;
+import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -37,6 +39,13 @@ public class ExportActivity extends Activity {
 				}
 				new ExportTask().execute(email);
 				break;
+			case R.id.btn_go_verify:
+				Preferences.setEmail(et_email.getText().toString(),
+						ExportActivity.this);
+				startActivity(new Intent(ExportActivity.this,
+						BindEmailActivity.class));
+				ExportActivity.this.finish();
+				break;
 			}
 		}
 	};
@@ -49,6 +58,10 @@ public class ExportActivity extends Activity {
 
 	private TextView tv_failed;
 
+	private TextView tv_verify;
+
+	private Button btn_go_verify;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,6 +72,9 @@ public class ExportActivity extends Activity {
 		et_email.setText(Preferences.getEmail(this));
 		tv_success = (TextView) findViewById(R.id.tv_success);
 		tv_failed = (TextView) findViewById(R.id.tv_failed);
+		tv_verify = (TextView) findViewById(R.id.tv_verify);
+		btn_go_verify = (Button) findViewById(R.id.btn_go_verify);
+		btn_go_verify.setOnClickListener(onClickListener);
 		findViewById(R.id.btn_export).setOnClickListener(onClickListener);
 
 		api_client = SichuAPI.getInstance(this);
@@ -71,7 +87,7 @@ public class ExportActivity extends Activity {
 			super.onPreExecute();
 			setSupportProgressBarIndeterminateVisibility(true);
 		}
-		
+
 		@Override
 		protected Boolean doInBackground(String... params) {
 			try {
@@ -96,6 +112,11 @@ public class ExportActivity extends Activity {
 			if (result) {
 				tv_success.setVisibility(View.VISIBLE);
 				tv_failed.setVisibility(View.GONE);
+				if (TextUtils
+						.isEmpty(Preferences.getEmail(ExportActivity.this))) {
+					tv_verify.setVisibility(View.VISIBLE);
+					btn_go_verify.setVisibility(View.VISIBLE);
+				}
 			} else {
 				tv_success.setVisibility(View.GONE);
 				tv_failed.setVisibility(View.VISIBLE);
