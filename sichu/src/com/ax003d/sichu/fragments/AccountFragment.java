@@ -14,9 +14,11 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.ax003d.sichu.LoginActivity;
 import com.ax003d.sichu.MainActivity;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.api.ISichuAPI;
@@ -77,6 +79,7 @@ public class AccountFragment extends PreferenceFragment implements
 	public boolean onPreferenceClick(Preference preference) {
 		if (preference.getKey().equals("pref_key_logout")) {
 			Preferences.clearLoginInfo(mActivity);
+			mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
 			mActivity.finish();
 		} else if (preference.getKey().equals("pref_key_weibo")) {
 			if (screenName == null) {
