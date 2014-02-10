@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.models.BookOwn;
+import com.ax003d.sichu.utils.PinYin4j;
 import com.ax003d.sichu.utils.Utils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -26,12 +27,14 @@ public class BookOwnListAdapter extends BaseAdapter implements Filterable {
 	private DisplayImageOptions options;
 	private ImageLoader img_loader;
 	private BookOwnFilter mFilter;
+	private PinYin4j pinyin4j;
 
 	public BookOwnListAdapter(Context context) {
 		bookownsAll = new ArrayList<BookOwn>();
 		bookowns = new ArrayList<BookOwn>();
 		options = Utils.getCloudOptions();
 		img_loader = Utils.getImageLoader(context);
+		pinyin4j = new PinYin4j();
 	}
 
 	public void addBookOwn(BookOwn own) {
@@ -123,10 +126,25 @@ public class BookOwnListAdapter extends BaseAdapter implements Filterable {
 			if (TextUtils.isEmpty(constraint)) {
 				bookowns.addAll(bookownsAll);
 			} else {
+				String cons = constraint.toString().toLowerCase();
 				for (BookOwn i : bookownsAll) {
-					if (i.getBook() != null
-							&& i.getBook().getTitle().contains(constraint)) {
+					if (i.getBook() == null) {
+						continue;
+					}
+
+					String title = i.getBook().getTitle();
+					if (i.getTitlePinyin() == null) {
+						i.setTitlePinyin(pinyin4j.getPinyin(title));
+					}
+					if (title.contains(cons)) {
 						bookowns.add(i);
+						continue;
+					}
+					for (String py : i.getTitlePinyin()) {
+						if (py.toLowerCase().contains(cons)) {
+							bookowns.add(i);
+							break;
+						}
 					}
 				}
 			}

@@ -1,5 +1,7 @@
 package com.ax003d.sichu.models;
 
+import java.util.Set;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +27,7 @@ public class BookOwn implements Parcelable {
 	private boolean hasEbook;
 	private String remark;
 	private User owner;
+	private Set<String> titlePinyin;
 
 	public static final class BookOwns implements BaseColumns {
 		private BookOwns() {
@@ -209,5 +212,13 @@ public class BookOwn implements Parcelable {
 		remark = source.readString();
 		book = source.readParcelable(Book.class.getClassLoader());
 		owner = source.readParcelable(User.class.getClassLoader());
+	}
+
+	public Set<String> getTitlePinyin() {
+		return titlePinyin;
+	}
+
+	public void setTitlePinyin(Set<String> titlePinyin) {
+		this.titlePinyin = titlePinyin;
 	}
 }
