@@ -13,6 +13,13 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:visibility="gone" />
 
+    <EditText
+        android:id="@+id/et_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_search_inverse"
+        android:padding="10dp" />
+
     <ListView
         android:id="@+id/lst_bookowns"
         android:layout_width="match_parent"

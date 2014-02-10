@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Fragment;
+import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
@@ -24,6 +25,8 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +69,23 @@ public class BooksMineFragment extends Fragment implements
 	private boolean requery;
 	private int mActionPosition;
 	private View lbl_no_books;
+	private EditText et_filter;
+	private TextWatcher mOnFilterTextChanged = new TextWatcher() {
+		
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+		}
+		
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+		
+		@Override
+		public void afterTextChanged(Editable s) {
+			adapter.getFilter().filter(s.toString());
+		}
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +107,8 @@ public class BooksMineFragment extends Fragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		activity.setSupportProgressBarIndeterminateVisibility(false);
+		et_filter = (EditText) activity.findViewById(R.id.et_filter);
+		et_filter.addTextChangedListener(mOnFilterTextChanged );
 		lst_bookown = (ListView) activity.findViewById(R.id.lst_bookowns);
 		lst_bookown.setAdapter(adapter);
 		lst_bookown.setOnItemClickListener(this);
@@ -229,7 +251,7 @@ public class BooksMineFragment extends Fragment implements
 		do {
 			adapter.addBookOwn(new BookOwn(data));
 		} while (data.moveToNext());
-		adapter.notifyDataSetChanged();
+		adapter.getFilter().filter("");
 	}
 
 	@Override

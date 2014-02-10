@@ -611,28 +611,30 @@ android.support.v4.widget.SimpleCursorAdapter:
     278:279:public void setCursorToStringConverter(android.support.v4.widget.SimpleCursorAdapter$CursorToStringConverter)
     344:348:public void changeCursorAndColumns(android.database.Cursor,java.lang.String[],int[])
 com.ax003d.sichu.BuildConfig
-com.ax003d.sichu.MainActivity:
-    97:97:static synthetic com.ax003d.sichu.api.ISichuAPI access$2(com.ax003d.sichu.MainActivity)
-    99:99:static synthetic long access$3(com.ax003d.sichu.MainActivity)
-com.ax003d.sichu.MainActivity$SyncTask
+com.ax003d.sichu.InviteWeiboFriendActivity$1:
+    52:61:public void onIOException(java.io.IOException)
+com.ax003d.sichu.InviteWeiboFriendActivity$1$1
 com.ax003d.sichu.R:
     10:10:public R()
 com.ax003d.sichu.api.ISichuAPI:
     public abstract org.json.JSONObject bookownByID(java.lang.String,com.ax003d.sichu.net.HttpEntityWithProgress$ProgressListener)
-    public abstract org.json.JSONObject oplog(java.lang.String,com.ax003d.sichu.net.HttpEntityWithProgress$ProgressListener)
 com.ax003d.sichu.api.SichuAPI:
-    150:159:public org.json.JSONObject oplog(java.lang.String,com.ax003d.sichu.net.HttpEntityWithProgress$ProgressListener)
-    185:190:public org.json.JSONObject bookownByID(java.lang.String,com.ax003d.sichu.net.HttpEntityWithProgress$ProgressListener)
+    217:222:public org.json.JSONObject bookownByID(java.lang.String,com.ax003d.sichu.net.HttpEntityWithProgress$ProgressListener)
 com.ax003d.sichu.fragments.BooksBorrowedFragment:
     private static final int BOOKBORROW_BORROW_LOADER
 com.ax003d.sichu.fragments.BooksLoanedFragment:
     private static final int BOOKBORROW_LOADER
 com.ax003d.sichu.fragments.BooksMineFragment:
+    private static final int REQUEST_BARCODE
     private static final int BOOKOWN_LOADER
 com.ax003d.sichu.fragments.FollowerFragment:
     private static final int FOLLOWER_LOADER
 com.ax003d.sichu.fragments.FollowingFragment:
     private static final int FOLLOWING_LOADER
+com.ax003d.sichu.fragments.MayKnowFragment:
+    123:124:public void updateMayKnowList()
+com.ax003d.sichu.fragments.MayKnowFragment$1:
+    110:111:public void onIOException(java.io.IOException)
 com.ax003d.sichu.fragments.MessagesFragment:
     private static final int BOOKBORROWREQ_LOADER
 com.ax003d.sichu.models.Book$Books:
@@ -644,11 +646,12 @@ com.ax003d.sichu.models.Book$Books:
     public static final java.lang.String AUTHOR
     public static final java.lang.String DOUBAN_ID
     public static final java.lang.String COVER
-    22:23:private Book$Books()
+    24:25:private Book$Books()
 com.ax003d.sichu.models.BookBorrow:
-    112:112:public long getBookOwnID()
-    116:117:public void setBookOwnID(long)
-    148:149:public void setBorrower(com.ax003d.sichu.models.User)
+    public static final java.lang.String CATEGORY
+    120:120:public long getBookOwnID()
+    124:125:public void setBookOwnID(long)
+    156:157:public void setBorrower(com.ax003d.sichu.models.User)
 com.ax003d.sichu.models.BookBorrow$BookBorrows:
     public static final java.lang.String CONTENT_TYPE
     public static final java.lang.String TABLE_NAME
@@ -658,10 +661,11 @@ com.ax003d.sichu.models.BookBorrow$BookBorrows:
     public static final java.lang.String BORROW_DATE
     public static final java.lang.String PLANED_RETURN_DATE
     public static final java.lang.String RETURNED_DATE
-    29:30:private BookBorrow$BookBorrows()
+    31:32:private BookBorrow$BookBorrows()
 com.ax003d.sichu.models.BookBorrowReq:
-    111:112:public void setRequester(com.ax003d.sichu.models.User)
-    119:120:public void setRemark(java.lang.String)
+    public static final java.lang.String CATEGORY
+    115:116:public void setRequester(com.ax003d.sichu.models.User)
+    123:124:public void setRemark(java.lang.String)
 com.ax003d.sichu.models.BookBorrowReq$BookBorrowReqs:
     public static final java.lang.String CONTENT_TYPE
     public static final java.lang.String TABLE_NAME
@@ -672,12 +676,12 @@ com.ax003d.sichu.models.BookBorrowReq$BookBorrowReqs:
     public static final java.lang.String PLANED_RETURN_DATE
     public static final java.lang.String REMARK
     public static final java.lang.String STATUS
-    32:33:private BookBorrowReq$BookBorrowReqs()
+    33:34:private BookBorrowReq$BookBorrowReqs()
 com.ax003d.sichu.models.BookOwn:
-    56:66:public BookOwn(long,long,long,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
-    96:96:public long getBookID()
-    100:101:public void setBookID(long)
-    112:112:public int getStatusRaw()
+    public static final java.lang.String CATEGORY
+    60:70:public BookOwn(long,long,long,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+    100:100:public long getBookID()
+    104:105:public void setBookID(long)
 com.ax003d.sichu.models.BookOwn$BookOwns:
     public static final java.lang.String CONTENT_TYPE
     public static final java.lang.String TABLE_NAME
@@ -687,10 +691,11 @@ com.ax003d.sichu.models.BookOwn$BookOwns:
     public static final java.lang.String STATUS
     public static final java.lang.String HASEBOOK
     public static final java.lang.String REMARK
-    26:27:private BookOwn$BookOwns()
+    30:31:private BookOwn$BookOwns()
 com.ax003d.sichu.models.Follow:
-    89:90:public void setFollowing(com.ax003d.sichu.models.User)
-    97:98:public void setRemark(java.lang.String)
+    public static final java.lang.String CATEGORY
+    92:93:public void setFollowing(com.ax003d.sichu.models.User)
+    100:101:public void setRemark(java.lang.String)
 com.ax003d.sichu.models.Follow$Follows:
     public static final java.lang.String CONTENT_TYPE
     public static final java.lang.String TABLE_NAME
@@ -698,7 +703,7 @@ com.ax003d.sichu.models.Follow$Follows:
     public static final java.lang.String FOLLOWINGID
     public static final java.lang.String REMARK
     public static final java.lang.String USERID
-    24:25:private Follow$Follows()
+    25:26:private Follow$Follows()
 com.ax003d.sichu.models.User$Users:
     public static final java.lang.String CONTENT_TYPE
     public static final java.lang.String TABLE_NAME
@@ -707,7 +712,7 @@ com.ax003d.sichu.models.User$Users:
     public static final java.lang.String LAST_NAME
     public static final java.lang.String FIRST_NAME
     public static final java.lang.String AVATAR
-    21:22:private User$Users()
+    23:24:private User$Users()
 com.ax003d.sichu.net.ApiBase:
     59:59:public com.ax003d.sichu.net.ApiResponse execute(com.ax003d.sichu.net.ApiRequest)
     163:170:private org.apache.http.HttpEntity createFileOnlyMultipartEntity(com.ax003d.sichu.net.ApiRequest)
@@ -737,66 +742,418 @@ com.ax003d.sichu.providers.SichuContentProvider:
     private static final int FOLLOWINGS
     private static final int FOLLOWERS
     private static final int BOOKBORROWREQS
+    private static final int BOOKBORROWREQS_BY_USER
+    private static final int BOOKBORROWREQ_BY_GUID
+    private static final int BOOKBORROW_BY_GUID
+    private static final int FOLLOW_BY_GUID
     public static final java.lang.String AUTHORITY
 com.ax003d.sichu.utils.AccessTokenKeeper:
     private static final java.lang.String PREFERENCES_NAME
     13:13:public AccessTokenKeeper()
-    44:48:public static com.weibo.sdk.android.Oauth2AccessToken readAccessToken(android.content.Context)
 com.ax003d.sichu.utils.Preferences:
-    12:12:public Preferences()
-    35:35:public static java.lang.String getAvatar(android.content.Context)
-    97:102:public static void setSyncTime(android.content.Context)
-    110:110:public static long getSyncTime(android.content.Context)
+    10:10:public Preferences()
+    33:33:public static java.lang.String getAvatar(android.content.Context)
 com.ax003d.sichu.utils.Utils:
-    20:20:public Utils()
-    41:44:public static long getUTCTimeStamp()
-    48:51:public static java.util.Date getDateFromUTCTimeStamp(long)
+    26:26:public Utils()
+    48:51:public static long getUTCTimeStamp()
+    55:58:public static java.util.Date getDateFromUTCTimeStamp(long)
 com.ax003d.sichu.utils.WeiboAuthDialogListener$UsersShowListener:
-    71:72:public void onIOException(java.io.IOException)
+    74:75:public void onIOException(java.io.IOException)
 com.ax003d.sichu.utils.WeiboUtils:
     private static final java.lang.String CONSUMER_KEY
     private static final java.lang.String REDIRECT_URL
-    5:5:public WeiboUtils()
-com.google.zxing.integration.android.IntentIntegrator:
-    public static final int REQUEST_CODE
-    public static final java.lang.String DEFAULT_TITLE
-    public static final java.lang.String DEFAULT_MESSAGE
-    public static final java.lang.String DEFAULT_YES
-    public static final java.lang.String DEFAULT_NO
-    private static final java.lang.String BS_PACKAGE
-    private static final java.lang.String BSPLUS_PACKAGE
-    160:160:public java.lang.String getTitle()
-    164:165:public void setTitle(java.lang.String)
-    168:169:public void setTitleByID(int)
-    172:172:public java.lang.String getMessage()
-    176:177:public void setMessage(java.lang.String)
-    180:181:public void setMessageByID(int)
-    184:184:public java.lang.String getButtonYes()
-    188:189:public void setButtonYes(java.lang.String)
-    192:193:public void setButtonYesByID(int)
-    196:196:public java.lang.String getButtonNo()
-    200:201:public void setButtonNo(java.lang.String)
-    204:205:public void setButtonNoByID(int)
-    208:208:public java.util.Collection getTargetApplications()
-    212:213:public void setTargetApplications(java.util.Collection)
-    216:217:public void setSingleTargetApplication(java.lang.String)
-    220:220:public java.util.Map getMoreExtras()
-    224:225:public void addExtra(java.lang.String,java.lang.Object)
-    358:358:public android.app.AlertDialog shareText(java.lang.CharSequence)
-    371:385:public android.app.AlertDialog shareText(java.lang.CharSequence,java.lang.CharSequence)
-com.google.zxing.integration.android.IntentResult:
-    59:59:public java.lang.String getFormatName()
-    66:66:public byte[] getRawBytes()
-    73:73:public java.lang.Integer getOrientation()
-    80:80:public java.lang.String getErrorCorrectionLevel()
-com.markupartist.android.widget.PullToRefreshListView
-com.markupartist.android.widget.PullToRefreshListView$OnClickRefreshListener
-com.markupartist.android.widget.PullToRefreshListView$OnRefreshListener
-com.markupartist.android.widget.pulltorefresh.R
-com.markupartist.android.widget.pulltorefresh.R$drawable
-com.markupartist.android.widget.pulltorefresh.R$id
-com.markupartist.android.widget.pulltorefresh.R$layout
-com.markupartist.android.widget.pulltorefresh.R$string
+    24:24:public WeiboUtils()
+    29:29:static synthetic boolean access$0()
+com.ax003d.sichu.utils.WeiboUtils$1:
+    53:53:public void onIOException(java.io.IOException)
+com.ax003d.sichu.utils.WeiboUtils$2$1:
+    92:92:public void onIOException(java.io.IOException)
+com.google.zxing.BinaryBitmap:
+    92:92:public boolean isCropSupported()
+    106:107:public com.google.zxing.BinaryBitmap crop(int,int,int,int)
+    135:136:public com.google.zxing.BinaryBitmap rotateCounterClockwise45()
+com.google.zxing.LuminanceSource:
+    80:80:public boolean isCropSupported()
+    94:94:public com.google.zxing.LuminanceSource crop(int,int,int,int)
+    121:121:public com.google.zxing.LuminanceSource rotateCounterClockwise45()
+com.google.zxing.MultiFormatReader:
+    54:55:public com.google.zxing.Result decode(com.google.zxing.BinaryBitmap)
+com.google.zxing.MultiFormatWriter:
+    45:45:public com.google.zxing.common.BitMatrix encode(java.lang.String,com.google.zxing.BarcodeFormat,int,int)
+com.google.zxing.PlanarYUVLuminanceSource:
+    108:108:public boolean isCropSupported()
+    113:113:public com.google.zxing.LuminanceSource crop(int,int,int,int)
+com.google.zxing.RGBLuminanceSource
+com.google.zxing.Reader:
+    public abstract com.google.zxing.Result decode(com.google.zxing.BinaryBitmap)
+com.google.zxing.Writer:
+    public abstract com.google.zxing.common.BitMatrix encode(java.lang.String,com.google.zxing.BarcodeFormat,int,int)
+com.google.zxing.aztec.AztecReader:
+    53:53:public com.google.zxing.Result decode(com.google.zxing.BinaryBitmap)
+com.google.zxing.client.result.CalendarParsedResult:
+    134:134:public double getLatitude()
+    138:138:public double getLongitude()
+com.google.zxing.client.result.ExpandedProductParsedResult:
+    public static final java.lang.String KILOGRAM
+    public static final java.lang.String POUND
+    138:138:public java.lang.String getProductID()
+    142:142:public java.lang.String getSscc()
+    146:146:public java.lang.String getLotNumber()
+    150:150:public java.lang.String getProductionDate()
+    154:154:public java.lang.String getPackagingDate()
+    158:158:public java.lang.String getBestBeforeDate()
+    162:162:public java.lang.String getExpirationDate()
+    166:166:public java.lang.String getWeight()
+    170:170:public java.lang.String getWeightType()
+    174:174:public java.lang.String getWeightIncrement()
+    178:178:public java.lang.String getPrice()
+    182:182:public java.lang.String getPriceIncrement()
+    186:186:public java.lang.String getPriceCurrency()
+    190:190:public java.util.Map getUncommonAIs()
+com.google.zxing.client.result.GeoParsedResult:
+    72:72:public double getAltitude()
+    79:79:public java.lang.String getQuery()
+com.google.zxing.client.result.ProductParsedResult:
+    28:29:ProductParsedResult(java.lang.String)
+com.google.zxing.client.result.ResultParser:
+    private static final java.lang.String BYTE_ORDER_MARK
+    96:100:protected static void maybeAppend(java.lang.String,java.lang.StringBuilder)
+    103:109:protected static void maybeAppend(java.lang.String[],java.lang.StringBuilder)
+    154:158:protected static boolean isSubstringOfDigits(java.lang.CharSequence,int,int)
+    162:166:protected static boolean isSubstringOfAlphaNumeric(java.lang.CharSequence,int,int)
+com.google.zxing.client.result.SMSParsedResult:
+    52:83:public java.lang.String getSMSURI()
+    91:91:public java.lang.String[] getVias()
+com.google.zxing.client.result.TelParsedResult:
+    44:44:public java.lang.String getTitle()
+com.google.zxing.client.result.TextParsedResult:
+    37:37:public java.lang.String getText()
+    41:41:public java.lang.String getLanguage()
+com.google.zxing.client.result.URIParsedResult:
+    42:42:public java.lang.String getTitle()
+    54:54:public boolean isPossiblyMaliciousURI()
+com.google.zxing.client.result.URIResultParser:
+    private static final java.lang.String ALPHANUM_PART
+com.google.zxing.client.result.WifiParsedResult:
+    30:31:public WifiParsedResult(java.lang.String,java.lang.String,java.lang.String)
+com.google.zxing.common.BitArray:
+    78:79:public void flip(int)
+    134:135:public void setBulk(int,int)
+    144:167:public void setRange(int,int)
+    288:288:public int[] getBitArray()
+com.google.zxing.common.BitMatrix:
+    137:144:public com.google.zxing.common.BitArray getRow(int,com.google.zxing.common.BitArray)
+    152:153:public void setRow(int,com.google.zxing.common.BitArray)
+com.google.zxing.common.GlobalHistogramBinarizer:
+    private static final int LUMINANCE_BITS
+    private static final int LUMINANCE_SHIFT
+    private static final int LUMINANCE_BUCKETS
+com.google.zxing.common.GridSampler:
+    48:49:public static void setGridSampler(com.google.zxing.common.GridSampler)
+com.google.zxing.common.HybridBinarizer:
+    private static final int BLOCK_SIZE_POWER
+    private static final int BLOCK_SIZE
+    private static final int BLOCK_SIZE_MASK
+    private static final int MINIMUM_DIMENSION
+    private static final int MIN_DYNAMIC_RANGE
+com.google.zxing.common.PerspectiveTransform:
+    88:96:public void transformPoints(float[],float[])
+com.google.zxing.common.StringUtils:
+    public static final java.lang.String SHIFT_JIS
+    public static final java.lang.String GB2312
+    private static final java.lang.String EUC_JP
+    private static final java.lang.String UTF8
+    private static final java.lang.String ISO88591
+    42:42:private StringUtils()
+com.google.zxing.common.detector.MathUtils:
+    21:22:private MathUtils()
+com.google.zxing.common.detector.MonochromeRectangleDetector
+com.google.zxing.common.detector.WhiteRectangleDetector:
+    private static final int INIT_SIZE
+    private static final int CORR
+com.google.zxing.common.reedsolomon.GenericGF:
+    private static final int INITIALIZATION_THRESHOLD
+com.google.zxing.datamatrix.DataMatrixReader:
+    59:59:public com.google.zxing.Result decode(com.google.zxing.BinaryBitmap)
+com.google.zxing.datamatrix.decoder.DecodedBitStreamParser:
+    79:80:private DecodedBitStreamParser()
+com.google.zxing.datamatrix.decoder.Decoder:
+    51:60:public com.google.zxing.common.DecoderResult decode(boolean[][])
+com.google.zxing.maxicode.MaxiCodeReader:
+    private static final int MATRIX_WIDTH
+    private static final int MATRIX_HEIGHT
+    47:47:com.google.zxing.maxicode.decoder.Decoder getDecoder()
+    60:60:public com.google.zxing.Result decode(com.google.zxing.BinaryBitmap)
+com.google.zxing.maxicode.decoder.DecodedBitStreamParser:
+    private static final char SHIFTA
+    private static final char SHIFTB
+    private static final char SHIFTC
+    private static final char SHIFTD
+    private static final char SHIFTE
+    private static final char TWOSHIFTA
+    private static final char THREESHIFTA
+    private static final char LATCHA
+    private static final char LATCHB
+    private static final char LOCK
+    private static final char ECI
+    private static final char NS
+    private static final char PAD
+    private static final char FS
+    private static final char GS
+    private static final char RS
+    60:61:private DecodedBitStreamParser()
+com.google.zxing.maxicode.decoder.Decoder:
+    private static final int ALL
+    private static final int EVEN
+    private static final int ODD
+    49:49:public com.google.zxing.common.DecoderResult decode(com.google.zxing.common.BitMatrix)
+com.google.zxing.multi.ByQuadrantReader
+com.google.zxing.multi.GenericMultipleBarcodeReader
+com.google.zxing.multi.MultipleBarcodeReader
+com.google.zxing.multi.qrcode.QRCodeMultiReader
+com.google.zxing.multi.qrcode.detector.MultiDetector
+com.google.zxing.multi.qrcode.detector.MultiFinderPatternFinder
+com.google.zxing.multi.qrcode.detector.MultiFinderPatternFinder$1
+com.google.zxing.multi.qrcode.detector.MultiFinderPatternFinder$ModuleSizeComparator
+com.google.zxing.oned.CodaBarReader:
+    private static final int MAX_ACCEPTABLE
+    private static final int PADDING
+    private static final java.lang.String ALPHABET_STRING
+    private static final int MIN_CHARACTER_LENGTH
+com.google.zxing.oned.Code128Reader:
+    private static final int MAX_AVG_VARIANCE
+    private static final int MAX_INDIVIDUAL_VARIANCE
+    private static final int CODE_SHIFT
+    private static final int CODE_CODE_C
+    private static final int CODE_CODE_B
+    private static final int CODE_CODE_A
+    private static final int CODE_FNC_1
+    private static final int CODE_FNC_2
+    private static final int CODE_FNC_3
+    private static final int CODE_FNC_4_A
+    private static final int CODE_FNC_4_B
+    private static final int CODE_START_A
+    private static final int CODE_START_B
+    private static final int CODE_START_C
+    private static final int CODE_STOP
+com.google.zxing.oned.Code128Writer:
+    private static final int CODE_START_B
+    private static final int CODE_START_C
+    private static final int CODE_CODE_B
+    private static final int CODE_CODE_C
+    private static final int CODE_STOP
+    private static final char ESCAPE_FNC_1
+    private static final char ESCAPE_FNC_2
+    private static final char ESCAPE_FNC_3
+    private static final char ESCAPE_FNC_4
+    private static final int CODE_FNC_1
+    private static final int CODE_FNC_2
+    private static final int CODE_FNC_3
+    private static final int CODE_FNC_4_B
+com.google.zxing.oned.Code39Reader:
+    static final java.lang.String ALPHABET_STRING
+    90:93:public Code39Reader(boolean,boolean)
+com.google.zxing.oned.Code93Reader:
+    private static final java.lang.String ALPHABET_STRING
+com.google.zxing.oned.EAN13Writer:
+    private static final int CODE_WIDTH
+com.google.zxing.oned.EAN8Writer:
+    private static final int CODE_WIDTH
+com.google.zxing.oned.ITFReader:
+    private static final int MAX_AVG_VARIANCE
+    private static final int MAX_INDIVIDUAL_VARIANCE
+    private static final int W
+    private static final int N
+com.google.zxing.oned.OneDReader:
+    protected static final int INTEGER_MATH_SHIFT
+    protected static final int PATTERN_MATCH_RESULT_SCALE_FACTOR
+    49:49:public com.google.zxing.Result decode(com.google.zxing.BinaryBitmap)
+com.google.zxing.oned.OneDimensionalCodeWriter:
+    37:37:public com.google.zxing.common.BitMatrix encode(java.lang.String,com.google.zxing.BarcodeFormat,int,int)
+com.google.zxing.oned.UPCAReader:
+    57:57:public com.google.zxing.Result decode(com.google.zxing.BinaryBitmap)
+com.google.zxing.oned.UPCAWriter:
+    39:39:public com.google.zxing.common.BitMatrix encode(java.lang.String,com.google.zxing.BarcodeFormat,int,int)
+com.google.zxing.oned.UPCEANReader:
+    private static final int MAX_AVG_VARIANCE
+    private static final int MAX_INDIVIDUAL_VARIANCE
+com.google.zxing.oned.rss.AbstractRSSReader:
+    private static final int MAX_AVG_VARIANCE
+    private static final int MAX_INDIVIDUAL_VARIANCE
+    private static final float MIN_FINDER_PATTERN_RATIO
+    private static final float MAX_FINDER_PATTERN_RATIO
+com.google.zxing.oned.rss.RSSUtils:
+    22:22:private RSSUtils()
+    25:61:static int[] getRSSwidths(int,int,int,int,boolean)
+    128:152:static int[] elements(int[],int,int)
+com.google.zxing.oned.rss.expanded.BitArrayBuilder:
+    39:40:private BitArrayBuilder()
+com.google.zxing.oned.rss.expanded.RSSExpandedReader:
+    private static final int FINDER_PAT_A
+    private static final int FINDER_PAT_B
+    private static final int FINDER_PAT_C
+    private static final int FINDER_PAT_D
+    private static final int FINDER_PAT_E
+    private static final int FINDER_PAT_F
+    private static final int MAX_PAIRS
+com.google.zxing.oned.rss.expanded.decoders.AI01392xDecoder:
+    private static final int HEADER_SIZE
+    private static final int LAST_DIGIT_SIZE
+com.google.zxing.oned.rss.expanded.decoders.AI01393xDecoder:
+    private static final int HEADER_SIZE
+    private static final int LAST_DIGIT_SIZE
+    private static final int FIRST_THREE_DIGITS_SIZE
+com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder:
+    private static final int HEADER_SIZE
+    private static final int WEIGHT_SIZE
+    private static final int DATE_SIZE
+com.google.zxing.oned.rss.expanded.decoders.AI013x0xDecoder:
+    private static final int HEADER_SIZE
+    private static final int WEIGHT_SIZE
+com.google.zxing.oned.rss.expanded.decoders.AI01AndOtherAIs:
+    private static final int HEADER_SIZE
+com.google.zxing.oned.rss.expanded.decoders.AI01decoder:
+    protected static final int GTIN_SIZE
+com.google.zxing.oned.rss.expanded.decoders.AnyAIDecoder:
+    private static final int HEADER_SIZE
+com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState:
+    65:65:boolean isNumeric()
+com.google.zxing.oned.rss.expanded.decoders.DecodedChar:
+    static final char FNC1
+com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric:
+    static final int FNC1
+    64:64:int getValue()
+    76:76:boolean isAnyFNC1()
+com.google.zxing.oned.rss.expanded.decoders.FieldParser:
+    189:190:private FieldParser()
+com.google.zxing.pdf417.PDF417Reader:
+    56:56:public com.google.zxing.Result decode(com.google.zxing.BinaryBitmap)
+com.google.zxing.pdf417.decoder.BitMatrixParser:
+    private static final int MAX_ROW_DIFFERENCE
+    private static final int MAX_ROWS
+    private static final int MAX_CW_CAPACITY
+    private static final int MODULES_IN_SYMBOL
+com.google.zxing.pdf417.decoder.DecodedBitStreamParser:
+    private static final int TEXT_COMPACTION_MODE_LATCH
+    private static final int BYTE_COMPACTION_MODE_LATCH
+    private static final int NUMERIC_COMPACTION_MODE_LATCH
+    private static final int BYTE_COMPACTION_MODE_LATCH_6
+    private static final int BEGIN_MACRO_PDF417_CONTROL_BLOCK
+    private static final int BEGIN_MACRO_PDF417_OPTIONAL_FIELD
+    private static final int MACRO_PDF417_TERMINATOR
+    private static final int MODE_SHIFT_TO_BYTE_COMPACTION_MODE
+    private static final int MAX_NUMERIC_CODEWORDS
+    private static final int PL
+    private static final int LL
+    private static final int AS
+    private static final int ML
+    private static final int AL
+    private static final int PS
+    private static final int PAL
+    83:84:private DecodedBitStreamParser()
+com.google.zxing.pdf417.decoder.Decoder:
+    private static final int MAX_ERRORS
+    private static final int MAX_EC_CODEWORDS
+    49:58:public com.google.zxing.common.DecoderResult decode(boolean[][])
+com.google.zxing.pdf417.decoder.ec.ModulusPoly:
+    56:56:int[] getCoefficients()
+    205:227:com.google.zxing.pdf417.decoder.ec.ModulusPoly[] divide(com.google.zxing.pdf417.decoder.ec.ModulusPoly)
+com.google.zxing.pdf417.detector.Detector:
+    private static final int INTEGER_MATH_SHIFT
+    private static final int PATTERN_MATCH_RESULT_SCALE_FACTOR
+    private static final int MAX_AVG_VARIANCE
+    private static final int MAX_INDIVIDUAL_VARIANCE
+    private static final int SKEW_THRESHOLD
+com.google.zxing.pdf417.encoder.BarcodeMatrix:
+    47:48:void set(int,int,byte)
+    51:52:void setMatrix(int,int,boolean)
+    63:63:byte[][] getMatrix()
+    67:67:byte[][] getScaledMatrix(int)
+com.google.zxing.pdf417.encoder.BarcodeRow:
+    45:46:void set(int,byte)
+    69:69:byte[] getRow()
+com.google.zxing.pdf417.encoder.Dimensions:
+    31:36:public Dimensions(int,int,int,int)
+com.google.zxing.pdf417.encoder.PDF417:
+    private static final int START_PATTERN
+    private static final int STOP_PATTERN
+    private static final float PREFERRED_RATIO
+    private static final float DEFAULT_MODULE_WIDTH
+    private static final float HEIGHT
+    549:564:private static int getNumberOfRows(int,int,int)
+com.google.zxing.pdf417.encoder.PDF417ErrorCorrection:
+    127:128:private PDF417ErrorCorrection()
+    152:167:static int getRecommendedMinimumErrorCorrectionLevel(int)
+com.google.zxing.pdf417.encoder.PDF417HighLevelEncoder:
+    private static final int TEXT_COMPACTION
+    private static final int BYTE_COMPACTION
+    private static final int NUMERIC_COMPACTION
+    private static final int SUBMODE_ALPHA
+    private static final int SUBMODE_LOWER
+    private static final int SUBMODE_MIXED
+    private static final int SUBMODE_PUNCTUATION
+    private static final int LATCH_TO_TEXT
+    private static final int LATCH_TO_BYTE_PADDED
+    private static final int LATCH_TO_NUMERIC
+    private static final int SHIFT_TO_BYTE
+    private static final int LATCH_TO_BYTE
+    111:112:private PDF417HighLevelEncoder()
+com.google.zxing.pdf417.encoder.PDF417Writer:
+    70:70:public com.google.zxing.common.BitMatrix encode(java.lang.String,com.google.zxing.BarcodeFormat,int,int)
+    88:92:public com.google.zxing.common.BitMatrix encode(java.lang.String,com.google.zxing.BarcodeFormat,boolean,int,int,int,int,int,int,com.google.zxing.pdf417.encoder.Compaction)
+com.google.zxing.qrcode.QRCodeReader:
+    50:50:protected com.google.zxing.qrcode.decoder.Decoder getDecoder()
+    63:63:public com.google.zxing.Result decode(com.google.zxing.BinaryBitmap)
+com.google.zxing.qrcode.QRCodeWriter:
+    private static final int QUIET_ZONE_SIZE
+    44:44:public com.google.zxing.common.BitMatrix encode(java.lang.String,com.google.zxing.BarcodeFormat,int,int)
+com.google.zxing.qrcode.decoder.DecodedBitStreamParser:
+    private static final int GB2312_SUBSET
+    53:54:private DecodedBitStreamParser()
+com.google.zxing.qrcode.decoder.Decoder:
+    45:45:public com.google.zxing.common.DecoderResult decode(boolean[][])
+    59:68:public com.google.zxing.common.DecoderResult decode(boolean[][],java.util.Map)
+    72:72:public com.google.zxing.common.DecoderResult decode(com.google.zxing.common.BitMatrix)
+com.google.zxing.qrcode.decoder.FormatInformation:
+    private static final int FORMAT_INFO_MASK_QR
+com.google.zxing.qrcode.detector.Detector:
+    49:49:protected final com.google.zxing.common.BitMatrix getImage()
+    53:53:protected final com.google.zxing.ResultPointCallback getResultPointCallback()
+    63:63:public com.google.zxing.common.DetectorResult detect()
+com.google.zxing.qrcode.detector.FinderPattern:
+    52:53:void incrementCount()
+com.google.zxing.qrcode.detector.FinderPatternFinder:
+    private static final int CENTER_QUORUM
+    protected static final int MIN_SKIP
+    protected static final int MAX_MODULES
+    private static final int INTEGER_MATH_SHIFT
+    59:60:public FinderPatternFinder(com.google.zxing.common.BitMatrix)
+    70:70:protected final com.google.zxing.common.BitMatrix getImage()
+    74:74:protected final java.util.List getPossibleCenters()
+com.google.zxing.qrcode.encoder.ByteMatrix:
+    57:58:public void set(int,int,byte)
+com.google.zxing.qrcode.encoder.Encoder:
+    static final java.lang.String DEFAULT_BYTE_MODE_ENCODING
+    52:53:private Encoder()
+    76:76:public static com.google.zxing.qrcode.encoder.QRCode encode(java.lang.String,com.google.zxing.qrcode.decoder.ErrorCorrectionLevel)
+    180:180:public static com.google.zxing.qrcode.decoder.Mode chooseMode(java.lang.String)
+com.google.zxing.qrcode.encoder.MaskUtil:
+    private static final int N1
+    private static final int N2
+    private static final int N3
+    private static final int N4
+    32:34:private MaskUtil()
+com.google.zxing.qrcode.encoder.MatrixUtil:
+    private static final int VERSION_INFO_POLY
+    private static final int TYPE_INFO_POLY
+    private static final int TYPE_INFO_MASK_PATTERN
+    30:32:private MatrixUtil()
+com.google.zxing.qrcode.encoder.QRCode:
+    public static final int NUM_MASK_PATTERNS
+    42:42:public com.google.zxing.qrcode.decoder.Mode getMode()
+    46:46:public com.google.zxing.qrcode.decoder.ErrorCorrectionLevel getECLevel()
+    50:50:public com.google.zxing.qrcode.decoder.Version getVersion()
+    54:54:public int getMaskPattern()
 com.nostra13.universalimageloader.cache.disc.BaseDiscCache:
     22:23:public BaseDiscCache(java.io.File)
     38:44:public void clear()
@@ -1022,186 +1379,260 @@ com.sina.sso.RemoteSSO$Stub$Proxy:
     77:77:public java.lang.String getInterfaceDescriptor()
 com.umeng.analytics.Gender
 com.umeng.analytics.MobclickAgent:
-    private static synthetic int[] b
-    public MobclickAgent()
-    public static void setAutoLocation(boolean)
-    public static void setSessionContinueMillis(long)
-    public static void setEnableEventBuffer(boolean)
-    public static void setOnlineConfigureListener(com.umeng.analytics.UmengOnlineConfigureListener)
-    static com.umeng.analytics.b a()
-    public static void setOpenGLContext(javax.microedition.khronos.opengles.GL10)
-    public static void openActivityDurationTrack(boolean)
-    public static void setDebugMode(boolean)
-    public static void setDefaultReportPolicy(android.content.Context,int)
-    public static void onResume(android.content.Context,java.lang.String,java.lang.String)
-    public static void onError(android.content.Context,java.lang.String)
-    public static void reportError(android.content.Context,java.lang.String)
-    public static void flush(android.content.Context)
-    public static void onEvent(android.content.Context,java.lang.String)
-    public static void onEvent(android.content.Context,java.lang.String,int)
-    public static void onEvent(android.content.Context,java.lang.String,java.lang.String,int)
-    public static void onEvent(android.content.Context,java.lang.String,java.lang.String)
-    public static void onEvent(android.content.Context,java.lang.String,java.util.Map)
-    public static void onEventDuration(android.content.Context,java.lang.String,long)
-    public static void onEventDuration(android.content.Context,java.lang.String,java.lang.String,long)
-    public static void onEventDuration(android.content.Context,java.lang.String,java.util.Map,long)
-    public static void onEventBegin(android.content.Context,java.lang.String)
-    public static void onEventEnd(android.content.Context,java.lang.String)
-    public static void onEventBegin(android.content.Context,java.lang.String,java.lang.String)
-    public static void onEventEnd(android.content.Context,java.lang.String,java.lang.String)
-    public static void onKVEventBegin(android.content.Context,java.lang.String,java.util.Map,java.lang.String)
-    public static void onKVEventEnd(android.content.Context,java.lang.String,java.lang.String)
-    public static java.lang.String getConfigParams(android.content.Context,java.lang.String)
-    public static void updateOnlineConfig(android.content.Context,java.lang.String,java.lang.String)
-    public static void updateOnlineConfig(android.content.Context)
-    public void setGender(android.content.Context,com.umeng.analytics.Gender)
-    public void setAge(android.content.Context,int)
-    public void setUserID(android.content.Context,java.lang.String,java.lang.String)
-    static synthetic int[] b()
+    20:397:public MobclickAgent()
+    34:35:public static void setAutoLocation(boolean)
+    41:42:public static void setSessionContinueMillis(long)
+    48:49:public static void setEnableEventBuffer(boolean)
+    55:56:public static void setOnlineConfigureListener(com.umeng.analytics.onlineconfig.UmengOnlineConfigureListener)
+    59:59:static com.umeng.analytics.b a()
+    67:74:public static void setOpenGLContext(javax.microedition.khronos.opengles.GL10)
+    81:82:public static void openActivityDurationTrack(boolean)
+    89:90:public static void setDebugMode(boolean)
+    101:102:public static void setDefaultReportPolicy(android.content.Context,int)
+    125:133:public static void onResume(android.content.Context,java.lang.String,java.lang.String)
+    146:152:public static void onError(android.content.Context,java.lang.String)
+    160:161:public static void reportError(android.content.Context,java.lang.String)
+    168:169:public static void reportError(android.content.Context,java.lang.Throwable)
+    177:178:public static void flush(android.content.Context)
+    187:188:public static void onEvent(android.content.Context,java.lang.String)
+    196:197:public static void onEvent(android.content.Context,java.lang.String,int)
+    206:212:public static void onEvent(android.content.Context,java.lang.String,java.lang.String,int)
+    221:227:public static void onEvent(android.content.Context,java.lang.String,java.lang.String)
+    237:238:public static void onEvent(android.content.Context,java.lang.String,java.util.HashMap)
+    248:253:public static void onEventDuration(android.content.Context,java.lang.String,long)
+    262:271:public static void onEventDuration(android.content.Context,java.lang.String,java.lang.String,long)
+    280:285:public static void onEventDuration(android.content.Context,java.lang.String,java.util.HashMap,long)
+    292:293:public static void onEventBegin(android.content.Context,java.lang.String)
+    301:302:public static void onEventEnd(android.content.Context,java.lang.String)
+    310:311:public static void onEventBegin(android.content.Context,java.lang.String,java.lang.String)
+    319:320:public static void onEventEnd(android.content.Context,java.lang.String,java.lang.String)
+    329:330:public static void onKVEventBegin(android.content.Context,java.lang.String,java.util.HashMap,java.lang.String)
+    338:339:public static void onKVEventEnd(android.content.Context,java.lang.String,java.lang.String)
+    350:351:public static java.lang.String getConfigParams(android.content.Context,java.lang.String)
+    362:368:public static void updateOnlineConfig(android.content.Context,java.lang.String,java.lang.String)
+    374:375:public static void updateOnlineConfig(android.content.Context)
+    386:401:public void setGender(android.content.Context,com.umeng.analytics.Gender)
+    409:416:public void setAge(android.content.Context,int)
+    425:437:public void setUserID(android.content.Context,java.lang.String,java.lang.String)
+    444:445:public static void onKillProcess(android.content.Context)
+com.umeng.analytics.MobclickAgent$1
 com.umeng.analytics.MobclickAgentJSInterface
 com.umeng.analytics.MobclickAgentJSInterface$a
-com.umeng.analytics.ReportPolicy:
-    public static final int REALTIME
-    public static final int BATCH_AT_LAUNCH
-    static final int a
-    static final int b
-    public static final int DAILY
-    public static final int WIFIONLY
-    public static final int BATCH_BY_INTERVAL
-    static void a(android.content.Context,int)
-    static void b(android.content.Context,int,long)
-    boolean a()
-com.umeng.analytics.a:
+com.umeng.analytics.ReportPolicy
+com.umeng.analytics.a.a:
+    31:37:public a(java.lang.String,java.util.HashMap,long)
+    40:61:private java.util.HashMap a(java.util.HashMap)
+    65:65:private long b()
+com.umeng.analytics.a.b:
+    18:21:public b(java.lang.String,com.umeng.analytics.a.a)
+com.umeng.analytics.a.d:
+    25:27:public d(java.lang.String)
+com.umeng.analytics.a.e:
+    32:40:public e(java.lang.String,java.lang.String,java.lang.String,int,long)
+com.umeng.analytics.a.f:
+    83:86:public f(java.lang.String,java.lang.String)
+    90:106:private void c(org.json.JSONObject)
+    109:117:private void d(org.json.JSONObject)
+    120:123:private void e(org.json.JSONObject)
+    126:128:private void f(org.json.JSONObject)
+    131:134:private void g(org.json.JSONObject)
+    137:140:private void h(org.json.JSONObject)
+    144:152:public void a(org.json.JSONObject)
+com.umeng.analytics.a.g:
+    public abstract void a(org.json.JSONObject)
+com.umeng.analytics.a.h:
+    25:26:public void a(com.umeng.analytics.a.o)
+    68:76:public org.json.JSONObject b()
+com.umeng.analytics.a.i:
+    62:74:public void a(java.lang.String,com.umeng.analytics.a.a)
+com.umeng.analytics.a.l:
+    public static final java.lang.String f
+    18:19:public void a(java.lang.String)
+com.umeng.analytics.a.m:
+    private static final java.lang.String k
+    private static final java.lang.String l
+    private static final java.lang.String m
+com.umeng.analytics.a.o:
+    public static final java.lang.String d
+    public static final java.lang.String e
+    public static final java.lang.String f
+    private static final java.lang.String g
+com.umeng.analytics.a.p:
+    private static final java.lang.String c
     private static final java.lang.String d
 com.umeng.analytics.b:
-    void a(android.content.Context,java.lang.String)
-    void d(android.content.Context)
-    void a(android.content.Context,java.lang.String,java.lang.String,long,int)
-    void a(android.content.Context,java.lang.String,java.util.Map,long)
-    private synchronized void l(android.content.Context)
-    private void p(android.content.Context)
-    private org.json.JSONArray a(org.json.JSONObject,org.json.JSONArray)
-    private java.lang.String q(android.content.Context)
-    public void e(android.content.Context)
-    private synchronized void e(android.content.Context,java.lang.String)
-    void b(android.content.Context,java.lang.String)
-    void c(android.content.Context,java.lang.String)
-    void a(android.content.Context,java.lang.String,java.lang.String)
-    void b(android.content.Context,java.lang.String,java.lang.String)
-    void a(android.content.Context,java.lang.String,java.util.Map,java.lang.String)
-    void c(android.content.Context,java.lang.String,java.lang.String)
-    static synthetic void a(com.umeng.analytics.b,android.content.Context,java.lang.String)
-com.umeng.analytics.b$a:
-    b$a(com.umeng.analytics.b,android.content.Context,java.lang.String,java.lang.String,long,int,int)
-    b$a(com.umeng.analytics.b,android.content.Context,java.lang.String,java.util.Map,long,int)
-    b$a(com.umeng.analytics.b,android.content.Context,java.lang.String,java.util.Map,java.lang.String,int)
-com.umeng.analytics.c
+    48:48:void a()
+    52:52:void b()
+    73:86:void a(android.content.Context,java.lang.String)
+    89:96:void a(android.content.Context,java.lang.Throwable)
+    158:162:void c(android.content.Context)
+    166:183:void a(android.content.Context,java.lang.String,java.lang.String,long,int)
+    187:210:void a(android.content.Context,java.lang.String,java.util.HashMap,long)
+    334:344:private void d(android.content.Context,java.lang.String)
+    347:365:private int e(android.content.Context,java.lang.String)
+    369:375:void b(android.content.Context,java.lang.String)
+    378:389:void c(android.content.Context,java.lang.String)
+    392:397:void a(android.content.Context,java.lang.String,java.lang.String)
+    400:410:void b(android.content.Context,java.lang.String,java.lang.String)
+    419:438:void a(android.content.Context,java.lang.String,java.util.HashMap,java.lang.String)
+    441:456:void c(android.content.Context,java.lang.String,java.lang.String)
+    460:464:void d(android.content.Context)
+com.umeng.analytics.c:
+    38:39:public void a(int)
+    49:56:public void a(java.lang.String)
+    59:62:public long b(java.lang.String)
+    66:67:public void a(java.lang.String,java.util.HashMap)
+    70:73:public java.util.HashMap c(java.lang.String)
+    78:79:public synchronized void a(java.lang.String,java.lang.String,java.lang.String,long,int)
+    82:83:public synchronized void a(java.lang.String,java.lang.String,java.util.HashMap,long)
 com.umeng.analytics.d:
-    public void a(int)
-    public boolean b()
-    public void a(java.lang.String,java.util.Map)
-    public java.util.Map c(java.lang.String)
-    public synchronized boolean a(android.content.Context,java.lang.String,java.lang.String,long,int)
-    public synchronized boolean a(android.content.Context,java.lang.String,java.util.Map,long)
-com.umeng.analytics.e:
-    static final java.lang.String a
-    static final java.lang.String b
-    static final java.lang.String c
+    82:83:public void e(android.content.Context)
+    442:444:public void a(int,long)
+com.umeng.analytics.f:
+    public static final java.lang.String a
+    public static final java.lang.String b
+    public static final java.lang.String c
     static final int e
     static final int f
-    static final java.lang.String l
-    static final java.lang.String m
+    static final java.lang.String n
     static final java.lang.String o
-    static final java.lang.String q
-    static final java.lang.String r
-    static final java.lang.String t
+    public static final java.lang.String q
     static final java.lang.String u
     static final java.lang.String v
     static final java.lang.String w
     static final java.lang.String x
     static final java.lang.String y
     static final java.lang.String z
-    static final java.lang.String A
-    static final java.lang.String B
-    static final java.lang.String C
-    e()
-com.umeng.analytics.f:
-    f()
-com.umeng.analytics.h:
-    h()
+    public static final java.lang.String A
+    public static final java.lang.String B
+    public static final java.lang.String C
+    public static final java.lang.String D
+    public static final java.lang.String E
+    public static final java.lang.String F
+    public static final java.lang.String G
+    public static final java.lang.String H
+    8:8:public f()
 com.umeng.analytics.i:
-    private static final int b
-    public i(java.lang.String,int)
-    public int b()
+    private static final java.lang.String a
+    private static final java.lang.String b
+    private static final java.lang.String c
+    private static final java.lang.String d
+    private static final java.lang.String e
+    private static final java.lang.String f
+    private static final java.lang.String g
+    private static final java.lang.String h
+    23:23:public i()
+    36:36:static android.content.SharedPreferences a(android.content.Context)
+    48:48:static android.content.SharedPreferences d(android.content.Context)
+    64:88:static org.json.JSONObject h(android.content.Context)
+com.umeng.analytics.j
+com.umeng.analytics.onlineconfig.UmengOnlineConfigureListener:
+    public abstract void onDataReceived(org.json.JSONObject)
+com.umeng.analytics.onlineconfig.a:
+    46:56:public void a(android.content.Context)
+    60:64:public void a(android.content.Context,java.lang.String,java.lang.String)
+    67:68:public void a(com.umeng.analytics.onlineconfig.UmengOnlineConfigureListener)
+    71:72:public void a()
+    79:80:public void b()
+    83:84:private void a(org.json.JSONObject)
+    87:96:private java.lang.String b(android.content.Context)
+    100:100:private java.lang.String c(android.content.Context)
+    105:125:private org.json.JSONObject d(android.content.Context)
+    130:131:private java.lang.String e(android.content.Context)
+    135:150:private void a(android.content.Context,com.umeng.analytics.onlineconfig.b)
+    153:178:private void b(android.content.Context,com.umeng.analytics.onlineconfig.b)
+    24:24:static synthetic void a(com.umeng.analytics.onlineconfig.a,org.json.JSONObject)
+    24:24:static synthetic org.json.JSONObject a(com.umeng.analytics.onlineconfig.a,android.content.Context)
+    24:24:static synthetic com.umeng.analytics.onlineconfig.c a(com.umeng.analytics.onlineconfig.a)
+    24:24:static synthetic void a(com.umeng.analytics.onlineconfig.a,android.content.Context,com.umeng.analytics.onlineconfig.b)
+    24:24:static synthetic void b(com.umeng.analytics.onlineconfig.a,android.content.Context,com.umeng.analytics.onlineconfig.b)
+com.umeng.analytics.onlineconfig.a$a
+com.umeng.analytics.onlineconfig.a$b
+com.umeng.analytics.onlineconfig.b
+com.umeng.analytics.onlineconfig.c:
+    public abstract void a(int,long)
 com.umeng.common.Log:
-    public Log()
-    public static void c(java.lang.String,java.lang.String)
-    public static void c(java.lang.String,java.lang.String,java.lang.Exception)
-    public static void d(java.lang.String,java.lang.String)
-    public static void d(java.lang.String,java.lang.String,java.lang.Exception)
-    public static void e(java.lang.String,java.lang.String,java.lang.Exception)
+    8:8:public Log()
+    56:59:public static void d(java.lang.String,java.lang.String)
+    62:65:public static void d(java.lang.String,java.lang.String,java.lang.Exception)
 com.umeng.common.a
-com.umeng.common.a.a
-com.umeng.common.a.b
-com.umeng.common.a.c
+com.umeng.common.a.a:
+    8:8:public a()
+    37:37:public static int g(android.content.Context)
+com.umeng.common.a.b:
+    8:8:public b()
+com.umeng.common.a.c:
+    7:7:public c()
+    26:26:public static int f(android.content.Context)
 com.umeng.common.b:
     protected static final java.lang.String b
     private static final java.lang.String d
     private static final java.lang.String e
     public static final int c
-    public static boolean a(java.lang.String,android.content.Context)
-    public static boolean a(android.content.Context)
-    public static java.util.Set b(android.content.Context)
-    public static boolean c(android.content.Context)
-    public static java.lang.String[] a(javax.microedition.khronos.opengles.GL10)
-    public static java.lang.String h(android.content.Context)
-    public static java.lang.String i(android.content.Context)
-    public static boolean b()
-    public static java.lang.String a(java.util.Date)
-    public static java.util.Date a(java.lang.String)
-    public static int a(java.util.Date,java.util.Date)
-    public static java.lang.String v(android.content.Context)
-com.umeng.common.b.a
-com.umeng.common.b.b
-com.umeng.common.b.c
-com.umeng.common.b.d
-com.umeng.common.b.e
-com.umeng.common.b.f:
-    public f()
-    public static java.lang.String a(byte[],java.lang.String)
-com.umeng.common.b.g:
-    private static final java.lang.String b
-    public g()
-    public static java.lang.String a(android.content.Context,long)
-    public static void a(android.content.Context,java.lang.String)
-    public static boolean b(android.content.Context,java.lang.String)
-    public static boolean d(java.lang.String)
-com.umeng.common.b.h
-com.umeng.common.b.i
+    62:70:public static boolean a(java.lang.String,android.content.Context)
+    81:82:public static boolean a(android.content.Context)
+    93:100:public static java.util.Set b(android.content.Context)
+    110:113:public static boolean c(android.content.Context)
+    173:182:public static java.lang.String f(android.content.Context)
+    192:200:public static java.lang.String[] a(javax.microedition.khronos.opengles.GL10)
+    292:301:public static java.lang.String i(android.content.Context)
+    313:326:public static java.lang.String j(android.content.Context)
+    668:671:public static java.lang.String c()
+    680:684:public static java.util.Date a(java.lang.String)
+    695:703:public static int a(java.util.Date,java.util.Date)
+    762:764:public static boolean x(android.content.Context)
 com.umeng.common.c:
-    public int a(java.lang.String)
-    public int e(java.lang.String)
-com.umeng.common.net.DownloadingService
-com.umeng.common.net.DownloadingService$a
-com.umeng.common.net.DownloadingService$b
-com.umeng.common.net.DownloadingService$c
-com.umeng.common.net.DownloadingService$d
-com.umeng.common.net.a
-com.umeng.common.net.a$a
-com.umeng.common.net.a$b
-com.umeng.common.net.b
-com.umeng.common.net.c
-com.umeng.common.net.c$a
-com.umeng.common.net.c$b
-com.umeng.common.net.d
-com.umeng.common.net.e
+    97:97:public int a(java.lang.String)
+    141:141:public int e(java.lang.String)
+com.umeng.common.net.DownloadingService:
+    static final int a
+    static final int b
+    static final int c
+    static final int d
+    public static final int e
+    public static final int f
+    public static final int g
+    public static final int h
+    static final int i
+    static final int j
+    static final int k
+    static final java.lang.String l
+    private static final int q
+    private static final long u
+    466:476:private void d()
+com.umeng.common.net.a:
+    59:60:public void a(java.lang.String[])
+    68:69:public void a(boolean)
+com.umeng.common.net.c:
+    private static final java.lang.String b
+    private static final java.lang.String c
+    private static final java.lang.String d
+    private static final java.lang.String e
+    private static final java.lang.String f
+    private static final java.lang.String g
+    private static final java.lang.String h
+    private static final java.lang.String j
+    126:135:public void a(java.lang.String,java.lang.String,java.lang.String)
+    138:149:public int b(java.lang.String,java.lang.String)
+    153:164:public java.lang.String c(java.lang.String,java.lang.String)
+    168:187:public java.util.Date d(java.lang.String,java.lang.String)
+    191:196:public void e(java.lang.String,java.lang.String)
+    199:212:public java.util.List a(java.lang.String)
+com.umeng.common.net.c$a:
+    private static final int b
+    private static final java.lang.String c
+com.umeng.common.net.c$b:
+    67:67:private c$b()
 com.umeng.common.net.f
-com.umeng.common.net.g
-com.umeng.common.net.h
-com.umeng.common.net.i
-com.umeng.common.net.j
-com.umeng.common.net.k
-com.umeng.common.net.l
+com.umeng.common.net.l:
+    public static final java.lang.String a
+    public static final java.lang.String b
+    public static final java.lang.String c
+    public static final java.lang.String d
+    public static final java.lang.String e
+    15:15:public l()
+    55:59:public static int a(com.umeng.common.net.a$a)
+    63:69:public static android.app.PendingIntent a(android.content.Context,java.lang.String)
 com.umeng.common.net.m
 com.umeng.common.net.m$a
 com.umeng.common.net.m$b
@@ -1214,50 +1645,55 @@ com.umeng.common.net.p$b
 com.umeng.common.net.p$c
 com.umeng.common.net.q
 com.umeng.common.net.r:
-    private java.util.Map b
-    public com.umeng.common.net.t a(com.umeng.common.net.s,java.lang.Class)
-    private org.json.JSONObject a(java.lang.String,org.json.JSONObject)
-    public boolean a()
-    private static java.lang.String a(java.io.InputStream)
-    private org.json.JSONObject a(java.lang.String)
-    public com.umeng.common.net.r a(java.util.Map)
-    private void b(java.lang.String)
+    300:301:public com.umeng.common.net.r a(java.util.Map)
 com.umeng.common.net.s:
-    public abstract org.json.JSONObject a()
-    public abstract java.lang.String b()
-    protected java.lang.String c()
-    public void a(java.lang.String)
-    public java.lang.String d()
+    75:75:public java.lang.String d()
+com.umeng.common.util.DeltaUpdate:
+    private static final java.lang.String b
+    12:12:public DeltaUpdate()
+com.umeng.common.util.a
+com.umeng.common.util.b
+com.umeng.common.util.c
+com.umeng.common.util.d
+com.umeng.common.util.e
+com.umeng.common.util.f:
+    16:16:public f()
+    60:71:public static java.lang.String a(byte[],java.lang.String)
+com.umeng.common.util.g:
+    private static final java.lang.String b
+    25:25:public g()
+    123:135:public static java.lang.String a(android.content.Context,long)
+    167:170:public static void a(android.content.Context,java.lang.String)
+    181:187:public static boolean b(android.content.Context,java.lang.String)
+    211:214:public static boolean e(java.lang.String)
+com.umeng.common.util.h
+com.umeng.common.util.i
 com.umeng.fb.UMFeedbackService:
-    public UMFeedbackService()
-    public static void setGoBackButtonVisible()
-    public static void setContactMap(java.util.Map)
-    public static void setRemarkMap(java.util.Map)
-    public static void setFeedBackListener(com.umeng.fb.util.FeedBackListener)
+    163:164:public static void setGoBackButtonVisible()
+    173:174:public static void setContactMap(java.util.Map)
+    183:184:public static void setRemarkMap(java.util.Map)
+    243:244:public static void setFeedBackListener(com.umeng.fb.util.FeedBackListener)
 com.umeng.fb.a:
     public java.lang.String d
 com.umeng.fb.a.a:
     private static final int b
 com.umeng.fb.a.b:
-    public b(java.lang.String)
-    public org.json.JSONObject a()
-    public java.lang.String b()
-    public java.lang.String c()
+    25:27:public b(java.lang.String)
 com.umeng.fb.b.a:
-    public a()
+    7:7:public a()
 com.umeng.fb.b.b:
-    public b()
+    7:7:public b()
 com.umeng.fb.b.c:
-    public c()
-    public static int l(android.content.Context)
+    7:7:public c()
+    51:51:public static int l(android.content.Context)
 com.umeng.fb.b.d:
-    public d()
+    7:7:public d()
 com.umeng.fb.b.e:
-    public e()
-    public static int c(android.content.Context)
-    public static int k(android.content.Context)
-    public static int A(android.content.Context)
-com.umeng.fb.f:
+    7:7:public e()
+    17:17:public static int c(android.content.Context)
+    49:49:public static int k(android.content.Context)
+    112:112:public static int A(android.content.Context)
+com.umeng.fb.g:
     public static final java.lang.String a
     public static final java.lang.String b
     public static final java.lang.String c
@@ -1340,16 +1776,16 @@ com.umeng.fb.f:
     public static final java.lang.String aO
     public static final java.lang.String aP
     public static final java.lang.String aQ
-    public f()
-com.umeng.fb.g:
-    public g()
-    public static void a(android.content.Context)
-    public static java.lang.String a()
-    public static int a(java.util.Date,java.util.Date)
-    public static java.util.Date b(android.content.Context)
-    public static void a(android.content.Context,java.util.Date)
-    public static java.lang.String a(org.json.JSONObject)
-    public static java.lang.String b(org.json.JSONObject)
+    4:4:public g()
+com.umeng.fb.h:
+    31:31:public h()
+    34:38:public static void a(android.content.Context)
+    41:44:public static java.lang.String a()
+    58:66:public static int a(java.util.Date,java.util.Date)
+    70:74:public static java.util.Date b(android.content.Context)
+    78:83:public static void a(android.content.Context,java.util.Date)
+    264:270:public static java.lang.String a(org.json.JSONObject)
+    284:343:public static java.lang.String b(org.json.JSONObject)
 com.umeng.fb.ui.FeedbackConversations:
     private static final int c
     private static final int d
@@ -1361,36 +1797,39 @@ com.umeng.fb.ui.b:
 com.umeng.fb.ui.d:
     org.json.JSONArray d
     java.lang.String[] e
-    public com.umeng.fb.b$a a(int)
+    59:60:public com.umeng.fb.b$a a(int)
 com.umeng.fb.util.ActivityStarter:
-    public ActivityStarter()
+    14:14:public ActivityStarter()
 com.umeng.fb.util.a:
     static final java.lang.String a
     private static final int b
-    public a()
+    34:34:public a()
 com.umeng.fb.util.b:
-    public b()
-    public static synchronized boolean b(org.json.JSONObject)
+    12:12:public b()
+    86:90:public static synchronized boolean b(org.json.JSONObject)
 com.umeng.fb.util.c:
-    public c()
-com.weibo.sdk.android.BuildConfig
+    18:18:public c()
+com.umeng.update.UmengUpdateAgent:
+    public static final java.lang.String c
+    private static final java.lang.String i
+    private static final java.lang.String j
+    public static final java.lang.String g
+    85:86:public static void setOnDownloadListener(com.umeng.update.UmengDownloadListener)
+    113:115:public static void update(android.content.Context,java.lang.String)
+    124:125:public static void setUpdateOnlyWifi(boolean)
+    134:135:public static void setUpdateAutoPopup(boolean)
+    144:145:public static void setUpdateListener(com.umeng.update.UmengUpdateListener)
+    293:308:public static void update(android.content.Context,long)
+    311:314:private static android.content.SharedPreferences a(android.content.Context)
+com.umeng.update.UpdateStatus
 com.weibo.sdk.android.Oauth2AccessToken:
     31:44:public Oauth2AccessToken(java.lang.String)
-com.weibo.sdk.android.R:
-    10:10:public R()
-com.weibo.sdk.android.R$attr
-com.weibo.sdk.android.R$color
-com.weibo.sdk.android.R$dimen:
-    18:18:public R$dimen()
-com.weibo.sdk.android.R$drawable:
-    24:24:public R$drawable()
 com.weibo.sdk.android.Weibo:
-    private static final java.lang.String WEIBO_SDK_VERSION
     public static final java.lang.String KEY_TOKEN
     public static final java.lang.String KEY_EXPIRES
     public static final java.lang.String KEY_REFRESHTOKEN
-    54:56:public void setupConsumerConfig(java.lang.String,java.lang.String)
-    64:66:public void authorize(android.content.Context,com.weibo.sdk.android.WeiboAuthListener)
+    50:52:public void setupConsumerConfig(java.lang.String,java.lang.String)
+    60:62:public void authorize(android.content.Context,com.weibo.sdk.android.WeiboAuthListener)
 com.weibo.sdk.android.WeiboDialog:
     private static final java.lang.String TAG
 com.weibo.sdk.android.WeiboDialogError:
@@ -1407,21 +1846,68 @@ com.weibo.sdk.android.WeiboException:
     54:56:public WeiboException(int)
     59:60:public void setStatusCode(int)
 com.weibo.sdk.android.WeiboParameters:
-    34:36:public void add(java.lang.String,int)
-    52:57:public void remove(int)
-    104:108:public void addAll(com.weibo.sdk.android.WeiboParameters)
-    111:113:public void clear()
+    50:55:public void remove(int)
+    102:106:public void addAll(com.weibo.sdk.android.WeiboParameters)
+    109:111:public void clear()
 com.weibo.sdk.android.api.AccountAPI
 com.weibo.sdk.android.api.ActivityInvokeAPI
 com.weibo.sdk.android.api.CommentsAPI
 com.weibo.sdk.android.api.CommonAPI
 com.weibo.sdk.android.api.FavoritesAPI
-com.weibo.sdk.android.api.FriendshipsAPI
+com.weibo.sdk.android.api.FriendshipsAPI:
+    private static final java.lang.String SERVER_URL_PRIX
+    52:62:public void friends(java.lang.String,int,int,boolean,com.weibo.sdk.android.net.RequestListener)
+    76:88:public void inCommon(long,long,int,int,boolean,com.weibo.sdk.android.net.RequestListener)
+    99:105:public void bilateral(long,int,int,com.weibo.sdk.android.net.RequestListener)
+    116:122:public void bilateralIds(long,int,int,com.weibo.sdk.android.net.RequestListener)
+    133:138:public void friendsIds(long,int,int,com.weibo.sdk.android.net.RequestListener)
+    150:155:public void friendsIds(java.lang.String,int,int,com.weibo.sdk.android.net.RequestListener)
+    168:178:public void followers(long,int,int,boolean,com.weibo.sdk.android.net.RequestListener)
+    191:201:public void followers(java.lang.String,int,int,boolean,com.weibo.sdk.android.net.RequestListener)
+    212:217:public void followersIds(long,int,int,com.weibo.sdk.android.net.RequestListener)
+    229:234:public void followersIds(java.lang.String,int,int,com.weibo.sdk.android.net.RequestListener)
+    244:248:public void followersActive(long,int,com.weibo.sdk.android.net.RequestListener)
+    259:265:public void chainFollowers(long,int,int,com.weibo.sdk.android.net.RequestListener)
+    289:293:public void show(long,java.lang.String,com.weibo.sdk.android.net.RequestListener)
+    303:307:public void show(java.lang.String,long,com.weibo.sdk.android.net.RequestListener)
+    318:322:public void show(java.lang.String,java.lang.String,com.weibo.sdk.android.net.RequestListener)
+    346:349:public void create(java.lang.String,com.weibo.sdk.android.net.RequestListener)
+    359:363:public void destroy(long,java.lang.String,com.weibo.sdk.android.net.RequestListener)
+    373:376:public void destroy(java.lang.String,com.weibo.sdk.android.net.RequestListener)
 com.weibo.sdk.android.api.PlaceAPI
 com.weibo.sdk.android.api.RegisterAPI
 com.weibo.sdk.android.api.SearchAPI
 com.weibo.sdk.android.api.ShortUrlAPI
-com.weibo.sdk.android.api.StatusesAPI
+com.weibo.sdk.android.api.StatusesAPI:
+    private static final java.lang.String SERVER_URL_PRIX
+    30:39:public void publicTimeline(int,int,boolean,com.weibo.sdk.android.net.RequestListener)
+    55:72:public void friendsTimeline(long,long,int,int,boolean,com.weibo.sdk.android.api.WeiboAPI$FEATURE,boolean,com.weibo.sdk.android.net.RequestListener)
+    84:96:public void friendsTimelineIds(long,long,int,int,boolean,com.weibo.sdk.android.api.WeiboAPI$FEATURE,com.weibo.sdk.android.net.RequestListener)
+    112:129:public void homeTimeline(long,long,int,int,boolean,com.weibo.sdk.android.api.WeiboAPI$FEATURE,boolean,com.weibo.sdk.android.net.RequestListener)
+    146:164:public void userTimeline(long,long,long,int,int,boolean,com.weibo.sdk.android.api.WeiboAPI$FEATURE,boolean,com.weibo.sdk.android.net.RequestListener)
+    181:199:public void userTimeline(java.lang.String,long,long,int,int,boolean,com.weibo.sdk.android.api.WeiboAPI$FEATURE,boolean,com.weibo.sdk.android.net.RequestListener)
+    216:233:public void userTimeline(long,long,int,int,boolean,com.weibo.sdk.android.api.WeiboAPI$FEATURE,boolean,com.weibo.sdk.android.net.RequestListener)
+    249:263:public void userTimelineIds(long,long,long,int,int,boolean,com.weibo.sdk.android.api.WeiboAPI$FEATURE,com.weibo.sdk.android.net.RequestListener)
+    279:293:public void userTimelineIds(java.lang.String,long,long,int,int,boolean,com.weibo.sdk.android.api.WeiboAPI$FEATURE,com.weibo.sdk.android.net.RequestListener)
+    308:316:public void repostTimeline(long,long,long,int,int,com.weibo.sdk.android.api.WeiboAPI$AUTHOR_FILTER,com.weibo.sdk.android.net.RequestListener)
+    331:340:public void repostTimelineIds(long,long,long,int,int,com.weibo.sdk.android.api.WeiboAPI$AUTHOR_FILTER,com.weibo.sdk.android.net.RequestListener)
+    353:359:public void repostByMe(long,long,int,int,com.weibo.sdk.android.net.RequestListener)
+    377:391:public void mentions(long,long,int,int,com.weibo.sdk.android.api.WeiboAPI$AUTHOR_FILTER,com.weibo.sdk.android.api.WeiboAPI$SRC_FILTER,com.weibo.sdk.android.api.WeiboAPI$TYPE_FILTER,boolean,com.weibo.sdk.android.net.RequestListener)
+    408:417:public void mentionsIds(long,long,int,int,com.weibo.sdk.android.api.WeiboAPI$AUTHOR_FILTER,com.weibo.sdk.android.api.WeiboAPI$SRC_FILTER,com.weibo.sdk.android.api.WeiboAPI$TYPE_FILTER,com.weibo.sdk.android.net.RequestListener)
+    434:452:public void bilateralTimeline(long,long,int,int,boolean,com.weibo.sdk.android.api.WeiboAPI$FEATURE,boolean,com.weibo.sdk.android.net.RequestListener)
+    461:464:public void show(long,com.weibo.sdk.android.net.RequestListener)
+    474:489:public void queryMID(long[],com.weibo.sdk.android.api.WeiboAPI$TYPE,com.weibo.sdk.android.net.RequestListener)
+    502:529:public void queryID(java.lang.String[],com.weibo.sdk.android.api.WeiboAPI$TYPE,boolean,boolean,com.weibo.sdk.android.net.RequestListener)
+    539:547:public void hotRepostDaily(int,boolean,com.weibo.sdk.android.net.RequestListener)
+    557:566:public void hotRepostWeekly(int,boolean,com.weibo.sdk.android.net.RequestListener)
+    576:585:public void hotCommentsDaily(int,boolean,com.weibo.sdk.android.net.RequestListener)
+    595:604:public void hotCommentsWeekly(int,boolean,com.weibo.sdk.android.net.RequestListener)
+    613:621:public void count(java.lang.String[],com.weibo.sdk.android.net.RequestListener)
+    633:638:public void repost(long,java.lang.String,com.weibo.sdk.android.api.WeiboAPI$COMMENTS_TYPE,com.weibo.sdk.android.net.RequestListener)
+    647:650:public void destroy(long,com.weibo.sdk.android.net.RequestListener)
+    682:693:public void upload(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.weibo.sdk.android.net.RequestListener)
+    706:716:public void uploadUrlText(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.weibo.sdk.android.net.RequestListener)
+    726:730:public void emotions(com.weibo.sdk.android.api.WeiboAPI$EMOTION_TYPE,com.weibo.sdk.android.api.WeiboAPI$LANGUAGE,com.weibo.sdk.android.net.RequestListener)
 com.weibo.sdk.android.api.SuggestionsAPI
 com.weibo.sdk.android.api.TagsAPI
 com.weibo.sdk.android.api.TrendsAPI
@@ -1452,6 +1938,28 @@ com.weibo.sdk.android.api.WeiboAPI$STATUSES_TYPE
 com.weibo.sdk.android.api.WeiboAPI$TYPE
 com.weibo.sdk.android.api.WeiboAPI$TYPE_FILTER
 com.weibo.sdk.android.api.WeiboAPI$USER_CATEGORY
+com.weibo.sdk.android.demo.MainActivity
+com.weibo.sdk.android.demo.MainActivity$1
+com.weibo.sdk.android.demo.MainActivity$2
+com.weibo.sdk.android.demo.MainActivity$3
+com.weibo.sdk.android.demo.MainActivity$AuthDialogListener
+com.weibo.sdk.android.demo.R:
+    9:9:public R()
+com.weibo.sdk.android.demo.R$array
+com.weibo.sdk.android.demo.R$color
+com.weibo.sdk.android.demo.R$dimen:
+    19:19:public R$dimen()
+com.weibo.sdk.android.demo.R$drawable:
+    28:28:public R$drawable()
+com.weibo.sdk.android.demo.R$id
+com.weibo.sdk.android.demo.R$layout
+com.weibo.sdk.android.demo.R$menu
+com.weibo.sdk.android.demo.R$string
+com.weibo.sdk.android.demo.R$style
+com.weibo.sdk.android.demo.Util
+com.weibo.sdk.android.demo.Util$1
+com.weibo.sdk.android.demo.Util$2
+com.weibo.sdk.android.keep.AccessTokenKeeper
 com.weibo.sdk.android.net.AsyncWeiboRunner:
     10:10:public AsyncWeiboRunner()
 com.weibo.sdk.android.net.HttpManager:
@@ -1460,7 +1968,7 @@ com.weibo.sdk.android.net.HttpManager:
     public static final java.lang.String HTTPMETHOD_GET
     private static final int SET_CONNECTION_TIMEOUT
     private static final int SET_SOCKET_TIMEOUT
-    62:62:public HttpManager()
+    58:58:public HttpManager()
 com.weibo.sdk.android.net.NetStateManager:
     18:18:public NetStateManager()
     19:19:static synthetic void access$0(android.content.Context)
@@ -1521,4 +2029,3 @@ org.apache.http.entity.mime.content.StringBody:
     126:127:public StringBody(java.lang.String)
     130:130:public java.io.Reader getReader()
     140:141:public void writeTo(java.io.OutputStream,int)
-snippet.Snippet
