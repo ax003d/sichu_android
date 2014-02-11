@@ -39,6 +39,14 @@ public class BookOwnListAdapter extends BaseAdapter implements Filterable {
 
 	public void addBookOwn(BookOwn own) {
 		bookownsAll.add(own);
+		if (own.getBook() == null) {
+			return;
+		}
+
+		String title = own.getBook().getTitle();
+		if (own.getTitlePinyin() == null) {
+			own.setTitlePinyin(pinyin4j.getPinyin(title));
+		}
 	}
 
 	public void clearBookOwn() {

@@ -6669,6 +6669,7 @@ com.ax003d.sichu.R$drawable -> com.ax003d.sichu.R$drawable:
     int ic_reject -> ic_reject
     int ic_remark -> ic_remark
     int ic_return -> ic_return
+    int ic_search_inverse -> ic_search_inverse
     int ic_share -> ic_share
     int ic_timer -> ic_timer
     int ic_unavailable -> ic_unavailable
@@ -6986,6 +6987,7 @@ com.ax003d.sichu.R$id -> com.ax003d.sichu.R$id:
     int empty -> empty
     int end -> end
     int et_email -> et_email
+    int et_filter -> et_filter
     int expanded_menu -> expanded_menu
     int fill -> fill
     int fill_horizontal -> fill_horizontal
@@ -8446,8 +8448,11 @@ com.ax003d.sichu.adapters.BookLoanedListAdapter -> com.ax003d.sichu.a.a:
     void replaceItem(com.ax003d.sichu.models.BookBorrow) -> b
 com.ax003d.sichu.adapters.BookOwnListAdapter -> com.ax003d.sichu.a.b:
     java.util.ArrayList bookowns -> a
-    com.nostra13.universalimageloader.core.DisplayImageOptions options -> b
-    com.nostra13.universalimageloader.core.ImageLoader img_loader -> c
+    java.util.ArrayList bookownsAll -> b
+    com.nostra13.universalimageloader.core.DisplayImageOptions options -> c
+    com.nostra13.universalimageloader.core.ImageLoader img_loader -> d
+    com.ax003d.sichu.adapters.BookOwnListAdapter$BookOwnFilter mFilter -> e
+    com.ax003d.sichu.utils.PinYin4j pinyin4j -> f
     void addBookOwn(com.ax003d.sichu.models.BookOwn) -> a
     void clearBookOwn() -> a
     int getCount() -> getCount
@@ -8455,7 +8460,15 @@ com.ax003d.sichu.adapters.BookOwnListAdapter -> com.ax003d.sichu.a.b:
     long getItemId(int) -> getItemId
     android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
     void prependBookOwn(com.ax003d.sichu.models.BookOwn) -> b
-com.ax003d.sichu.adapters.FollowListAdapter -> com.ax003d.sichu.a.c:
+    android.widget.Filter getFilter() -> getFilter
+    java.util.ArrayList access$0(com.ax003d.sichu.adapters.BookOwnListAdapter) -> a
+    java.util.ArrayList access$1(com.ax003d.sichu.adapters.BookOwnListAdapter) -> b
+    com.ax003d.sichu.utils.PinYin4j access$2(com.ax003d.sichu.adapters.BookOwnListAdapter) -> c
+com.ax003d.sichu.adapters.BookOwnListAdapter$BookOwnFilter -> com.ax003d.sichu.a.c:
+    com.ax003d.sichu.adapters.BookOwnListAdapter this$0 -> a
+    android.widget.Filter$FilterResults performFiltering(java.lang.CharSequence) -> performFiltering
+    void publishResults(java.lang.CharSequence,android.widget.Filter$FilterResults) -> publishResults
+com.ax003d.sichu.adapters.FollowListAdapter -> com.ax003d.sichu.a.d:
     java.util.ArrayList follows -> a
     boolean asFollower -> b
     com.nostra13.universalimageloader.core.DisplayImageOptions options -> c
@@ -8467,7 +8480,7 @@ com.ax003d.sichu.adapters.FollowListAdapter -> com.ax003d.sichu.a.c:
     void clearFollows() -> a
     void addFollow(com.ax003d.sichu.models.Follow) -> a
     void setAsFollower(boolean) -> a
-com.ax003d.sichu.adapters.MayKnowListAdapter -> com.ax003d.sichu.a.d:
+com.ax003d.sichu.adapters.MayKnowListAdapter -> com.ax003d.sichu.a.e:
     java.util.ArrayList mMayKnows -> a
     com.nostra13.universalimageloader.core.DisplayImageOptions options -> b
     com.nostra13.universalimageloader.core.ImageLoader img_loader -> c
@@ -8482,23 +8495,23 @@ com.ax003d.sichu.adapters.MayKnowListAdapter -> com.ax003d.sichu.a.d:
     void remove(java.lang.String) -> b
     com.ax003d.sichu.api.ISichuAPI access$0(com.ax003d.sichu.adapters.MayKnowListAdapter) -> a
     android.content.Context access$1(com.ax003d.sichu.adapters.MayKnowListAdapter) -> b
-com.ax003d.sichu.adapters.MayKnowListAdapter$1 -> com.ax003d.sichu.a.e:
+com.ax003d.sichu.adapters.MayKnowListAdapter$1 -> com.ax003d.sichu.a.f:
     com.ax003d.sichu.adapters.MayKnowListAdapter this$0 -> a
     void onClick(android.view.View) -> onClick
-com.ax003d.sichu.adapters.MayKnowListAdapter$2 -> com.ax003d.sichu.a.f:
+com.ax003d.sichu.adapters.MayKnowListAdapter$2 -> com.ax003d.sichu.a.g:
     com.ax003d.sichu.adapters.MayKnowListAdapter this$0 -> a
     void onClick(android.view.View) -> onClick
-com.ax003d.sichu.adapters.MayKnowListAdapter$FollowTask -> com.ax003d.sichu.a.g:
+com.ax003d.sichu.adapters.MayKnowListAdapter$FollowTask -> com.ax003d.sichu.a.h:
     com.ax003d.sichu.adapters.MayKnowListAdapter this$0 -> a
     org.json.JSONObject doInBackground(java.lang.String[]) -> a
     void onPostExecute(org.json.JSONObject) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.ax003d.sichu.adapters.MayKnowListAdapter$MayKnowComparator -> com.ax003d.sichu.a.h:
+com.ax003d.sichu.adapters.MayKnowListAdapter$MayKnowComparator -> com.ax003d.sichu.a.i:
     com.ax003d.sichu.adapters.MayKnowListAdapter this$0 -> a
     int compare(com.ax003d.sichu.models.MayKnow,com.ax003d.sichu.models.MayKnow) -> a
     int compare(java.lang.Object,java.lang.Object) -> compare
-com.ax003d.sichu.adapters.MessageListAdapter -> com.ax003d.sichu.a.i:
+com.ax003d.sichu.adapters.MessageListAdapter -> com.ax003d.sichu.a.j:
     java.util.ArrayList messages -> a
     com.nostra13.universalimageloader.core.DisplayImageOptions options -> b
     com.nostra13.universalimageloader.core.ImageLoader img_loader -> c
@@ -8672,6 +8685,8 @@ com.ax003d.sichu.fragments.BooksMineFragment -> com.ax003d.sichu.c.j:
     boolean requery -> g
     int mActionPosition -> h
     android.view.View lbl_no_books -> i
+    org.holoeverywhere.widget.EditText et_filter -> j
+    android.text.TextWatcher mOnFilterTextChanged -> k
     com.ax003d.sichu.fragments.BooksMineFragment getInstance() -> a
     void onCreate(android.os.Bundle) -> onCreate
     android.view.View onCreateView(org.holoeverywhere.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> onCreateView
@@ -8686,26 +8701,31 @@ com.ax003d.sichu.fragments.BooksMineFragment -> com.ax003d.sichu.c.j:
     void onLoaderReset(android.support.v4.content.Loader) -> a
     void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
     void onLoadFinished(android.support.v4.content.Loader,java.lang.Object) -> a
-    com.ax003d.sichu.MainActivity access$1(com.ax003d.sichu.fragments.BooksMineFragment) -> a
-    com.ax003d.sichu.api.ISichuAPI access$2(com.ax003d.sichu.fragments.BooksMineFragment) -> b
-    com.ax003d.sichu.adapters.BookOwnListAdapter access$3(com.ax003d.sichu.fragments.BooksMineFragment) -> c
+    com.ax003d.sichu.adapters.BookOwnListAdapter access$1(com.ax003d.sichu.fragments.BooksMineFragment) -> a
+    com.ax003d.sichu.MainActivity access$2(com.ax003d.sichu.fragments.BooksMineFragment) -> b
+    com.ax003d.sichu.api.ISichuAPI access$3(com.ax003d.sichu.fragments.BooksMineFragment) -> c
     void access$4(com.ax003d.sichu.fragments.BooksMineFragment,boolean) -> a
     boolean access$5(com.ax003d.sichu.fragments.BooksMineFragment) -> d
-com.ax003d.sichu.fragments.BooksMineFragment$AddBookOwnTask -> com.ax003d.sichu.c.k:
+com.ax003d.sichu.fragments.BooksMineFragment$1 -> com.ax003d.sichu.c.k:
+    com.ax003d.sichu.fragments.BooksMineFragment this$0 -> a
+    void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
+    void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
+    void afterTextChanged(android.text.Editable) -> afterTextChanged
+com.ax003d.sichu.fragments.BooksMineFragment$AddBookOwnTask -> com.ax003d.sichu.c.l:
     com.ax003d.sichu.fragments.BooksMineFragment this$0 -> a
     void onPreExecute() -> onPreExecute
     org.json.JSONObject doInBackground(java.lang.String[]) -> a
     void onPostExecute(org.json.JSONObject) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.ax003d.sichu.fragments.BooksMineFragment$GetBookOwnTask -> com.ax003d.sichu.c.l:
+com.ax003d.sichu.fragments.BooksMineFragment$GetBookOwnTask -> com.ax003d.sichu.c.m:
     com.ax003d.sichu.fragments.BooksMineFragment this$0 -> a
     void onPreExecute() -> onPreExecute
     org.json.JSONObject doInBackground(java.lang.String[]) -> a
     void onPostExecute(org.json.JSONObject) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.ax003d.sichu.fragments.FollowerFragment -> com.ax003d.sichu.c.m:
+com.ax003d.sichu.fragments.FollowerFragment -> com.ax003d.sichu.c.n:
     com.ax003d.sichu.fragments.FollowerFragment instance -> a
     java.lang.String[] followerProjection -> b
     com.ax003d.sichu.adapters.FollowListAdapter adapter -> c
@@ -8730,14 +8750,14 @@ com.ax003d.sichu.fragments.FollowerFragment -> com.ax003d.sichu.c.m:
     com.ax003d.sichu.api.ISichuAPI access$2(com.ax003d.sichu.fragments.FollowerFragment) -> b
     void access$3(com.ax003d.sichu.fragments.FollowerFragment,boolean) -> a
     boolean access$4(com.ax003d.sichu.fragments.FollowerFragment) -> c
-com.ax003d.sichu.fragments.FollowerFragment$GetFollowerTask -> com.ax003d.sichu.c.n:
+com.ax003d.sichu.fragments.FollowerFragment$GetFollowerTask -> com.ax003d.sichu.c.o:
     com.ax003d.sichu.fragments.FollowerFragment this$0 -> a
     void onPreExecute() -> onPreExecute
     org.json.JSONObject doInBackground(java.lang.String[]) -> a
     void onPostExecute(org.json.JSONObject) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.ax003d.sichu.fragments.FollowingFragment -> com.ax003d.sichu.c.o:
+com.ax003d.sichu.fragments.FollowingFragment -> com.ax003d.sichu.c.p:
     com.ax003d.sichu.fragments.FollowingFragment instance -> a
     java.lang.String[] followingProjection -> b
     com.ax003d.sichu.adapters.FollowListAdapter adapter -> c
@@ -8762,14 +8782,14 @@ com.ax003d.sichu.fragments.FollowingFragment -> com.ax003d.sichu.c.o:
     com.ax003d.sichu.api.ISichuAPI access$2(com.ax003d.sichu.fragments.FollowingFragment) -> b
     void access$3(com.ax003d.sichu.fragments.FollowingFragment,boolean) -> a
     boolean access$4(com.ax003d.sichu.fragments.FollowingFragment) -> c
-com.ax003d.sichu.fragments.FollowingFragment$GetFollowingTask -> com.ax003d.sichu.c.p:
+com.ax003d.sichu.fragments.FollowingFragment$GetFollowingTask -> com.ax003d.sichu.c.q:
     com.ax003d.sichu.fragments.FollowingFragment this$0 -> a
     void onPreExecute() -> onPreExecute
     org.json.JSONObject doInBackground(java.lang.String[]) -> a
     void onPostExecute(org.json.JSONObject) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.ax003d.sichu.fragments.MayKnowFragment -> com.ax003d.sichu.c.q:
+com.ax003d.sichu.fragments.MayKnowFragment -> com.ax003d.sichu.c.r:
     com.ax003d.sichu.fragments.MayKnowFragment instance -> a
     org.holoeverywhere.slidingmenu.SlidingActivity activity -> b
     int mFriendCursor -> c
@@ -8789,20 +8809,20 @@ com.ax003d.sichu.fragments.MayKnowFragment -> com.ax003d.sichu.c.q:
     com.ax003d.sichu.adapters.MayKnowListAdapter access$3(com.ax003d.sichu.fragments.MayKnowFragment) -> d
     int access$4(com.ax003d.sichu.fragments.MayKnowFragment) -> e
     void access$5(com.ax003d.sichu.fragments.MayKnowFragment,int) -> a
-com.ax003d.sichu.fragments.MayKnowFragment$1 -> com.ax003d.sichu.c.r:
+com.ax003d.sichu.fragments.MayKnowFragment$1 -> com.ax003d.sichu.c.s:
     com.ax003d.sichu.fragments.MayKnowFragment this$0 -> a
     void onComplete(java.lang.String) -> a
     void onError(com.weibo.sdk.android.WeiboException) -> a
-com.ax003d.sichu.fragments.MayKnowFragment$GetMayKnowTask -> com.ax003d.sichu.c.s:
+com.ax003d.sichu.fragments.MayKnowFragment$GetMayKnowTask -> com.ax003d.sichu.c.t:
     com.ax003d.sichu.fragments.MayKnowFragment this$0 -> a
     org.json.JSONObject doInBackground(java.lang.String[]) -> a
     void onPostExecute(org.json.JSONObject) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.ax003d.sichu.fragments.MayKnowFragment$MayKnowHandler -> com.ax003d.sichu.c.t:
+com.ax003d.sichu.fragments.MayKnowFragment$MayKnowHandler -> com.ax003d.sichu.c.u:
     java.lang.ref.WeakReference mFragment -> a
     void handleMessage(android.os.Message) -> handleMessage
-com.ax003d.sichu.fragments.MessagesFragment -> com.ax003d.sichu.c.u:
+com.ax003d.sichu.fragments.MessagesFragment -> com.ax003d.sichu.c.v:
     com.ax003d.sichu.fragments.MessagesFragment instance -> b
     java.lang.String[] bookborrowreqProjection -> c
     com.ax003d.sichu.api.ISichuAPI api_client -> d
@@ -8828,20 +8848,20 @@ com.ax003d.sichu.fragments.MessagesFragment -> com.ax003d.sichu.c.u:
     com.ax003d.sichu.api.ISichuAPI access$2(com.ax003d.sichu.fragments.MessagesFragment) -> b
     com.ax003d.sichu.adapters.MessageListAdapter access$3(com.ax003d.sichu.fragments.MessagesFragment) -> c
     int access$4(com.ax003d.sichu.fragments.MessagesFragment) -> d
-com.ax003d.sichu.fragments.MessagesFragment$1 -> com.ax003d.sichu.c.v:
+com.ax003d.sichu.fragments.MessagesFragment$1 -> com.ax003d.sichu.c.w:
     com.ax003d.sichu.fragments.MessagesFragment this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.ax003d.sichu.fragments.MessagesFragment$2 -> com.ax003d.sichu.c.w:
+com.ax003d.sichu.fragments.MessagesFragment$2 -> com.ax003d.sichu.c.x:
     com.ax003d.sichu.fragments.MessagesFragment this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.ax003d.sichu.fragments.MessagesFragment$GetBookBorrowReqTask -> com.ax003d.sichu.c.x:
+com.ax003d.sichu.fragments.MessagesFragment$GetBookBorrowReqTask -> com.ax003d.sichu.c.y:
     com.ax003d.sichu.fragments.MessagesFragment this$0 -> a
     void onPreExecute() -> onPreExecute
     org.json.JSONObject doInBackground(java.lang.String[]) -> a
     void onPostExecute(org.json.JSONObject) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.ax003d.sichu.fragments.MessagesFragment$ProcessBookBorrowRequestTask -> com.ax003d.sichu.c.y:
+com.ax003d.sichu.fragments.MessagesFragment$ProcessBookBorrowRequestTask -> com.ax003d.sichu.c.z:
     com.ax003d.sichu.fragments.MessagesFragment this$0 -> a
     org.json.JSONObject doInBackground(java.lang.String[]) -> a
     void onPostExecute(org.json.JSONObject) -> a
@@ -8935,6 +8955,7 @@ com.ax003d.sichu.models.BookOwn -> com.ax003d.sichu.models.BookOwn:
     boolean hasEbook -> f
     java.lang.String remark -> g
     com.ax003d.sichu.models.User owner -> h
+    java.util.Set titlePinyin -> i
     android.os.Parcelable$Creator CREATOR -> CREATOR
     com.ax003d.sichu.models.Book getBook() -> a
     void setBook(com.ax003d.sichu.models.Book) -> a
@@ -8950,6 +8971,8 @@ com.ax003d.sichu.models.BookOwn -> com.ax003d.sichu.models.BookOwn:
     void setOwner(com.ax003d.sichu.models.User) -> a
     int describeContents() -> describeContents
     void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    java.util.Set getTitlePinyin() -> f
+    void setTitlePinyin(java.util.Set) -> a
 com.ax003d.sichu.models.BookOwn$1 -> com.ax003d.sichu.models.g:
     com.ax003d.sichu.models.BookOwn createFromParcel(android.os.Parcel) -> a
     com.ax003d.sichu.models.BookOwn[] newArray(int) -> a
@@ -9081,7 +9104,20 @@ com.ax003d.sichu.utils.AccessTokenKeeper -> com.ax003d.sichu.e.a:
     void keepAccessToken(android.content.Context,com.weibo.sdk.android.Oauth2AccessToken) -> a
     void clear(android.content.Context) -> a
     com.weibo.sdk.android.Oauth2AccessToken readAccessToken(android.content.Context) -> b
-com.ax003d.sichu.utils.Preferences -> com.ax003d.sichu.e.b:
+com.ax003d.sichu.utils.PinYin4j -> com.ax003d.sichu.e.b:
+    java.util.Set getPinyin(java.lang.String) -> a
+    java.lang.String[] paiLie(java.lang.String[][]) -> a
+    java.util.Set array2Set(java.lang.Object[]) -> a
+com.ax003d.sichu.utils.PinyinHelper -> com.ax003d.sichu.e.c:
+    com.ax003d.sichu.utils.PinyinHelper instance -> a
+    java.util.Properties properties -> b
+    java.lang.String[] getUnformattedHanyuPinyinStringArray(char) -> a
+    com.ax003d.sichu.utils.PinyinHelper getInstance() -> a
+    void initResource() -> b
+    java.io.BufferedInputStream getResourceInputStream(java.lang.String) -> a
+    java.lang.String[] getHanyuPinyinStringArray(char) -> b
+    java.lang.String getHanyuPinyinRecordFromChar(char) -> c
+com.ax003d.sichu.utils.Preferences -> com.ax003d.sichu.e.d:
     boolean DEBUG -> a
     java.lang.String SERVER -> b
     void setLoginInfo(android.content.Context,java.lang.String,java.lang.String,long,long,java.lang.String,java.lang.String,java.lang.String) -> a
@@ -9103,7 +9139,7 @@ com.ax003d.sichu.utils.Preferences -> com.ax003d.sichu.e.b:
     long getWeiboUID(android.content.Context) -> l
     java.lang.String getEmail(android.content.Context) -> m
     void setEmail(java.lang.String,android.content.Context) -> a
-com.ax003d.sichu.utils.Sync -> com.ax003d.sichu.e.c:
+com.ax003d.sichu.utils.Sync -> com.ax003d.sichu.e.e:
     org.holoeverywhere.slidingmenu.SlidingActivity mActivity -> a
     com.ax003d.sichu.api.ISichuAPI api_client -> b
     long userID -> c
@@ -9121,11 +9157,11 @@ com.ax003d.sichu.utils.Sync -> com.ax003d.sichu.e.c:
     int access$6(com.ax003d.sichu.utils.Sync) -> e
     void access$7(com.ax003d.sichu.utils.Sync,int) -> c
     long access$8(com.ax003d.sichu.utils.Sync) -> f
-com.ax003d.sichu.utils.Sync$GetSyncIDTask -> com.ax003d.sichu.e.d:
+com.ax003d.sichu.utils.Sync$GetSyncIDTask -> com.ax003d.sichu.e.f:
     com.ax003d.sichu.utils.Sync this$0 -> a
     java.lang.Void doInBackground(java.lang.String[]) -> a
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.ax003d.sichu.utils.Sync$SyncTask -> com.ax003d.sichu.e.e:
+com.ax003d.sichu.utils.Sync$SyncTask -> com.ax003d.sichu.e.g:
     java.lang.String mCategory -> b
     com.ax003d.sichu.utils.Sync this$0 -> a
     void onPreExecute() -> onPreExecute
@@ -9136,7 +9172,7 @@ com.ax003d.sichu.utils.Sync$SyncTask -> com.ax003d.sichu.e.e:
     void add_object(android.content.ContentResolver,org.json.JSONObject) -> c
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.ax003d.sichu.utils.Utils -> com.ax003d.sichu.e.f:
+com.ax003d.sichu.utils.Utils -> com.ax003d.sichu.e.h:
     com.nostra13.universalimageloader.core.ImageLoader img_loader -> a
     com.nostra13.universalimageloader.core.DisplayImageOptions cloud_options -> b
     java.text.SimpleDateFormat dateTimeFmt -> c
@@ -9153,7 +9189,7 @@ com.ax003d.sichu.utils.Utils -> com.ax003d.sichu.e.f:
     boolean isExpired(android.content.Context) -> e
     android.content.pm.PackageInfo getPackagetInfo(android.content.Context) -> f
     boolean isEmailValid(java.lang.String) -> c
-com.ax003d.sichu.utils.WeiboAuthDialogListener -> com.ax003d.sichu.e.g:
+com.ax003d.sichu.utils.WeiboAuthDialogListener -> com.ax003d.sichu.e.i:
     org.holoeverywhere.app.Activity mActivity -> a
     long uid -> b
     com.ax003d.sichu.api.ISichuAPI api_client -> c
@@ -9166,14 +9202,14 @@ com.ax003d.sichu.utils.WeiboAuthDialogListener -> com.ax003d.sichu.e.g:
     long access$1(com.ax003d.sichu.utils.WeiboAuthDialogListener) -> b
     com.ax003d.sichu.api.ISichuAPI access$2(com.ax003d.sichu.utils.WeiboAuthDialogListener) -> c
     com.weibo.sdk.android.Oauth2AccessToken access$3(com.ax003d.sichu.utils.WeiboAuthDialogListener) -> d
-com.ax003d.sichu.utils.WeiboAuthDialogListener$1 -> com.ax003d.sichu.e.h:
+com.ax003d.sichu.utils.WeiboAuthDialogListener$1 -> com.ax003d.sichu.e.j:
     com.ax003d.sichu.utils.WeiboAuthDialogListener this$0 -> a
     void run() -> run
-com.ax003d.sichu.utils.WeiboAuthDialogListener$UsersShowListener -> com.ax003d.sichu.e.i:
+com.ax003d.sichu.utils.WeiboAuthDialogListener$UsersShowListener -> com.ax003d.sichu.e.k:
     com.ax003d.sichu.utils.WeiboAuthDialogListener this$0 -> a
     void onError(com.weibo.sdk.android.WeiboException) -> a
     void onComplete(java.lang.String) -> a
-com.ax003d.sichu.utils.WeiboUtils -> com.ax003d.sichu.e.j:
+com.ax003d.sichu.utils.WeiboUtils -> com.ax003d.sichu.e.l:
     long MICABINET_UID -> a
     com.weibo.sdk.android.Weibo g_weibo -> b
     boolean isFollower -> c
@@ -9183,14 +9219,14 @@ com.ax003d.sichu.utils.WeiboUtils -> com.ax003d.sichu.e.j:
     void askFollowing(android.content.Context) -> a
     void access$1(boolean) -> a
     long access$2() -> c
-com.ax003d.sichu.utils.WeiboUtils$1 -> com.ax003d.sichu.e.k:
+com.ax003d.sichu.utils.WeiboUtils$1 -> com.ax003d.sichu.e.m:
     void onError(com.weibo.sdk.android.WeiboException) -> a
     void onComplete(java.lang.String) -> a
-com.ax003d.sichu.utils.WeiboUtils$2 -> com.ax003d.sichu.e.l:
+com.ax003d.sichu.utils.WeiboUtils$2 -> com.ax003d.sichu.e.n:
     org.holoeverywhere.widget.CheckBox val$checkBox -> a
     com.weibo.sdk.android.Oauth2AccessToken val$accessToken -> b
     void onClick(android.content.DialogInterface,int) -> onClick
-com.ax003d.sichu.utils.WeiboUtils$2$1 -> com.ax003d.sichu.e.m:
+com.ax003d.sichu.utils.WeiboUtils$2$1 -> com.ax003d.sichu.e.o:
     com.ax003d.sichu.utils.WeiboUtils$2 this$1 -> a
     void onError(com.weibo.sdk.android.WeiboException) -> a
     void onComplete(java.lang.String) -> a

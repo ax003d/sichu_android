@@ -679,9 +679,9 @@ com.ax003d.sichu.models.BookBorrowReq$BookBorrowReqs:
     33:34:private BookBorrowReq$BookBorrowReqs()
 com.ax003d.sichu.models.BookOwn:
     public static final java.lang.String CATEGORY
-    60:70:public BookOwn(long,long,long,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
-    100:100:public long getBookID()
-    104:105:public void setBookID(long)
+    63:73:public BookOwn(long,long,long,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+    103:103:public long getBookID()
+    107:108:public void setBookID(long)
 com.ax003d.sichu.models.BookOwn$BookOwns:
     public static final java.lang.String CONTENT_TYPE
     public static final java.lang.String TABLE_NAME
@@ -691,7 +691,7 @@ com.ax003d.sichu.models.BookOwn$BookOwns:
     public static final java.lang.String STATUS
     public static final java.lang.String HASEBOOK
     public static final java.lang.String REMARK
-    30:31:private BookOwn$BookOwns()
+    33:34:private BookOwn$BookOwns()
 com.ax003d.sichu.models.Follow:
     public static final java.lang.String CATEGORY
     92:93:public void setFollowing(com.ax003d.sichu.models.User)
@@ -750,6 +750,10 @@ com.ax003d.sichu.providers.SichuContentProvider:
 com.ax003d.sichu.utils.AccessTokenKeeper:
     private static final java.lang.String PREFERENCES_NAME
     13:13:public AccessTokenKeeper()
+com.ax003d.sichu.utils.PinYin4j:
+    20:30:public java.lang.String makeStringByStringSet(java.util.Set)
+    103:106:public static void main(java.lang.String[])
+com.ax003d.sichu.utils.PinyinHelper$Field
 com.ax003d.sichu.utils.Preferences:
     10:10:public Preferences()
     33:33:public static java.lang.String getAvatar(android.content.Context)

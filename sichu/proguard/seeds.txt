@@ -5877,6 +5877,7 @@ com.ax003d.sichu.R$drawable: int ic_refresh
 com.ax003d.sichu.R$drawable: int ic_reject
 com.ax003d.sichu.R$drawable: int ic_remark
 com.ax003d.sichu.R$drawable: int ic_return
+com.ax003d.sichu.R$drawable: int ic_search_inverse
 com.ax003d.sichu.R$drawable: int ic_share
 com.ax003d.sichu.R$drawable: int ic_timer
 com.ax003d.sichu.R$drawable: int ic_unavailable
@@ -6194,6 +6195,7 @@ com.ax003d.sichu.R$id: int edittext_container
 com.ax003d.sichu.R$id: int empty
 com.ax003d.sichu.R$id: int end
 com.ax003d.sichu.R$id: int et_email
+com.ax003d.sichu.R$id: int et_filter
 com.ax003d.sichu.R$id: int expanded_menu
 com.ax003d.sichu.R$id: int fill
 com.ax003d.sichu.R$id: int fill_horizontal
