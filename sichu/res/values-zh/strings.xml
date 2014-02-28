@@ -168,5 +168,7 @@
     <string name="verify_failed">验证电子邮箱失败!</string>
     <string name="btn_go_verify">去验证!</string>
     <string name="hint_go_verify">验证电子邮箱，下次导出可不用输入</string>
+    <string name="menu_more">更多</string>
+    <string name="menu_add">手动添加</string>
 
 </resources>

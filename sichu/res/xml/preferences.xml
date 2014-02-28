@@ -10,10 +10,10 @@
 
     <PreferenceCategory holo:title="@string/pref_accounts" >
         <Preference
-            holo:icon="@drawable/ic_contact"
+            holo:icon="@drawable/ic_action_person"
             holo:key="pref_key_account" />
         <Preference
-            holo:icon="@drawable/ic_email"
+            holo:icon="@drawable/ic_action_email"
             holo:key="pref_key_email" />
         <Preference
             holo:icon="@drawable/ic_weibo"
