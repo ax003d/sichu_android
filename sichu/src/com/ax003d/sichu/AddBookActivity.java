@@ -31,14 +31,14 @@ public class AddBookActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			if (v.getId() == R.id.btn_add) {
+				Utils.hideKeyboard(AddBookActivity.this,
+						et_isbn.getWindowToken());
 				String isbn = et_isbn.getText().toString();
 				if (TextUtils.isEmpty(isbn)) {
 					Toast.makeText(AddBookActivity.this,
-							"ISBN cannot be empty", Toast.LENGTH_SHORT).show();
+							R.string.err_empty_isbn, Toast.LENGTH_SHORT).show();
 					return;
 				}
-				Utils.hideKeyboard(AddBookActivity.this,
-						et_isbn.getWindowToken());
 				new AddBookOwnTask().execute(isbn);
 			}
 		}

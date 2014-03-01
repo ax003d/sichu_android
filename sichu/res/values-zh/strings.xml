@@ -170,5 +170,10 @@
     <string name="hint_go_verify">验证电子邮箱，下次导出可不用输入</string>
     <string name="menu_more">更多</string>
     <string name="menu_add">手动添加</string>
+    <string name="title_activity_add_book">添加书籍</string>
+    <string name="btn_add">添加</string>
+    <string name="hint_isbn">ISBN</string>
+    <string name="err_email_not_valid">请输入正确的 Email 地址!</string>
+    <string name="err_empty_isbn">请输入 ISBN !</string>
 
 </resources>
