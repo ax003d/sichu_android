@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_search_inverse"
+        android:hint="@string/hint_filter"
         android:padding="10dp" />
 
     <ListView
