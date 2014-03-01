@@ -39,14 +39,14 @@ public class BookOwnListAdapter extends BaseAdapter implements Filterable {
 
 	public void addBookOwn(BookOwn own) {
 		bookownsAll.add(own);
-		if (own.getBook() == null) {
-			return;
-		}
-
-		String title = own.getBook().getTitle();
-		if (own.getTitlePinyin() == null) {
-			own.setTitlePinyin(pinyin4j.getPinyin(title));
-		}
+//		if (own.getBook() == null) {
+//			return;
+//		}
+//
+//		String title = own.getBook().getTitle();
+//		if (own.getTitlePinyin() == null) {
+//			own.setTitlePinyin(pinyin4j.getPinyin(title));
+//		}
 	}
 
 	public void clearBookOwn() {
@@ -141,19 +141,23 @@ public class BookOwnListAdapter extends BaseAdapter implements Filterable {
 					}
 
 					String title = i.getBook().getTitle();
-					if (i.getTitlePinyin() == null) {
-						i.setTitlePinyin(pinyin4j.getPinyin(title));
-					}
-					if (title.contains(cons)) {
+					String author = i.getBook().getAuthor();
+					String remark = i.getRemark();
+//					if (i.getTitlePinyin() == null) {
+//						i.setTitlePinyin(pinyin4j.getPinyin(title));
+//					}
+					if (title.toLowerCase().contains(cons) ||
+							author.toLowerCase().contains(cons) ||
+							remark.toLowerCase().contains(cons)) {
 						bookowns.add(i);
 						continue;
 					}
-					for (String py : i.getTitlePinyin()) {
-						if (py.toLowerCase().contains(cons)) {
-							bookowns.add(i);
-							break;
-						}
-					}
+//					for (String py : i.getTitlePinyin()) {
+//						if (py.toLowerCase().contains(cons)) {
+//							bookowns.add(i);
+//							break;
+//						}
+//					}
 				}
 			}
 

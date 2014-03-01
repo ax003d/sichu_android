@@ -175,6 +175,6 @@
     <string name="hint_isbn">ISBN</string>
     <string name="err_email_not_valid">Email not valid!</string>
     <string name="err_empty_isbn">ISBN cannot be empty</string>
-    <string name="hint_filter">Input Book Name to filter</string>
+    <string name="hint_filter">Title/Author/Remark</string>
 
 </resources>

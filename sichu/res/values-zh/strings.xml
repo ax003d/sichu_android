@@ -175,6 +175,6 @@
     <string name="hint_isbn">ISBN</string>
     <string name="err_email_not_valid">请输入正确的 Email 地址!</string>
     <string name="err_empty_isbn">请输入 ISBN !</string>
-    <string name="hint_filter">输入书籍名称或者首字母</string>
+    <string name="hint_filter">标题/作者/备注</string>
 
 </resources>
