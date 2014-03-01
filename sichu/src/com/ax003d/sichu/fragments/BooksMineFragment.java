@@ -36,6 +36,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.ax003d.sichu.AddBookActivity;
 import com.ax003d.sichu.BooksEditActivity;
 import com.ax003d.sichu.ExportActivity;
 import com.ax003d.sichu.MainActivity;
@@ -142,6 +143,9 @@ public class BooksMineFragment extends Fragment implements
 			break;
 		case R.id.menu_export:
 			startActivity(new Intent(activity, ExportActivity.class));
+			break;
+		case R.id.menu_add:
+			startActivity(new Intent(activity, AddBookActivity.class));
 			break;
 		}
 

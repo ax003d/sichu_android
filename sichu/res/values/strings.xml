@@ -170,5 +170,11 @@
     <string name="hint_go_verify">Verify email, save your time on next exports!</string>
     <string name="menu_more">More</string>
     <string name="menu_add">Add</string>
+    <string name="title_activity_add_book">AddBookActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="btn_add">Add</string>
+    <string name="hint_isbn">ISBN</string>
+    <string name="err_email_not_valid">Email not valid!</string>
 
 </resources>

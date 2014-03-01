@@ -212,6 +212,10 @@
             android:name="com.ax003d.sichu.BindEmailActivity"
             android:label="@string/title_activity_bind_email" >
         </activity>
+        <activity
+            android:name="com.ax003d.sichu.AddBookActivity"
+            android:label="@string/title_activity_add_book" >
+        </activity>
     </application>
 
 </manifest>

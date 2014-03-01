@@ -33,10 +33,11 @@ public class ExportActivity extends Activity {
 			case R.id.btn_export:
 				String email = et_email.getText().toString();
 				if (TextUtils.isEmpty(email) || !Utils.isEmailValid(email)) {
-					Toast.makeText(ExportActivity.this, "Email not valid!",
+					Toast.makeText(ExportActivity.this, R.string.err_email_not_valid,
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
+				Utils.hideKeyboard(ExportActivity.this, et_email.getWindowToken());
 				new ExportTask().execute(email);
 				break;
 			case R.id.btn_go_verify:

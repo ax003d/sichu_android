@@ -14,7 +14,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.IBinder;
 import android.util.Patterns;
+import android.view.inputmethod.InputMethodManager;
 
 import com.ax003d.sichu.R;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
@@ -148,5 +150,11 @@ public class Utils {
 
 	public static boolean isEmailValid(String email) {
 		return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+	}
+
+	public static void hideKeyboard(Context context, IBinder token) {
+		InputMethodManager imm = (InputMethodManager) context
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(token, 0);
 	}
 }
