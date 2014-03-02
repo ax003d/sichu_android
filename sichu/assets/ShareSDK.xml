@@ -1,0 +1,9 @@
+<ShareSDK AppKey="1473ae26e96e" />
+<SinaWeibo
+    AppKey="1157643996"
+    AppSecret="a8056c7ba10029aaa7fa37ecb13426fa"
+    Enable="true"
+    Id="1"
+    RedirectUrl="http://sichu.sinaapp.com/callback/weibo/authorize/"
+    ShortLinkConversationEnable="false"
+    SortId="1" />

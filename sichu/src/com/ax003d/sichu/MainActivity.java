@@ -22,6 +22,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
+import cn.sharesdk.framework.ShareSDK;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.ActionBar.TabListener;
@@ -336,5 +338,11 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	protected void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		ShareSDK.stopSDK(this);
 	}
 }

@@ -8,6 +8,8 @@ import org.holoeverywhere.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import cn.sharesdk.framework.ShareSDK;
+
 import com.ax003d.sichu.utils.Utils;
 import com.umeng.fb.NotificationType;
 import com.umeng.fb.UMFeedbackService;
@@ -17,6 +19,7 @@ public class SplashActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ShareSDK.initSDK(this);
 		setContentView(R.layout.activity_splash);
 		UMFeedbackService.enableNewReplyNotification(this, NotificationType.NotificationBar);
 		

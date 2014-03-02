@@ -47,3 +47,8 @@
 -keep class sdk.** { *; }
 
 -keep class com.google.zxing.client.android.** { *; }
+
+# For share sdk
+-keep class cn.sharesdk.**{*;}
+-keep class com.sina.**{*;}
+-keep class m.framework.**{*;}
