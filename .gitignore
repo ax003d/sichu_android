@@ -2,6 +2,7 @@ sichu/bin/
 sichu/gen/
 sichu/.settings/
 sichu/local.properties
+sichu/proguard/
 tools/*
 *~
 submodules/android/bin/
