@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.TimeZone;
 
 import org.holoeverywhere.app.ProgressDialog;
@@ -17,13 +18,19 @@ import android.net.NetworkInfo;
 import android.os.IBinder;
 import android.util.Patterns;
 import android.view.inputmethod.InputMethodManager;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.PlatformDb;
 
 import com.ax003d.sichu.R;
+import com.ax003d.sichu.events.PlatformAuthorizeEvent;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 public class Utils {
 
@@ -33,6 +40,39 @@ public class Utils {
 	private static SimpleDateFormat dateTimeFmt = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss");
 	private static SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
+	private static Bus bus;
+
+	public static PlatformActionListener paListener = new PlatformActionListener() {
+
+		@Override
+		public void onError(Platform platform, int action, Throwable e) {
+			if (action == Platform.ACTION_AUTHORIZING) {
+				Utils.getBus().post(new PlatformAuthorizeEvent());
+			}
+		}
+
+		@Override
+		public void onComplete(Platform platform, int action,
+				HashMap<String, Object> res) {
+			if (action == Platform.ACTION_AUTHORIZING) {
+				PlatformDb db = platform.getDb();
+				String token = db.getToken();
+				long expiresTime = db.getExpiresTime();
+				String id = db.getUserId();
+				String name = db.getUserName();
+				String icon = db.getUserIcon();
+
+				Utils.getBus().post(
+						new PlatformAuthorizeEvent(token, expiresTime, id,
+								name, icon));
+			}
+		}
+
+		@Override
+		public void onCancel(Platform arg0, int arg1) {
+			// Do nothing
+		}
+	};
 
 	public static boolean isNetworkAvailable(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context
@@ -156,5 +196,12 @@ public class Utils {
 		InputMethodManager imm = (InputMethodManager) context
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(token, 0);
+	}
+
+	public static Bus getBus() {
+		if (bus == null) {
+			bus = new Bus(ThreadEnforcer.ANY);
+		}
+		return bus;
 	}
 }
