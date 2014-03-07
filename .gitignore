@@ -7,3 +7,4 @@ tools/*
 *~
 submodules/android/bin/
 submodules/android/gen/
+contrib/share_sdk/MainLibs/bin/

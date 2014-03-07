@@ -18,6 +18,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.sina.weibo.SinaWeibo;
 
 import com.ax003d.sichu.BindEmailActivity;
 import com.ax003d.sichu.LoginActivity;
@@ -25,9 +28,10 @@ import com.ax003d.sichu.MainActivity;
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.api.ISichuAPI;
 import com.ax003d.sichu.api.SichuAPI;
-import com.ax003d.sichu.utils.AccessTokenKeeper;
+import com.ax003d.sichu.events.PlatformAuthorizeEvent;
 import com.ax003d.sichu.utils.Preferences;
 import com.ax003d.sichu.utils.Utils;
+import com.squareup.otto.Subscribe;
 import com.umeng.fb.UMFeedbackService;
 
 public class AccountFragment extends PreferenceFragment implements
@@ -71,10 +75,11 @@ public class AccountFragment extends PreferenceFragment implements
 		pref_key_account.setTitle(Preferences.getUserName(mActivity));
 		pref_key_feedback.setOnPreferenceClickListener(this);
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
+		Utils.getBus().register(this);
 		setScreenName();
 	}
 
@@ -85,7 +90,7 @@ public class AccountFragment extends PreferenceFragment implements
 		} else {
 			pref_key_weibo.setTitle(R.string.hint_bind_weibo);
 		}
-		
+
 		email = Preferences.getEmail(mActivity);
 		if (TextUtils.isEmpty(email)) {
 			pref_key_email.setTitle(R.string.hint_bind_email);
@@ -102,8 +107,7 @@ public class AccountFragment extends PreferenceFragment implements
 			mActivity.finish();
 		} else if (preference.getKey().equals("pref_key_weibo")) {
 			if (screenName == null) {
-				// bind weibo
-				mActivity.bindWeibo();
+				bindWeibo();
 			} else {
 				// unbind weibo
 				Builder builder = new AlertDialog.Builder(mActivity);
@@ -129,12 +133,31 @@ public class AccountFragment extends PreferenceFragment implements
 		return false;
 	}
 
+	public void bindWeibo() {
+		Platform weibo = ShareSDK.getPlatform(mActivity, SinaWeibo.NAME);
+		weibo.setPlatformActionListener(Utils.paListener);
+		weibo.authorize();
+	}
+
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
 		return false;
 	}
 
 	private class UnbindWeiboTask extends AsyncTask<Void, Void, Boolean> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			mActivity.runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					mActivity
+							.setSupportProgressBarIndeterminateVisibility(true);
+				}
+			});
+		}
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
@@ -156,14 +179,88 @@ public class AccountFragment extends PreferenceFragment implements
 		@Override
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
+			mActivity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					mActivity
+							.setSupportProgressBarIndeterminateVisibility(false);
+				}
+			});
 			if (!result) {
 				Toast.makeText(mActivity, "Unbind weibo failed!",
 						Toast.LENGTH_SHORT).show();
 				return;
 			}
-			AccessTokenKeeper.clear(mActivity);
 			Preferences.clearWeiboUser(mActivity);
 			setScreenName();
 		}
+	}
+
+	private class BindWeiboTask extends AsyncTask<String, Void, Boolean> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			mActivity.runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					mActivity
+							.setSupportProgressBarIndeterminateVisibility(true);
+				}
+			});
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			boolean bind_ok = false;
+			try {
+				String id = params[0];
+				String name = params[1];
+				String icon = params[2];
+				String token = params[3];
+				String expiresTime = params[4];
+				JSONObject ret = api_client.account_bind_weibo(id, name, icon,
+						token, expiresTime, null);
+				if (ret.has("status")) {
+					bind_ok = true;
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			return bind_ok;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			mActivity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					mActivity
+							.setSupportProgressBarIndeterminateVisibility(false);
+					setScreenName();
+				}
+			});
+		}
+	}
+
+	@Subscribe
+	public void platformAuthorized(PlatformAuthorizeEvent event) {
+		if (!event.getStatus()) {
+			Toast.makeText(mActivity, "Bind weibo failed!", Toast.LENGTH_SHORT)
+					.show();
+			return;
+		}
+
+		Preferences.storeWeiboUser(mActivity, Long.parseLong(event.getId()),
+				event.getName(), event.getIcon());
+		new BindWeiboTask().execute(event.getId(), event.getName(),
+				event.getIcon(), event.getToken(), event.getExpiresTime() + "");
 	}
 }

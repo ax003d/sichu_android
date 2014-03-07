@@ -1,19 +1,15 @@
 package com.ax003d.sichu;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.holoeverywhere.ArrayAdapter;
-import org.holoeverywhere.app.ProgressDialog;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.slidingmenu.SlidingMenu;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-
 import cn.sharesdk.framework.ShareSDK;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -38,15 +33,11 @@ import com.ax003d.sichu.fragments.FollowerFragment;
 import com.ax003d.sichu.fragments.FollowingFragment;
 import com.ax003d.sichu.fragments.MayKnowFragment;
 import com.ax003d.sichu.fragments.MessagesFragment;
-import com.ax003d.sichu.utils.Utils;
-import com.ax003d.sichu.utils.WeiboAuthDialogListener;
-import com.ax003d.sichu.utils.WeiboUtils;
 import com.ax003d.sichu.widget.NavigationItem;
 import com.ax003d.sichu.widget.NavigationWidget;
 import com.igexin.slavesdk.MessageManager;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
-import com.weibo.sdk.android.sso.SsoHandler;
 
 
 public class MainActivity extends SlidingActivity implements TabListener {
@@ -95,9 +86,6 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	}
 
 	private ListNavigationAdapter adapter;
-	SsoHandler mSsoHandler;
-	private UpdatePreferHandler preferHandler;
-	private ProgressDialog mDialog;
 	private boolean reallyExit;
 	private static int[] pages = { R.string.page_books, R.string.page_friends,
 			R.string.page_messages, R.string.page_account };
@@ -111,6 +99,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ShareSDK.initSDK(this);
 		// umeng sdk
 		MobclickAgent.onError(this);
 		UmengUpdateAgent.update(this);
@@ -138,11 +127,10 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setDisplayShowHomeEnabled(true);
 
-		preferHandler = new UpdatePreferHandler(this);
-		Bundle extras = getIntent().getExtras();
-		if (extras != null && extras.getBoolean("ask_following") && (!WeiboUtils.isFollower())) {
-			WeiboUtils.askFollowing(this);
-		}		
+//		Bundle extras = getIntent().getExtras();
+//		if (extras != null && extras.getBoolean("ask_following") && (!WeiboUtils.isFollower())) {
+//			WeiboUtils.askFollowing(this);
+//		}		
 	}
 	
 	@Override
@@ -237,33 +225,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		}
 		return true;
 	}
-
-	public void bindWeibo() {
-		mSsoHandler = new SsoHandler(this,
-				WeiboUtils.getWeiboInstance());
-		mSsoHandler.authorize(new WeiboAuthDialogListener(this));		
-	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (mSsoHandler != null) {
-			mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
-			if (mDialog == null) {
-				mDialog = Utils.createLoginDialog(this);			
-			}
-			if (resultCode == RESULT_OK) {
-				mDialog.show();
-			}
-		}
-	}
-	
-	public void closeDialog() {
-		if (mDialog != null) {
-			mDialog.dismiss();
-		}
-	}
-
+		
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		Integer tag = (Integer) tab.getTag();
@@ -301,31 +263,6 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 
-	}
-	
-	private static class UpdatePreferHandler extends Handler {
-		private final WeakReference<MainActivity> mActivity;
-		
-		public UpdatePreferHandler(MainActivity activity) {
-			mActivity = new WeakReference<MainActivity>(activity);
-		}
-		
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			MainActivity activity = mActivity.get();
-			if (activity != null) {
-				activity.closeDialog();
-				AccountFragment.getInstance().setScreenName();
-				if (!WeiboUtils.isFollower()) {
-					WeiboUtils.askFollowing(activity);
-				}
-			}
-		}
-	}
-	
-	public void sendMessage() {
-		preferHandler.sendEmptyMessage(0);
 	}
 	
 	@Override
