@@ -3,6 +3,7 @@ package com.ax003d.sichu.utils;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -32,6 +33,8 @@ import cn.sharesdk.framework.PlatformDb;
 
 import com.ax003d.sichu.R;
 import com.ax003d.sichu.events.FollowEvent;
+import com.ax003d.sichu.events.ListFriendsEvent;
+import com.ax003d.sichu.events.ShareEvent;
 import com.ax003d.sichu.events.FollowEvent.Action;
 import com.ax003d.sichu.events.PlatformAuthorizeEvent;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
@@ -54,7 +57,7 @@ public class Utils {
 
 	public static final long MICABINET_UID = 2749010082L;
 	public static boolean isFollower = false;
-	
+
 	public static PlatformActionListener paListener = new PlatformActionListener() {
 
 		@Override
@@ -92,6 +95,18 @@ public class Utils {
 
 			if (action == Platform.ACTION_FOLLOWING_USER) {
 				isFollower = true;
+				return;
+			}
+
+			if (action == Platform.ACTION_SHARE) {
+				Utils.getBus().post(new ShareEvent());
+				return;
+			}
+
+			if (action == Platform.ACTION_GETTING_FRIEND_LIST) {
+				ArrayList<HashMap<String, Object>> users = (ArrayList<HashMap<String, Object>>) res
+						.get("users");
+				Utils.getBus().post(new ListFriendsEvent(users));
 				return;
 			}
 		}

@@ -1,5 +1,7 @@
 package com.ax003d.sichu.models;
 
+import java.util.HashMap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,6 +22,18 @@ public class MayKnow {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public MayKnow(HashMap<String, Object> user) {
+		isSichuUser = false;
+		if (user.get("id") instanceof Integer) {
+			wb_uid = (Integer) user.get("id") + "";	
+		} else if (user.get("id") instanceof Long) {
+			wb_uid = (Long) user.get("id") + "";
+		}
+		username = (String) user.get("screen_name");
+		avatar = (String) user.get("profile_image_url");
+		remark = (String) user.get("remark");
 	}
 
 	public String getAvatar() {

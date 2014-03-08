@@ -165,6 +165,12 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		weibo.followFriend(Utils.MICABINET_UID + "");
 	}
 	
+	public void listFriend() {
+		Log.d("weibo", "list friends");
+		initWeibo();
+		weibo.listFriend(50, 0, null);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (page != R.string.page_account) {
