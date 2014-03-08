@@ -7,22 +7,32 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.app.AlertDialog;
+import org.holoeverywhere.app.AlertDialog.Builder;
 import org.holoeverywhere.app.ProgressDialog;
+import org.holoeverywhere.widget.CheckBox;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
+import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.PlatformDb;
 
 import com.ax003d.sichu.R;
+import com.ax003d.sichu.events.FollowEvent;
+import com.ax003d.sichu.events.FollowEvent.Action;
 import com.ax003d.sichu.events.PlatformAuthorizeEvent;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -42,6 +52,9 @@ public class Utils {
 	private static SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
 	private static Bus bus;
 
+	public static final long MICABINET_UID = 2749010082L;
+	public static boolean isFollower = false;
+	
 	public static PlatformActionListener paListener = new PlatformActionListener() {
 
 		@Override
@@ -65,6 +78,21 @@ public class Utils {
 				Utils.getBus().post(
 						new PlatformAuthorizeEvent(token, expiresTime, id,
 								name, icon));
+				return;
+			}
+
+			if (action == Platform.ACTION_USER_INFOR) {
+				long id = (Long) res.get("id");
+				boolean following = (Boolean) res.get("following");
+				if ((id == MICABINET_UID) && (!following)) {
+					Utils.getBus().post(new FollowEvent(Action.ASK_FOLLOW));
+				}
+				return;
+			}
+
+			if (action == Platform.ACTION_FOLLOWING_USER) {
+				isFollower = true;
+				return;
 			}
 		}
 
@@ -203,5 +231,27 @@ public class Utils {
 			bus = new Bus(ThreadEnforcer.ANY);
 		}
 		return bus;
+	}
+
+	public static void askFollowing(Context context) {
+		Builder builder = new AlertDialog.Builder(context);
+		LayoutInflater inflater = LayoutInflater.from(context);
+		View view = inflater.inflate(R.layout.following, null);
+		final CheckBox checkBox = (CheckBox) view
+				.findViewById(R.id.chk_following);
+		builder.setTitle(R.string.title_following);
+		builder.setView(view);
+		builder.setCancelable(false);
+		OnClickListener onClickListener = new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				if (!checkBox.isChecked()) {
+					return;
+				}
+				getBus().post(new FollowEvent(Action.FOLLOW));
+			}
+		};
+		builder.setPositiveButton(android.R.string.ok, onClickListener);
+		builder.create().show();
 	}
 }

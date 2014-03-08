@@ -11,13 +11,16 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.sina.weibo.SinaWeibo;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -25,6 +28,8 @@ import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+import com.ax003d.sichu.events.FollowEvent;
+import com.ax003d.sichu.events.FollowEvent.Action;
 import com.ax003d.sichu.fragments.AccountFragment;
 import com.ax003d.sichu.fragments.BooksBorrowedFragment;
 import com.ax003d.sichu.fragments.BooksLoanedFragment;
@@ -33,9 +38,11 @@ import com.ax003d.sichu.fragments.FollowerFragment;
 import com.ax003d.sichu.fragments.FollowingFragment;
 import com.ax003d.sichu.fragments.MayKnowFragment;
 import com.ax003d.sichu.fragments.MessagesFragment;
+import com.ax003d.sichu.utils.Utils;
 import com.ax003d.sichu.widget.NavigationItem;
 import com.ax003d.sichu.widget.NavigationWidget;
 import com.igexin.slavesdk.MessageManager;
+import com.squareup.otto.Subscribe;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
@@ -96,10 +103,12 @@ public class MainActivity extends SlidingActivity implements TabListener {
 			R.string.friends_follower, R.string.friends_may_know }; 
 	private static int[] messages_tabs = { R.string.messages_borrow_request };	
 
+	private Platform weibo;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ShareSDK.initSDK(this);
+		ShareSDK.initSDK(this.getApplicationContext());
 		// umeng sdk
 		MobclickAgent.onError(this);
 		UmengUpdateAgent.update(this);
@@ -127,10 +136,33 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setDisplayShowHomeEnabled(true);
 
-//		Bundle extras = getIntent().getExtras();
-//		if (extras != null && extras.getBoolean("ask_following") && (!WeiboUtils.isFollower())) {
-//			WeiboUtils.askFollowing(this);
-//		}		
+		Utils.getBus().register(this);
+		Bundle extras = getIntent().getExtras();
+		if (extras != null && extras.getBoolean("ask_following") && (!Utils.isFollower)) {
+			checkFollow();
+		}
+	}
+	
+	public void bindWeibo() {
+		initWeibo();
+		weibo.authorize();
+	}
+
+	private void initWeibo() {
+		if (weibo == null) {
+			weibo = ShareSDK.getPlatform(this, SinaWeibo.NAME);
+			weibo.setPlatformActionListener(Utils.paListener);
+		}
+	}
+	
+	public void checkFollow() {
+		initWeibo();
+		weibo.showUser(Utils.MICABINET_UID + "");
+	}
+
+	public void follow() {
+		initWeibo();
+		weibo.followFriend(Utils.MICABINET_UID + "");
 	}
 	
 	@Override
@@ -269,6 +301,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	protected void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
+		Utils.getBus().register(this);
 	}
 	
 	@Override
@@ -281,5 +314,20 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	protected void onDestroy() {
 		super.onDestroy();
 		ShareSDK.stopSDK(this);
+	}
+	
+	@Subscribe
+	public void askFollow(FollowEvent event) {
+		if (event.mAction == Action.FOLLOW) {
+			follow();
+		} else if (event.mAction == Action.ASK_FOLLOW) {
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					Utils.askFollowing(MainActivity.this);
+				}
+			});
+		}
 	}
 }

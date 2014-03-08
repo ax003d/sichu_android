@@ -18,9 +18,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.sina.weibo.SinaWeibo;
 
 import com.ax003d.sichu.BindEmailActivity;
 import com.ax003d.sichu.LoginActivity;
@@ -107,7 +104,7 @@ public class AccountFragment extends PreferenceFragment implements
 			mActivity.finish();
 		} else if (preference.getKey().equals("pref_key_weibo")) {
 			if (screenName == null) {
-				bindWeibo();
+				mActivity.bindWeibo();
 			} else {
 				// unbind weibo
 				Builder builder = new AlertDialog.Builder(mActivity);
@@ -131,12 +128,6 @@ public class AccountFragment extends PreferenceFragment implements
 			startActivity(new Intent(mActivity, BindEmailActivity.class));
 		}
 		return false;
-	}
-
-	public void bindWeibo() {
-		Platform weibo = ShareSDK.getPlatform(mActivity, SinaWeibo.NAME);
-		weibo.setPlatformActionListener(Utils.paListener);
-		weibo.authorize();
 	}
 
 	@Override
@@ -262,5 +253,6 @@ public class AccountFragment extends PreferenceFragment implements
 				event.getName(), event.getIcon());
 		new BindWeiboTask().execute(event.getId(), event.getName(),
 				event.getIcon(), event.getToken(), event.getExpiresTime() + "");
+		mActivity.checkFollow();
 	}
 }

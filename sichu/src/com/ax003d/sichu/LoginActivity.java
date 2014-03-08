@@ -36,11 +36,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private boolean remember = false;
 	private ISichuAPI api_client;
 	private ProgressDialog mDialog;
+	private Platform weibo;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ShareSDK.initSDK(this);
+		ShareSDK.initSDK(this.getApplicationContext());
 		setContentView(R.layout.activity_login);
 
 		api_client = SichuAPI.getInstance(getApplicationContext());
@@ -70,6 +71,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 		findViewById(R.id.btn_login_by_weibo).setOnClickListener(this);
 
 		mDialog = Utils.createLoginDialog(LoginActivity.this);
+		weibo = ShareSDK.getPlatform(this, SinaWeibo.NAME);
+		weibo.setPlatformActionListener(Utils.paListener);
 	}
 
 	@Override
@@ -103,8 +106,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_login_by_weibo:
-			Platform weibo = ShareSDK.getPlatform(this, SinaWeibo.NAME);
-			weibo.setPlatformActionListener(Utils.paListener);
 			weibo.authorize();
 			break;
 

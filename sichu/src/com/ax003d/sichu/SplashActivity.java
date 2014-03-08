@@ -19,7 +19,7 @@ public class SplashActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ShareSDK.initSDK(this);
+		ShareSDK.initSDK(this.getApplicationContext());
 		setContentView(R.layout.activity_splash);
 		UMFeedbackService.enableNewReplyNotification(this, NotificationType.NotificationBar);
 		
