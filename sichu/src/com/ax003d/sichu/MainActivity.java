@@ -1,12 +1,10 @@
 package com.ax003d.sichu;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.holoeverywhere.ArrayAdapter;
 import org.holoeverywhere.app.Activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -29,8 +27,6 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
@@ -45,66 +41,26 @@ import com.ax003d.sichu.fragments.FollowingFragment;
 import com.ax003d.sichu.fragments.MayKnowFragment;
 import com.ax003d.sichu.fragments.MessagesFragment;
 import com.ax003d.sichu.utils.Utils;
-import com.ax003d.sichu.widget.NavigationItem;
 import com.igexin.slavesdk.MessageManager;
 import com.squareup.otto.Subscribe;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
-public class MainActivity extends Activity implements TabListener {
+public class MainActivity extends Activity {
 	public static final String TAG = "MainActivity";
 
 	public int pre_page = -1;
 	public int page = -1;
 
-	private final class ListNavigationAdapter extends ArrayAdapter<Integer>
-			implements OnItemClickListener {
-		private int lastSelectedItem = 0;
-
-		public ListNavigationAdapter() {
-			this(new ArrayList<Integer>());
-		}
-
-		public ListNavigationAdapter(List<Integer> list) {
-			super(MainActivity.this, android.R.id.text1, list);
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup container) {
-			NavigationItem view;
-			if (convertView == null) {
-				view = new NavigationItem(MainActivity.this);
-				view.setSelectionHandlerColorResource(R.color.holo_blue_light);
-			} else {
-				view = (NavigationItem) convertView;
-			}
-			int item = getItem(position);
-			view.setLabel(item);
-			view.setSelectionHandlerVisiblity(lastSelectedItem == position ? View.VISIBLE
-					: View.INVISIBLE);
-			return view;
-		}
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			lastSelectedItem = position;
-			notifyDataSetInvalidated();
-			pre_page = page;
-			page = pages[lastSelectedItem];
-			replaceTabs();
-			getSupportActionBar().setSubtitle(page);
-			// getSlidingMenu().showAbove(true);
-		}
-	}
-
 	public static class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		private int page;
 		private int[] sections;
+		private Context mContext;
 
-		public SectionsPagerAdapter(FragmentManager fm) {
+		public SectionsPagerAdapter(FragmentManager fm, Context context) {
 			super(fm);
+			mContext = context;
 			changePage(0);
 		}
 
@@ -117,12 +73,15 @@ public class MainActivity extends Activity implements TabListener {
 				break;
 			// friends
 			case 1:
+				sections = friends_tabs;
 				break;
 			// messages
 			case 2:
+				sections = messages_tabs;
 				break;
 			// settings
 			case 3:
+				sections = settings_tabs;
 				break;
 			default:
 				sections = books_tabs;
@@ -133,15 +92,25 @@ public class MainActivity extends Activity implements TabListener {
 
 		@Override
 		public Fragment getItem(int i) {
-			if (page == 0) {
-				switch (i) {
-				case 0:
-					return BooksMineFragment.getInstance();
-				case 1:
-					return BooksLoanedFragment.getInstance();
-				case 2:
-					return BooksBorrowedFragment.getInstance();
-				}
+			switch (sections[i]) {
+			case R.string.books_mine:
+				return BooksMineFragment.getInstance();
+			case R.string.books_loaned:
+				return BooksLoanedFragment.getInstance();
+			case R.string.books_borrowed:
+				return BooksBorrowedFragment.getInstance();
+			case R.string.friends_following:
+				return FollowingFragment.getInstance();
+			case R.string.friends_follower:
+				return FollowerFragment.getInstance();
+			case R.string.friends_may_know:
+				return MayKnowFragment.getInstance();
+			case R.string.messages_borrow_request:
+				return MessagesFragment.getInstance();
+			case R.string.settings:
+				return AccountFragment.getInstance();
+			default:
+				break;
 			}
 
 			return null;
@@ -153,12 +122,25 @@ public class MainActivity extends Activity implements TabListener {
 		}
 
 		@Override
-		public CharSequence getPageTitle(int position) {
-			return "Section " + (position + 1);
+		public long getItemId(int position) {
+			return sections[position];
 		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return mContext.getString(sections[position]);
+		}
+
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			FragmentManager manager = ((Fragment) object).getFragmentManager();
+			FragmentTransaction trans = manager.beginTransaction();
+			trans.remove((Fragment) object);
+			trans.commit();
+		}
+
 	}
 
-	private ListNavigationAdapter adapter;
 	private boolean reallyExit;
 	private static int[] pages = { R.string.page_books, R.string.page_friends,
 			R.string.page_messages, R.string.page_account };
@@ -168,6 +150,7 @@ public class MainActivity extends Activity implements TabListener {
 	private static int[] friends_tabs = { R.string.friends_following,
 			R.string.friends_follower, R.string.friends_may_know };
 	private static int[] messages_tabs = { R.string.messages_borrow_request };
+	private static int[] settings_tabs = { R.string.settings };
 
 	private Platform weibo;
 	private DrawerLayout mDrawerLayout;
@@ -177,7 +160,6 @@ public class MainActivity extends Activity implements TabListener {
 	private CharSequence mTitle;
 	private CharSequence mDrawerTitle;
 	private ViewPager vp_contents;
-
 	private SectionsPagerAdapter mSectionsAdapter;
 
 	@Override
@@ -208,22 +190,14 @@ public class MainActivity extends Activity implements TabListener {
 		});
 
 		vp_contents = (ViewPager) findViewById(R.id.vp_contents);
-		mSectionsAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+		mSectionsAdapter = new SectionsPagerAdapter(
+				getSupportFragmentManager(), this);
 		vp_contents.setAdapter(mSectionsAdapter);
-		vp_contents
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						getSupportActionBar().setSelectedNavigationItem(
-								position);
-					}
-				});
 
 		final ActionBar ab = getSupportActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setDisplayShowHomeEnabled(true);
 		ab.setHomeButtonEnabled(true);
-		ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, R.string.drawer_open,
@@ -243,41 +217,11 @@ public class MainActivity extends Activity implements TabListener {
 		if (savedInstanceState == null) {
 			drawerItemSelected(0);
 		}
-		//
-		// adapter = new ListNavigationAdapter();
-		// for (int i = 0; i < pages.length; i++) {
-		// adapter.add(pages[i]);
-		// }
-		//
-		// NavigationWidget navigationWidget = new NavigationWidget(this);
-		// navigationWidget.setAdapter(adapter);
-		// navigationWidget.setOnItemClickListener(adapter);
-		// navigationWidget.performItemClick(0);
-		// setBehindContentView(navigationWidget);
-		//
-		// final SlidingMenu si = getSlidingMenu();
-		// si.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		// si.setBehindWidthRes(R.dimen.demo_menu_width);
-		// si.setShadowWidth(0);
-		//
-		// Utils.getBus().register(this);
-		// Bundle extras = getIntent().getExtras();
-		// if (extras != null && extras.getBoolean("ask_following") &&
-		// (!Utils.isFollower)) {
-		// checkFollow();
-		// }
 	}
 
 	private void drawerItemSelected(int position) {
 		Log.d(TAG, "drawer item " + position);
 		mSectionsAdapter.changePage(position);
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.removeAllTabs();
-		for (int i = 0; i < mSectionsAdapter.getCount(); i++) {
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsAdapter.getPageTitle(i))
-					.setTabListener(this));
-		}
 		mDrawerList.setItemChecked(position, true);
 		getSupportActionBar().setSubtitle(drawer_menus[position]);
 		mDrawerLayout.closeDrawer(mDrawerList);
@@ -350,55 +294,6 @@ public class MainActivity extends Activity implements TabListener {
 		return super.onKeyUp(keyCode, event);
 	}
 
-	private void replaceTabs() {
-		if (page == pre_page) {
-			return;
-		}
-		final ActionBar ab = getSupportActionBar();
-		ab.removeAllTabs();
-
-		if (page == R.string.page_books) {
-			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-			for (int i = 0; i < books_tabs.length; i++) {
-				ActionBar.Tab tab = ab.newTab();
-				tab.setText(books_tabs[i]);
-				tab.setTag(books_tabs[i]);
-				tab.setTabListener(this);
-				ab.addTab(tab);
-			}
-		} else if (page == R.string.page_friends) {
-			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-			for (int i = 0; i < friends_tabs.length; i++) {
-				ActionBar.Tab tab = getSupportActionBar().newTab();
-				tab.setText(friends_tabs[i]);
-				tab.setTag(friends_tabs[i]);
-				tab.setTabListener(this);
-				ab.addTab(tab);
-			}
-		} else if (page == R.string.page_messages) {
-			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-			for (int i = 0; i < messages_tabs.length; i++) {
-				ActionBar.Tab tab = ab.newTab();
-				tab.setText(messages_tabs[i]);
-				tab.setTag(messages_tabs[i]);
-				tab.setTabListener(this);
-				ab.addTab(tab);
-			}
-			FragmentTransaction ft = getSupportFragmentManager()
-					.beginTransaction();
-			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			ft.replace(android.R.id.content, MessagesFragment.getInstance());
-			ft.commit();
-		} else if (page == R.string.page_account) {
-			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-			FragmentTransaction ft = getSupportFragmentManager()
-					.beginTransaction();
-			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			ft.replace(android.R.id.content, AccountFragment.getInstance());
-			ft.commit();
-		}
-	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -409,46 +304,6 @@ public class MainActivity extends Activity implements TabListener {
 			return super.onOptionsItemSelected(item);
 		}
 		return true;
-	}
-
-	@Override
-	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		vp_contents.setCurrentItem(tab.getPosition());
-//		Integer tag = (Integer) tab.getTag();
-//		switch (tag) {
-//		case R.string.books_mine:
-//			ft.replace(android.R.id.content, BooksMineFragment.getInstance());
-//			break;
-//		case R.string.books_loaned:
-//			ft.replace(android.R.id.content, BooksLoanedFragment.getInstance());
-//			break;
-//		case R.string.books_borrowed:
-//			ft.replace(android.R.id.content,
-//					BooksBorrowedFragment.getInstance());
-//			break;
-//		case R.string.friends_following:
-//			ft.replace(android.R.id.content, FollowingFragment.getInstance());
-//			break;
-//		case R.string.friends_follower:
-//			ft.replace(android.R.id.content, FollowerFragment.getInstance());
-//			break;
-//		case R.string.friends_may_know:
-//			ft.replace(android.R.id.content, MayKnowFragment.getInstance());
-//			break;
-//
-//		default:
-//			break;
-//		}
-	}
-
-	@Override
-	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-
-	}
-
-	@Override
-	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-
 	}
 
 	@Override
