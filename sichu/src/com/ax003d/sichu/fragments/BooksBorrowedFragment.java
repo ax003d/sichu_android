@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.app.Activity;
 import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
@@ -55,7 +55,7 @@ public class BooksBorrowedFragment extends Fragment implements
 	}
 
 	private BookLoanedListAdapter adapter;
-	private SlidingActivity activity;
+	private Activity activity;
 	private ISichuAPI api_client;
 	private ListView lst_books_borrowed;
 	private long userID;
@@ -66,7 +66,7 @@ public class BooksBorrowedFragment extends Fragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		activity = (SlidingActivity) getActivity();
+		activity = (Activity) getActivity();
 		adapter = new BookLoanedListAdapter(activity);
 		adapter.setAsBorrower(true);
 		api_client = SichuAPI.getInstance(activity);

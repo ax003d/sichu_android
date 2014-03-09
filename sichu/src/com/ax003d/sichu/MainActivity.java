@@ -10,7 +10,11 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -48,6 +52,8 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
 public class MainActivity extends Activity implements TabListener {
+	public static final String TAG = "MainActivity";
+
 	public int pre_page = -1;
 	public int page = -1;
 
@@ -92,6 +98,66 @@ public class MainActivity extends Activity implements TabListener {
 		}
 	}
 
+	public static class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+		private int page;
+		private int[] sections;
+
+		public SectionsPagerAdapter(FragmentManager fm) {
+			super(fm);
+			changePage(0);
+		}
+
+		public void changePage(int page_id) {
+			page = page_id;
+			switch (page_id) {
+			// books
+			case 0:
+				sections = books_tabs;
+				break;
+			// friends
+			case 1:
+				break;
+			// messages
+			case 2:
+				break;
+			// settings
+			case 3:
+				break;
+			default:
+				sections = books_tabs;
+				break;
+			}
+			notifyDataSetChanged();
+		}
+
+		@Override
+		public Fragment getItem(int i) {
+			if (page == 0) {
+				switch (i) {
+				case 0:
+					return BooksMineFragment.getInstance();
+				case 1:
+					return BooksLoanedFragment.getInstance();
+				case 2:
+					return BooksBorrowedFragment.getInstance();
+				}
+			}
+
+			return null;
+		}
+
+		@Override
+		public int getCount() {
+			return sections.length;
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return "Section " + (position + 1);
+		}
+	}
+
 	private ListNavigationAdapter adapter;
 	private boolean reallyExit;
 	private static int[] pages = { R.string.page_books, R.string.page_friends,
@@ -110,6 +176,9 @@ public class MainActivity extends Activity implements TabListener {
 	private ActionBarDrawerToggle mDrawerToggle;
 	private CharSequence mTitle;
 	private CharSequence mDrawerTitle;
+	private ViewPager vp_contents;
+
+	private SectionsPagerAdapter mSectionsAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -129,11 +198,32 @@ public class MainActivity extends Activity implements TabListener {
 		mDrawerList = (ListView) findViewById(R.id.lv_drawer);
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_menu_item, drawer_menus));
+		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				drawerItemSelected(position);
+			}
+		});
+
+		vp_contents = (ViewPager) findViewById(R.id.vp_contents);
+		mSectionsAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+		vp_contents.setAdapter(mSectionsAdapter);
+		vp_contents
+				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+					@Override
+					public void onPageSelected(int position) {
+						getSupportActionBar().setSelectedNavigationItem(
+								position);
+					}
+				});
 
 		final ActionBar ab = getSupportActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setDisplayShowHomeEnabled(true);
 		ab.setHomeButtonEnabled(true);
+		ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, R.string.drawer_open,
@@ -151,7 +241,7 @@ public class MainActivity extends Activity implements TabListener {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		if (savedInstanceState == null) {
-			// selectItem(0);
+			drawerItemSelected(0);
 		}
 		//
 		// adapter = new ListNavigationAdapter();
@@ -178,12 +268,27 @@ public class MainActivity extends Activity implements TabListener {
 		// }
 	}
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-	
+	private void drawerItemSelected(int position) {
+		Log.d(TAG, "drawer item " + position);
+		mSectionsAdapter.changePage(position);
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.removeAllTabs();
+		for (int i = 0; i < mSectionsAdapter.getCount(); i++) {
+			actionBar.addTab(actionBar.newTab()
+					.setText(mSectionsAdapter.getPageTitle(i))
+					.setTabListener(this));
+		}
+		mDrawerList.setItemChecked(position, true);
+		getSupportActionBar().setSubtitle(drawer_menus[position]);
+		mDrawerLayout.closeDrawer(mDrawerList);
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		mDrawerToggle.syncState();
+	}
+
 	public void bindWeibo() {
 		initWeibo();
 		weibo.authorize();
@@ -207,7 +312,6 @@ public class MainActivity extends Activity implements TabListener {
 	}
 
 	public void listFriend() {
-		Log.d("weibo", "list friends");
 		initWeibo();
 		weibo.listFriend(50, 0, null);
 	}
@@ -309,31 +413,32 @@ public class MainActivity extends Activity implements TabListener {
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		Integer tag = (Integer) tab.getTag();
-		switch (tag) {
-		case R.string.books_mine:
-			ft.replace(android.R.id.content, BooksMineFragment.getInstance());
-			break;
-		case R.string.books_loaned:
-			ft.replace(android.R.id.content, BooksLoanedFragment.getInstance());
-			break;
-		case R.string.books_borrowed:
-			ft.replace(android.R.id.content,
-					BooksBorrowedFragment.getInstance());
-			break;
-		case R.string.friends_following:
-			ft.replace(android.R.id.content, FollowingFragment.getInstance());
-			break;
-		case R.string.friends_follower:
-			ft.replace(android.R.id.content, FollowerFragment.getInstance());
-			break;
-		case R.string.friends_may_know:
-			ft.replace(android.R.id.content, MayKnowFragment.getInstance());
-			break;
-
-		default:
-			break;
-		}
+		vp_contents.setCurrentItem(tab.getPosition());
+//		Integer tag = (Integer) tab.getTag();
+//		switch (tag) {
+//		case R.string.books_mine:
+//			ft.replace(android.R.id.content, BooksMineFragment.getInstance());
+//			break;
+//		case R.string.books_loaned:
+//			ft.replace(android.R.id.content, BooksLoanedFragment.getInstance());
+//			break;
+//		case R.string.books_borrowed:
+//			ft.replace(android.R.id.content,
+//					BooksBorrowedFragment.getInstance());
+//			break;
+//		case R.string.friends_following:
+//			ft.replace(android.R.id.content, FollowingFragment.getInstance());
+//			break;
+//		case R.string.friends_follower:
+//			ft.replace(android.R.id.content, FollowerFragment.getInstance());
+//			break;
+//		case R.string.friends_may_know:
+//			ft.replace(android.R.id.content, MayKnowFragment.getInstance());
+//			break;
+//
+//		default:
+//			break;
+//		}
 	}
 
 	@Override
