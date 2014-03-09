@@ -4,19 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.holoeverywhere.ArrayAdapter;
-import org.holoeverywhere.slidingmenu.SlidingActivity;
-import org.holoeverywhere.slidingmenu.SlidingMenu;
+import org.holoeverywhere.app.Activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.Toast;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
@@ -40,14 +42,12 @@ import com.ax003d.sichu.fragments.MayKnowFragment;
 import com.ax003d.sichu.fragments.MessagesFragment;
 import com.ax003d.sichu.utils.Utils;
 import com.ax003d.sichu.widget.NavigationItem;
-import com.ax003d.sichu.widget.NavigationWidget;
 import com.igexin.slavesdk.MessageManager;
 import com.squareup.otto.Subscribe;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
-
-public class MainActivity extends SlidingActivity implements TabListener {
+public class MainActivity extends Activity implements TabListener {
 	public int pre_page = -1;
 	public int page = -1;
 
@@ -88,7 +88,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 			page = pages[lastSelectedItem];
 			replaceTabs();
 			getSupportActionBar().setSubtitle(page);
-			getSlidingMenu().showAbove(true);
+			// getSlidingMenu().showAbove(true);
 		}
 	}
 
@@ -96,15 +96,21 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	private boolean reallyExit;
 	private static int[] pages = { R.string.page_books, R.string.page_friends,
 			R.string.page_messages, R.string.page_account };
-	
+
 	private static int[] books_tabs = { R.string.books_mine,
 			R.string.books_loaned, R.string.books_borrowed };
 	private static int[] friends_tabs = { R.string.friends_following,
-			R.string.friends_follower, R.string.friends_may_know }; 
-	private static int[] messages_tabs = { R.string.messages_borrow_request };	
+			R.string.friends_follower, R.string.friends_may_know };
+	private static int[] messages_tabs = { R.string.messages_borrow_request };
 
 	private Platform weibo;
-	
+	private DrawerLayout mDrawerLayout;
+	private ListView mDrawerList;
+	private String[] drawer_menus;
+	private ActionBarDrawerToggle mDrawerToggle;
+	private CharSequence mTitle;
+	private CharSequence mDrawerTitle;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -115,33 +121,68 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		// gexin sdk
 		MessageManager.getInstance().initialize(getApplicationContext());
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setContentView(R.layout.activity_main);
 
-		adapter = new ListNavigationAdapter();
-		for (int i = 0; i < pages.length; i++) {
-			adapter.add(pages[i]);
-		}
-
-		NavigationWidget navigationWidget = new NavigationWidget(this);
-		navigationWidget.setAdapter(adapter);
-		navigationWidget.setOnItemClickListener(adapter);
-		navigationWidget.performItemClick(0);
-		setBehindContentView(navigationWidget);
-
-		final SlidingMenu si = getSlidingMenu();
-		si.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		si.setBehindWidthRes(R.dimen.demo_menu_width);
-		si.setShadowWidth(0);
+		mTitle = mDrawerTitle = getTitle();
+		drawer_menus = getResources().getStringArray(R.array.drawer_menus);
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerList = (ListView) findViewById(R.id.lv_drawer);
+		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+				R.layout.drawer_menu_item, drawer_menus));
 
 		final ActionBar ab = getSupportActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setDisplayShowHomeEnabled(true);
+		ab.setHomeButtonEnabled(true);
 
-		Utils.getBus().register(this);
-		Bundle extras = getIntent().getExtras();
-		if (extras != null && extras.getBoolean("ask_following") && (!Utils.isFollower)) {
-			checkFollow();
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+				R.drawable.ic_drawer, R.string.drawer_open,
+				R.string.drawer_close) {
+			public void onDrawerClosed(View view) {
+				getSupportActionBar().setTitle(mTitle);
+				supportInvalidateOptionsMenu();
+			}
+
+			public void onDrawerOpened(View drawerView) {
+				getSupportActionBar().setTitle(mDrawerTitle);
+				supportInvalidateOptionsMenu();
+			}
+		};
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+		if (savedInstanceState == null) {
+			// selectItem(0);
 		}
+		//
+		// adapter = new ListNavigationAdapter();
+		// for (int i = 0; i < pages.length; i++) {
+		// adapter.add(pages[i]);
+		// }
+		//
+		// NavigationWidget navigationWidget = new NavigationWidget(this);
+		// navigationWidget.setAdapter(adapter);
+		// navigationWidget.setOnItemClickListener(adapter);
+		// navigationWidget.performItemClick(0);
+		// setBehindContentView(navigationWidget);
+		//
+		// final SlidingMenu si = getSlidingMenu();
+		// si.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+		// si.setBehindWidthRes(R.dimen.demo_menu_width);
+		// si.setShadowWidth(0);
+		//
+		// Utils.getBus().register(this);
+		// Bundle extras = getIntent().getExtras();
+		// if (extras != null && extras.getBoolean("ask_following") &&
+		// (!Utils.isFollower)) {
+		// checkFollow();
+		// }
 	}
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
 	
 	public void bindWeibo() {
 		initWeibo();
@@ -154,7 +195,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 			weibo.setPlatformActionListener(Utils.paListener);
 		}
 	}
-	
+
 	public void checkFollow() {
 		initWeibo();
 		weibo.showUser(Utils.MICABINET_UID + "");
@@ -164,13 +205,13 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		initWeibo();
 		weibo.followFriend(Utils.MICABINET_UID + "");
 	}
-	
+
 	public void listFriend() {
 		Log.d("weibo", "list friends");
 		initWeibo();
 		weibo.listFriend(50, 0, null);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (page != R.string.page_account) {
@@ -178,7 +219,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
 	@SuppressLint("NewApi")
 	public void onBackPressed() {
@@ -186,7 +227,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 			super.onBackPressed();
 			return;
 		}
-		
+
 		reallyExit = true;
 		Toast.makeText(this, R.string.hint_exit, Toast.LENGTH_SHORT).show();
 		new Handler().postDelayed(new Runnable() {
@@ -200,11 +241,11 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			toggle();
+			// toggle();
 		}
 		return super.onKeyUp(keyCode, event);
 	}
-	
+
 	private void replaceTabs() {
 		if (page == pre_page) {
 			return;
@@ -238,17 +279,19 @@ public class MainActivity extends SlidingActivity implements TabListener {
 				tab.setTag(messages_tabs[i]);
 				tab.setTabListener(this);
 				ab.addTab(tab);
-			}			
-	        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-	        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	        ft.replace(android.R.id.content, MessagesFragment.getInstance());
-	        ft.commit();
+			}
+			FragmentTransaction ft = getSupportFragmentManager()
+					.beginTransaction();
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			ft.replace(android.R.id.content, MessagesFragment.getInstance());
+			ft.commit();
 		} else if (page == R.string.page_account) {
 			ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-	        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-	        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-	        ft.replace(android.R.id.content, AccountFragment.getInstance());
-	        ft.commit();
+			FragmentTransaction ft = getSupportFragmentManager()
+					.beginTransaction();
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			ft.replace(android.R.id.content, AccountFragment.getInstance());
+			ft.commit();
 		}
 	}
 
@@ -256,19 +299,19 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			toggle();
+			// toggle();
 			break;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 		return true;
 	}
-		
+
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		Integer tag = (Integer) tab.getTag();
 		switch (tag) {
-		case R.string.books_mine:			
+		case R.string.books_mine:
 			ft.replace(android.R.id.content, BooksMineFragment.getInstance());
 			break;
 		case R.string.books_loaned:
@@ -287,7 +330,7 @@ public class MainActivity extends SlidingActivity implements TabListener {
 		case R.string.friends_may_know:
 			ft.replace(android.R.id.content, MayKnowFragment.getInstance());
 			break;
-			
+
 		default:
 			break;
 		}
@@ -302,26 +345,26 @@ public class MainActivity extends SlidingActivity implements TabListener {
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
 		Utils.getBus().register(this);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		ShareSDK.stopSDK(this);
 	}
-	
+
 	@Subscribe
 	public void askFollow(FollowEvent event) {
 		if (event.mAction == Action.FOLLOW) {

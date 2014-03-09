@@ -177,4 +177,14 @@
     <string name="err_empty_isbn">请输入 ISBN !</string>
     <string name="hint_filter">标题/作者/备注</string>
 
+    <string-array name="drawer_menus">
+        <item>书橱</item>
+        <item>橱友</item>
+        <item>消息</item>
+        <item>设置</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
 </resources>

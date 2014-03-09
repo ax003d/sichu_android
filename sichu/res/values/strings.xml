@@ -177,4 +177,14 @@
     <string name="err_empty_isbn">ISBN cannot be empty</string>
     <string name="hint_filter">Title/Author/Remark</string>
 
+    <string-array name="drawer_menus">
+        <item>Books</item>
+        <item>Friends</item>
+        <item>Messages</item>
+        <item>Account</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
 </resources>

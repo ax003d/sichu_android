@@ -3,6 +3,7 @@ package com.ax003d.sichu.utils;
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
+import org.holoeverywhere.app.Activity;
 import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
@@ -28,14 +29,14 @@ import com.ax003d.sichu.models.Follow.Follows;
 
 public class Sync {
 
-	private SlidingActivity mActivity;
+	private Activity mActivity;
 	private ISichuAPI api_client;
 	private long userID;
 	private int mAddNum = 0;
 	private int mUpdateNum = 0;
 	private int mDeleteNum = 0;
 
-	public Sync(SlidingActivity activity) {
+	public Sync(Activity activity) {
 		mActivity = activity;
 		api_client = SichuAPI.getInstance(mActivity);
 		userID = Preferences.getUserID(mActivity);
