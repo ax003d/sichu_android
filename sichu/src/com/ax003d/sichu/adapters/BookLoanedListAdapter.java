@@ -32,7 +32,7 @@ public class BookLoanedListAdapter extends BaseAdapter {
 		options = Utils.getCloudOptions();
 		img_loader = Utils.getImageLoader(context);
 		col_not_returned = context.getResources().getColor(R.color.col_value);
-		col_returned = org.holoeverywhere.slidingmenu.R.color.hint_foreground_holo_light;
+		col_returned = org.holoeverywhere.R.color.hint_foreground_holo_light;
 	}	
 	
 	public void setAsBorrower(boolean asBorrower) {

@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
