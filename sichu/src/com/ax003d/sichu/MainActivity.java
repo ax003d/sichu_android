@@ -5,6 +5,7 @@ import org.holoeverywhere.app.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -195,6 +196,7 @@ public class MainActivity extends Activity {
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setDisplayShowHomeEnabled(true);
 		ab.setHomeButtonEnabled(true);
+		ab.setBackgroundDrawable(new ColorDrawable(0xff3f3327));
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, R.string.drawer_open,
