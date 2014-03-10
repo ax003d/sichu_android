@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.app.Activity;
 import org.holoeverywhere.app.AlertDialog;
 import org.holoeverywhere.app.AlertDialog.Builder;
 import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.Toast;
 import org.json.JSONArray;
@@ -64,7 +64,7 @@ public class MessagesFragment extends Fragment implements
 	}
 
 	private ISichuAPI api_client;
-	private SlidingActivity activity;
+	private Activity activity;
 	private long userID;
 	private MessageListAdapter adapter;
 	private ListView lst_msg;
@@ -77,7 +77,7 @@ public class MessagesFragment extends Fragment implements
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		api_client = SichuAPI.getInstance(getActivity());
-		activity = (SlidingActivity) getActivity();
+		activity = (Activity) getActivity();
 		userID = Preferences.getUserID(activity);
 		adapter = new MessageListAdapter(activity);
 	}

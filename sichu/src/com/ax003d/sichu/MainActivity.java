@@ -12,9 +12,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +54,6 @@ public class MainActivity extends Activity {
 
 	public static class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-		private int page;
 		private int[] sections;
 		private Context mContext;
 
@@ -65,7 +64,6 @@ public class MainActivity extends Activity {
 		}
 
 		public void changePage(int page_id) {
-			page = page_id;
 			switch (page_id) {
 			// books
 			case 0:
@@ -139,12 +137,12 @@ public class MainActivity extends Activity {
 			trans.commit();
 		}
 
+		public int getItemPosition(Object object) {
+			return POSITION_NONE;
+		}
 	}
 
 	private boolean reallyExit;
-	private static int[] pages = { R.string.page_books, R.string.page_friends,
-			R.string.page_messages, R.string.page_account };
-
 	private static int[] books_tabs = { R.string.books_mine,
 			R.string.books_loaned, R.string.books_borrowed };
 	private static int[] friends_tabs = { R.string.friends_following,
@@ -157,10 +155,9 @@ public class MainActivity extends Activity {
 	private ListView mDrawerList;
 	private String[] drawer_menus;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private CharSequence mTitle;
-	private CharSequence mDrawerTitle;
 	private ViewPager vp_contents;
 	private SectionsPagerAdapter mSectionsAdapter;
+	private PagerTitleStrip pager_title_strip;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -174,8 +171,8 @@ public class MainActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_main);
 
-		mTitle = mDrawerTitle = getTitle();
 		drawer_menus = getResources().getStringArray(R.array.drawer_menus);
+		pager_title_strip = (PagerTitleStrip) findViewById(R.id.pager_title_strip);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.lv_drawer);
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
@@ -203,12 +200,10 @@ public class MainActivity extends Activity {
 				R.drawable.ic_drawer, R.string.drawer_open,
 				R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
-				getSupportActionBar().setTitle(mTitle);
 				supportInvalidateOptionsMenu();
 			}
 
 			public void onDrawerOpened(View drawerView) {
-				getSupportActionBar().setTitle(mDrawerTitle);
 				supportInvalidateOptionsMenu();
 			}
 		};
@@ -220,7 +215,11 @@ public class MainActivity extends Activity {
 	}
 
 	private void drawerItemSelected(int position) {
-		Log.d(TAG, "drawer item " + position);
+		if (position == 3) {
+			pager_title_strip.setVisibility(View.GONE);
+		} else {
+			pager_title_strip.setVisibility(View.VISIBLE);
+		}
 		mSectionsAdapter.changePage(position);
 		mDrawerList.setItemChecked(position, true);
 		getSupportActionBar().setSubtitle(drawer_menus[position]);

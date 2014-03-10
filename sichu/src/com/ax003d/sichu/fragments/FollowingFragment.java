@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.app.Activity;
 import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.slidingmenu.SlidingActivity;
 import org.holoeverywhere.widget.ListView;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,7 +58,7 @@ public class FollowingFragment extends Fragment implements
 	private FollowListAdapter adapter;
 	private ListView lst_following;
 	private ISichuAPI api_client;
-	private SlidingActivity activity;
+	private Activity activity;
 	private long userID;
 	private boolean requery;
 	private View lbl_no_following;
@@ -68,7 +68,7 @@ public class FollowingFragment extends Fragment implements
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		api_client = SichuAPI.getInstance(getActivity());
-		activity = (SlidingActivity) getActivity();
+		activity = (Activity) getActivity();
 		userID = Preferences.getUserID(activity);
 		adapter = new FollowListAdapter(activity);
 	}
