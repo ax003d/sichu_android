@@ -5,7 +5,6 @@ import org.holoeverywhere.app.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -133,6 +132,9 @@ public class MainActivity extends Activity {
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			FragmentManager manager = ((Fragment) object).getFragmentManager();
+			if (manager == null) {
+				return;
+			}
 			FragmentTransaction trans = manager.beginTransaction();
 			trans.remove((Fragment) object);
 			trans.commit();
@@ -196,7 +198,6 @@ public class MainActivity extends Activity {
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setDisplayShowHomeEnabled(true);
 		ab.setHomeButtonEnabled(true);
-		ab.setBackgroundDrawable(new ColorDrawable(0xff3f3327));
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, R.string.drawer_open,
@@ -222,6 +223,7 @@ public class MainActivity extends Activity {
 		} else {
 			pager_title_strip.setVisibility(View.VISIBLE);
 		}
+		vp_contents.setCurrentItem(0);
 		mSectionsAdapter.changePage(position);
 		mDrawerList.setItemChecked(position, true);
 		getSupportActionBar().setSubtitle(drawer_menus[position]);
@@ -287,10 +289,18 @@ public class MainActivity extends Activity {
 		}, 2000);
 	}
 
+	private void toggle() {
+		if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
+			mDrawerLayout.closeDrawer(mDrawerList);
+		} else {
+			mDrawerLayout.openDrawer(mDrawerList);
+		}
+	}
+
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			// toggle();
+			toggle();
 		}
 		return super.onKeyUp(keyCode, event);
 	}
@@ -299,7 +309,7 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// toggle();
+			toggle();
 			break;
 		default:
 			return super.onOptionsItemSelected(item);
