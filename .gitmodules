@@ -1,9 +1,9 @@
 [submodule "submodules/HoloEverywhere"]
 	path = submodules/HoloEverywhere
-	url = git://github.com/ChristopheVersieux/HoloEverywhere.git
+	url = git@github.com:ax003d/HoloEverywhere.git
 [submodule "submodules/pulltorefresh"]
 	path = submodules/pulltorefresh
-	url = git://github.com/ax003d/android-pulltorefresh.git
+	url = git@github.com:ax003d/android-pulltorefresh.git
 [submodule "submodules/weibo_android_sdk"]
 	path = submodules/weibo_android_sdk
-	url = git://github.com/mobileresearch/weibo_android_sdk.git
+	url = git@github.com:ax003d/weibo_android_sdk.git
